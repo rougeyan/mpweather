@@ -50,5 +50,13 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  // 改变swiper的时候更新 location;
+  changeSwiper: function(e){
+    console.log(e);
+  },
+  tapswiperitem: function(e){
+    console.log(e);
   }
+
 })

@@ -1,4 +1,5 @@
 //app.js
+const config = require('./utils/config')
 App({
   onLaunch: function () {
     // 展示本地存储能力
@@ -9,6 +10,7 @@ App({
     // 登录
     wx.login({
       success: res => {
+        console.log(res);
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })

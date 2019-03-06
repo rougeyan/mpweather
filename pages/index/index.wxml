@@ -1,13 +1,105 @@
 <!--index.wxml-->
+<view class="bg"></view>
 <view class="container">
+  <!-- 用户信息 -->
   <view class="userinfo">
+    <!-- 判定没有登陆信息时微信授权 -->
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      <text class="userinfo-nickname">{{userInfo.nickName+"，"}}</text>
+      <text class="greetings">晚上好</text>
     </block>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+
+  <!-- 实时天气概况 -->
+  <swiper bindchange="changeSwiper" indicator-dots="true" class="weatherSwiper">
+    <!-- 这里要渲染要读出配置城市的list -->
+    <swiper-item class="weatherSummary" bindtap="tapswiperitem">
+      <text class="location">广东省广州市白云区</text>
+      <text class="Summary">多云</text>
+      <text class="temperature">22</text>
+      <view class="latestUpdate">最后更新于22:00</view>
+    </swiper-item>
+  </swiper>
+
+
+  <!-- 逐三小时预报   -->
+  <scroll-view class="threehours" scroll-x="true">
+    <view class="item-hour">
+      <view class="hourStepWeather">
+        <text class="time">22:00</text>
+        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+        <text class="temperature">22</text>
+      </view>
+    </view>
+    <view class="item-hour">
+      <view class="hourStepWeather">
+        <text class="time">22:00</text>
+        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+        <text class="temperature">22</text>
+      </view>
+    </view>
+    <view class="item-hour">
+      <view class="hourStepWeather">
+        <text class="time">22:00</text>
+        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+        <text class="temperature">22</text>
+      </view>
+    </view>
+    <view class="item-hour">
+      <view class="hourStepWeather">
+        <text class="time">22:00</text>
+        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+        <text class="temperature">22</text>
+      </view>
+    </view>
+    <view class="item-hour">
+      <view class="hourStepWeather">
+        <text class="time">22:00</text>
+        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+        <text class="temperature">22</text>
+      </view>
+    </view>
+    <view class="item-hour">
+      <view class="hourStepWeather">
+        <text class="time">22:00</text>
+        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+        <text class="temperature">22</text>
+      </view>
+    </view>
+    <view class="item-hour">
+      <view class="hourStepWeather">
+        <text class="time">22:00</text>
+        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+        <text class="temperature">22</text>
+      </view>
+    </view>
+    <view class="item-hour">
+      <view class="hourStepWeather">
+        <text class="time">22:00</text>
+        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+        <text class="temperature">22</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 未来天气列表-->
+  <view class="futureWeather">
+    <view class="fulture-item">
+      <text class="weekitem">星期三</text>
+      <image class="weatherImg" src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+      <text class="highestTemperature">30</text>
+      <text class="lowestTemperature">28</text>
+    </view>
+    <view class="fulture-item">
+      <text class="weekitem">星期四</text>
+      <image class="weatherImg" src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+      <text class="highestTemperature">30</text>
+      <text class="lowestTemperature">28</text>
+    </view>
   </view>
+
+
+  
 </view>
