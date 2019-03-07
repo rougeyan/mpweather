@@ -1,0 +1,8 @@
+/* 全局样式 */
+/**app.wxss**/
+
+.container {
+  height: 100vh;
+  padding: 16rpx;
+  box-sizing: border-box;
+}
