@@ -1,6 +1,10 @@
 //app.js
+<<<<<<< HEAD
 const config = require('./utils/config');
 const api = require('./api/api');
+=======
+const config = require('./utils/config')
+>>>>>>> 084cbbaf2af36432219bc339d56e9f9129c08537
 App({
   onLaunch: function () {
     // 展示本地存储能力
@@ -37,7 +41,11 @@ App({
     })
   },
   globalData: {
+<<<<<<< HEAD
     userInfo: null,
     api
+=======
+    userInfo: null
+>>>>>>> 084cbbaf2af36432219bc339d56e9f9129c08537
   }
 })

@@ -1,8 +1,11 @@
 //index.js
 //获取应用实例
 const app = getApp()
+<<<<<<< HEAD
 const config = app.globalData.config
 const api = app.globalData.api
+=======
+>>>>>>> 084cbbaf2af36432219bc339d56e9f9129c08537
 
 Page({
   data: {
@@ -44,6 +47,7 @@ Page({
         }
       })
     }
+<<<<<<< HEAD
 
     // api
     api.heWeatherApi.getNowWeather().then((res)=>{
@@ -53,6 +57,8 @@ Page({
       console.log(res)
     })
 
+=======
+>>>>>>> 084cbbaf2af36432219bc339d56e9f9129c08537
   },
   getUserInfo: function(e) {
     console.log(e)
