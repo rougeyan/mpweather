@@ -6,10 +6,16 @@ const api = app.globalData.api
 
 Page({
   data: {
-    motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    cityList:[
+      {
+        location: 'beijing', 
+      },{
+        location: 'guangzhou', 
+      },
+    ]
   },
   //事件处理函数
   bindViewTap: function() {
@@ -18,6 +24,7 @@ Page({
     })
   },
   onLoad: function () {
+    console.log(this);
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -44,22 +51,21 @@ Page({
         }
       })
     }
-<<<<<<< HEAD
 
     // api
     api.heWeatherApi.getNowWeather().then((res)=>{
-      console.log(res)
+      console.log(this);
     })
     api.heWeatherApi.getDailyWeather().then((res)=>{
       console.log(res)
     })
-
-=======
->>>>>>> 084cbbaf2af36432219bc339d56e9f9129c08537
   },
+
   getUserInfo: function(e) {
     console.log(e)
+    // 设置全局globalDatauserInfo;
     app.globalData.userInfo = e.detail.userInfo
+    // page设置setData属性;
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true

@@ -5,10 +5,11 @@
   <view class="userinfo">
     <!-- 判定没有登陆信息时微信授权 -->
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+
     <block wx:else>
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName+"，"}}</text>
       <text class="greetings">晚上好</text>
+      <text class="userinfo-nickname">{{"，"+userInfo.nickName}}</text>
     </block>
   </view>
 
@@ -22,7 +23,6 @@
       <view class="latestUpdate">最后更新于22:00</view>
     </swiper-item>
   </swiper>
-
 
   <!-- 逐三小时预报   -->
   <scroll-view class="threehours" scroll-x="true">
