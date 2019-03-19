@@ -51,7 +51,7 @@ heWeatherApi.getNowWeather = (option)=>{
 heWeatherApi.getDailyWeather = (option)=>{
   return weatherPromiseRequest({
     ...option,
-    url: config.dailyWeatherUrl,
+    url: config.dailyWeatherUrl
   })
 }
 
@@ -59,7 +59,13 @@ heWeatherApi.getDailyWeather = (option)=>{
 heWeatherApi.getHourlyWeather = (option)=>{
   return weatherPromiseRequest({
     ...option,
-    url: config.hourlyWeatherUrl,
+    url: config.hourlyWeatherUrl
+  })
+}
+
+heWeatherApi.getLifestyle = (option) =>{
+  return weatherPromiseRequest({
+    url: config.lifestyleUrl
   })
 }
 

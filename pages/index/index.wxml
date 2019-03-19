@@ -1,18 +1,12 @@
 <!--index.wxml-->
 <view class="bg"></view>
 <view class="container">
-  <!-- 用户信息 -->
+  <!-- 用户信息 -->  
   <view class="userinfo">
-    <!-- 判定没有登陆信息时微信授权 -->
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="greetings">晚上好</text>
-      <text class="userinfo-nickname">{{"，"+userInfo.nickName}}</text>
-    </block>
+    <open-data type="userAvatarUrl" class="userinfo-avatar"/>
+    <text class="greetings">晚上好</text>
+    <open-data type="userNickName" class="greetings"/>
   </view>
-
   <!-- 实时天气概况 -->
   <swiper bindchange="changeSwiper" indicator-dots="true" class="weatherSwiper">
     <!-- 这里要渲染要读出配置城市的list -->

@@ -21,7 +21,6 @@
   align-items:center;
   background-color: tomato;
 }
-
 .userinfo .userinfo-avatar {
   width: 96rpx;
   height: 96rpx;

@@ -1,0 +1,4 @@
+<view class="citySwiper">
+  {{innerText}}
+</view>
+<slot></slot>

@@ -12,8 +12,10 @@ Page({
     cityList:[
       {
         location: 'beijing', 
+        description: '北京'
       },{
         location: 'guangzhou', 
+        description: '北京'
       },
     ]
   },
@@ -24,7 +26,6 @@ Page({
     })
   },
   onLoad: function () {
-    console.log(this);
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -43,7 +44,7 @@ Page({
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         success: res => {
-          app.globalData.userInfo = res.userInfo
+          app.globalData.userInfo = res.userInfo;
           this.setData({
             userInfo: res.userInfo,
             hasUserInfo: true
@@ -54,15 +55,14 @@ Page({
 
     // api
     api.heWeatherApi.getNowWeather().then((res)=>{
-      console.log(this);
+      console.log(res);
     })
     api.heWeatherApi.getDailyWeather().then((res)=>{
-      console.log(res)
+      console.log(res);
     })
   },
-
   getUserInfo: function(e) {
-    console.log(e)
+    console.log(e);
     // 设置全局globalDatauserInfo;
     app.globalData.userInfo = e.detail.userInfo
     // page设置setData属性;
@@ -74,9 +74,10 @@ Page({
   // 改变swiper的时候更新 location;
   changeSwiper: function(e){
     console.log(e);
+    console.log("do changeSwiper");
   },
   tapswiperitem: function(e){
     console.log(e);
+    console.log("do tapswiperitem");
   }
-
 })
