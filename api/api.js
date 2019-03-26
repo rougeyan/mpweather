@@ -1,4 +1,5 @@
 const config = require('./apiconfig');
+const FAKEDATA = require('./fakedata')
 
 // 默认参数(若不授权默认显示天气参数)
 const defaultParams = {
@@ -10,9 +11,10 @@ const defaultParams = {
 
 // weather api (天气接口)
 let heWeatherApi ={};
+
 // 天气请求
 function weatherPromiseRequest(option){
-  // 解构
+  // 解构 (依据wx.request接口)
   let {url,data,header,method,dataType,responseType,success,fail,complete} = option;
 
   return new Promise((resolve,reject)=>{
@@ -42,6 +44,12 @@ function weatherPromiseRequest(option){
 
 // 获取现在天气
 heWeatherApi.getNowWeather = (option)=>{
+  // 返回假数据
+  return new Promise((resolve,reject)=>{
+    console.log("resolve nowWeatherResponse");
+    resolve(FAKEDATA.nowWeatherResponse)
+  })
+  // 真实请求
   return weatherPromiseRequest({
     ...option,
     url: config.nowWeatherUrl
@@ -62,6 +70,7 @@ heWeatherApi.getHourlyWeather = (option)=>{
     url: config.hourlyWeatherUrl
   })
 }
+
 
 heWeatherApi.getLifestyle = (option) =>{
   return weatherPromiseRequest({

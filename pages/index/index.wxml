@@ -1,22 +1,30 @@
 <!--index.wxml-->
+
+<!-- 背景 -->
 <view class="bg"></view>
+
 <view class="container">
+  
   <!-- 用户信息 -->  
   <view class="userinfo">
     <open-data type="userAvatarUrl" class="userinfo-avatar"/>
     <text class="greetings">晚上好</text>
     <open-data type="userNickName" class="greetings"/>
   </view>
+
+
   <!-- 实时天气概况 -->
-  <swiper bindchange="changeSwiper" indicator-dots="true" class="weatherSwiper">
+  <swiper bindchange="changeSwiper" indicator-dots="true" class="weatherSwiper" >
     <!-- 这里要渲染要读出配置城市的list -->
-    <swiper-item class="weatherSummary" bindtap="tapswiperitem">
-      <text class="location">广东省广州市白云区</text>
-      <text class="Summary">多云</text>
-      <text class="temperature">22</text>
-      <view class="latestUpdate">最后更新于22:00</view>
+    <swiper-item wx:for="{{presentWeather}}" wx:key="unique" wx:for-item="locationItem" class="weatherSummary" bindtap="tapswiperitem">
+      <text class="location">{{locationItem.location}}</text>
+      <text class="Summary">{{locationItem.cond_txt}}</text>
+      <text class="temperature">{{locationItem.tmp}}</text>
+      <!-- <view class="latestUpdate">最后更新于23:59</view> -->
+      <view class="latestUpdate" bindtap="setDataFoRcity">{{locationItem.lat}}</view>
     </swiper-item>
   </swiper>
+
 
   <!-- 逐三小时预报   -->
   <scroll-view class="threehours" scroll-x="true">
@@ -78,6 +86,7 @@
     </view>
   </scroll-view>
 
+
   <!-- 未来天气列表-->
   <view class="futureWeather">
     <view class="fulture-item">
@@ -94,6 +103,8 @@
     </view>
   </view>
 
-
+  <!-- 今天其他信息(概述:风向/湿度/体感温度/气压/能见度/紫外线/) -->
+  
+  <!-- 查看更多,穿衣 == 之类 -->
   
 </view>
