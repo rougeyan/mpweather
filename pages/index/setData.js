@@ -3,6 +3,8 @@
 // 引入API 模块
 const api = app.globalData.api
 
+
+// setData 和api请求合并成同一块, 否则 过度分离;
 function updateNowWeather(self){
   api.heWeatherApi.getNowWeather().then((res)=>{
     // setData() 操作
@@ -10,7 +12,14 @@ function updateNowWeather(self){
       textData: "数据已被更新"
     })
   })
+}
 
+function updateData(self,fuc,data){
+  fuc().then((res)=>{
+    self.setData({
+      //具体data 书
+    })
+  })
 }
 
 // 更新

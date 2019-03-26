@@ -62,7 +62,6 @@ Page({
     // 这里有优化的地方:建议使用async funcname{ await funcname(); await funcname2();}
 
     // 获取现在天气
-    // setData 和api 请求合并成同一块, 否则 过度分离;
     api.heWeatherApi.getNowWeather().then((res)=>{
       console.log(res);
       // set Data
