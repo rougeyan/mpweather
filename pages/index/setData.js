@@ -1,5 +1,18 @@
 // 因为页面太多setData的话 导致js太长, 次js只作setData操作
 
+// 引入API 模块
+const api = app.globalData.api
+
+function updateNowWeather(self){
+  api.heWeatherApi.getNowWeather().then((res)=>{
+    // setData() 操作
+    self.setData({
+      textData: "数据已被更新"
+    })
+  })
+
+}
+
 // 更新
 function updateDataForCity(self){
   self.setData({
@@ -12,6 +25,7 @@ function updataElseData(self){
     textData: "数据第二次已被更新"
   })
 }
+
 // 更新城市的某一项: 数据[{},{第二项数据被更新掉},{}]
 /**
  * 
