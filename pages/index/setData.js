@@ -1,9 +1,10 @@
 // 因为页面太多setData的话 导致js太长, 次js只作setData操作
 
 // 引入API 模块
-const api = app.globalData.api
+// const api = app.globalData.api
 
-function updateNowWeather(self){
+// 最后可以演化成:
+function updateNowWeather(self,func,data){
   api.heWeatherApi.getNowWeather().then((res)=>{
     // setData() 操作
     self.setData({
