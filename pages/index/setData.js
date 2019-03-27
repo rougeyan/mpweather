@@ -1,19 +1,11 @@
-// 因为页面太多setData的话 导致js太长, 次js只作setData操作
-
 // 引入API 模块
 // const api = app.globalData.api
-const app = getApp()
+const app = getApp();
 const api = app.globalData.api
-// 通过cond_code 反馈cnName;
-// function(code){
-//   let cur = config.bgImgList.find((item) => {
-//     return item.codes.includes(parseInt(code))
-//   })
-// }
-
 // 更新现在天气
-function getNowWeather(self) {
-  var presentIndex = "presentWeather[" + 0 + "]"
+function getNowWeather(self,index) {
+  index = (index+1)?index:0;
+  var presentIndex = "presentWeather[" + index + "]"
   api.heWeatherApi.getNowWeather().then((res) => {
     let data = res.HeWeather6[0]
     self.setData({
@@ -33,7 +25,6 @@ function getNowWeather(self) {
 function getHourlyWeather(self) {
   api.heWeatherApi.getHourlyWeather().then((res) => {
     let arr = res.HeWeather6[0].hourly;
-    console.log(arr);
     var filterDateARR = [];
     // 过滤数据
     // 待优化;
@@ -49,11 +40,8 @@ function getHourlyWeather(self) {
     self.setData({
       hourlyWeather: filterDateARR
     });
-    console.log(self.data.hourlyWeather);
   })
 }
-
-
 
 // 更新未来逐日天气
 function getDailyWeather(self, index) {
@@ -92,47 +80,7 @@ function getDailyWeather(self, index) {
     });
   })
 }
-
-// 更新
-function updateDataForCity(self) {
-  self.setData({
-    textData: "数据已被更新"
-  })
-}
-// 
-function updataElseData(self) {
-  self.setData({
-    textData: "数据第二次已被更新"
-  })
-}
-
-// 更新城市的某一项: 数据[{},{第二项数据被更新掉},{}]
-/**
- * 
- * @param { page对象 } self 
- * @param { 修改的index } index 
- */
-function updateCityDaTA(self, index) {
-  // 这里只更新 城市的某一项:
-  // 参考 : https://www.cnblogs.com/Mrrabbit/p/7680934.html
-  var presentIndex = "presentWeather[" + 0 + "]"
-  self.setData({
-    [presentIndex]: {
-      tmp: '99', // 温度
-      lat: "1234", // 纬度
-      lon: "2134123", // 经度
-      location: '数组子项更新', // 城市定位
-      cond_txt: '什么鬼', // 天气状况
-      // condIconUrl: `${COND_ICON_BASE_URL}/999.png`, // 天气图标
-      loc: '' // 当地时间(最后更新时间)
-    },
-  })
-}
-
 module.exports = {
-  // updateDataForCity,
-  // updataElseData,
-  // updateCityDaTA,
   getNowWeather,
   getHourlyWeather,
   getDailyWeather

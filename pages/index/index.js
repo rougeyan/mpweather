@@ -4,6 +4,7 @@
 const app = getApp()
 const config = app.globalData.config
 const api = app.globalData.api
+const util = app.globalData.util
 const indexPageSetData = require("./setData")
 
 Page({
@@ -13,6 +14,7 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     // 自定义数据列表;
     // 当下天气信息 [{对应城市},{}]
+    grettings: "",
     textData: "数据没有被更新",
     // 初始化默认城市 作判定 是否允许定位; 不允许使用默认城市
     defaultCity:{
@@ -22,16 +24,17 @@ Page({
     // 而且这个不能写在data里面 应该被引入; 
     // 如localStorage
     // 应该读取
-    presentWeather: [
-      {
-      },
-    ],
+    presentWeather: [],
     hourlyWeather:[],
     dailyWeather:[],
   },
   // 页面显示/切入前台时触发。
   onShow(){
     this.init()
+    // 格式化问候语
+    this.setData({
+      grettings:util.getGreetings()
+    })
   },
   // 初始化函数
   init(){

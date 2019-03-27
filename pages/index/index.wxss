@@ -1,7 +1,7 @@
 /**index.wxss**/
 
 .bg{
-  background-color: cornflowerblue;
+  background-color: #ffab00;
   height: 100vh;
   /* background-repeat: no-repeat;
   background-size: cover; */
@@ -14,20 +14,20 @@
 }
 
 .container{
-  background-color: #ffab00;
   color: #333;
 }
 
 .userinfo {
-  height: 100rpx;
+  height: 80rpx;
   width: 100%;
   overflow: hidden;
   display: flex;
   align-items:center;
+  font-size: rpx;
 }
 .userinfo .userinfo-avatar {
-  width: 96rpx;
-  height: 96rpx;
+  width: 72rpx;
+  height: 72rpx;
   border-radius: 50%;
   overflow: hidden;
   margin-right: 20rpx;
