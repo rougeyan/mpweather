@@ -1,5 +1,6 @@
 //index.js
 //获取应用实例
+// 全局共享API;
 const app = getApp()
 const config = app.globalData.config
 const api = app.globalData.api
@@ -22,34 +23,11 @@ Page({
     // 如localStorage
     // 应该读取
     presentWeather: [
-      // {
-      //   tmp: 'N/A', // 温度
-      //   lat: "",  // 纬度
-      //   lon: "", // 经度
-      //   location: '', // 城市定位
-      //   cond_txt: '', // 天气状况
-      //   // condIconUrl: `${COND_ICON_BASE_URL}/999.png`, // 天气图标
-      //   loc: '' // 当地时间(最后更新时间)
-      // },
       {
-        tmp: '12', // 温度
-        lat: "案发时的",  // 纬度
-        lon: "asfdsa ", // 经度
-        location: '北京朝阳区', // 城市定位
-        cond_txt: 'asdf ', // 天气状况
-        // condIconUrl: `${COND_ICON_BASE_URL}/999.png`, // 天气图标
-        loc: '' // 当地时间(最后更新时间)
       },
-      {
-        tmp: '32', // 温度
-        lat: "asdf ",  // 纬度
-        lon: "a1111", // 经度
-        location: '广州', // 城市定位
-        cond_txt: '2222', // 天气状况
-        // condIconUrl: `${COND_ICON_BASE_URL}/999.png`, // 天气图标
-        loc: '3333' // 当地时间(最后更新时间)
-      }
     ],
+    hourlyWeather:[],
+    dailyWeather:[],
   },
   // 页面显示/切入前台时触发。
   onShow(){
@@ -62,27 +40,11 @@ Page({
     // 这里有优化的地方:建议使用async funcname{ await funcname(); await funcname2();}
 
     // 获取现在天气
-    // setData 和api 请求合并成同一块, 否则 过度分离;
-    api.heWeatherApi.getNowWeather().then((res)=>{
-      console.log(res);
-      // set Data
-    })
-    // 获取现在天气
-    api.heWeatherApi.getDailyWeather().then((res)=>{
-      console.log(res);
-    })
-  },
-
-  setDataFoRcity(){
-    var self = this; // 保存调用对象self
-    // // 第一次更新数据;
-    // indexPageSetData.updateDataForCity(self);
-    // // 第二次更新数据;
-    // setTimeout(() => {
-    //   indexPageSetData.updataElseData(self);
-    // }, 3000);
-    indexPageSetData.updateCityDaTA(self);
-    console.log(this.data.presentWeather)
+    indexPageSetData.getNowWeather(self);
+    // 获取逐步三小时天气
+    indexPageSetData.getHourlyWeather(self);
+    // 获取逐日天气
+    indexPageSetData.getDailyWeather(self);
   },
   //事件处理函数
   bindViewTap: function() {

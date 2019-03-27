@@ -13,38 +13,35 @@
   z-index: -1;
 }
 
+.container{
+  background-color: #ffab00;
+  color: #333;
+}
+
 .userinfo {
-  height: 120rpx;
+  height: 100rpx;
   width: 100%;
   overflow: hidden;
   display: flex;
   align-items:center;
-  background-color: tomato;
 }
 .userinfo .userinfo-avatar {
   width: 96rpx;
   height: 96rpx;
   border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20rpx;
 }
 
-.userinfo .userinfo-nickname {
-  line-height: 96rpx;
-  margin-left: 16rpx;
-  
-}
-.userinfo text{
-  font-size: 40rpx;
-}
 .weatherSwiper{
   /* swiper位置是固定的 需要定义高度;*/
   height:360rpx;
 }
 .weatherSummary{
-  background-color: antiquewhite;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #fff;
+  color: #333;
   position: relative;
   box-sizing: border-box;
   padding-top: 80rpx;
@@ -70,13 +67,13 @@
 }
 
 /* 逐三小时预报 */
-.threehours{
+.hourly{
   height: 300rpx;
   background-color: violet;
   width: unset;
   white-space: nowrap;
 }
-.threehours .item-hour{
+.hourly .item-hour{
   width: 200rpx;
   height: 100%;
   background-color: teal;
@@ -84,7 +81,7 @@
   vertical-align: top;
 }
 
-.threehours .hourStepWeather{
+.hourly .hourStepWeather{
   width: 200rpx;
   height: 100%;
   display: flex;
@@ -92,31 +89,35 @@
   align-items: center;
 }
 
-.threehours .hourStepWeather image{
+.hourly .hourStepWeather image{
   width: 100%;
 }
 
+
+
+
 /* 未来天气预报 */
-.futureWeather{
+.fulture{
   
 }
-.futureWeather .fulture-item{
+.fulture .fulture-item{
   width: 100%;
   height: 100rpx;
   display: flex;
   flex-direction: row;
   align-items:center;
-  background-color: #ddd;
+  background-color: tomato;
 }
-.futureWeather .fulture-item .weekitem{
+.fulture .fulture-item .weekitem{
   width: 200rpx;
 }
-.futureWeather .fulture-item .weatherImg{
+.fulture .fulture-item .weatherImg{
   flex: 1;
   height: 80%;
 }
-.futureWeather .fulture-item .highestTemperature, .lowestTemperature{
+.fulture .fulture-item .highestTemperature, .lowestTemperature{
   width: 100rpx;
   font-size: 36rpx;
   text-align: center;
+  
 }

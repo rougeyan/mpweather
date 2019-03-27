@@ -8,10 +8,9 @@
   <!-- 用户信息 -->  
   <view class="userinfo">
     <open-data type="userAvatarUrl" class="userinfo-avatar"/>
-    <text class="greetings">晚上好</text>
-    <open-data type="userNickName" class="greetings"/>
+    <text class="greetings">晚上好,</text>
+    <open-data type="userNickName"/>
   </view>
-
 
   <!-- 实时天气概况 -->
   <swiper bindchange="changeSwiper" indicator-dots="true" class="weatherSwiper" >
@@ -20,86 +19,30 @@
       <text class="location">{{locationItem.location}}</text>
       <text class="Summary">{{locationItem.cond_txt}}</text>
       <text class="temperature">{{locationItem.tmp}}</text>
-      <!-- <view class="latestUpdate">最后更新于23:59</view> -->
-      <view class="latestUpdate" bindtap="setDataFoRcity">{{locationItem.lat}}</view>
+      <view class="latestUpdate">{{"最后更新于"+locationItem.update_time}}</view>
     </swiper-item>
   </swiper>
 
 
   <!-- 逐三小时预报   -->
-  <scroll-view class="threehours" scroll-x="true">
-    <view class="item-hour">
+  <scroll-view class="hourly" scroll-x="true">
+    <view wx:for="{{hourlyWeather}}" wx:key="unique" wx:for-item="hour" class="item-hour">
       <view class="hourStepWeather">
-        <text class="time">22:00</text>
+        <text class="time">{{hour.time}}</text>
         <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-        <text class="temperature">22</text>
-      </view>
-    </view>
-    <view class="item-hour">
-      <view class="hourStepWeather">
-        <text class="time">22:00</text>
-        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-        <text class="temperature">22</text>
-      </view>
-    </view>
-    <view class="item-hour">
-      <view class="hourStepWeather">
-        <text class="time">22:00</text>
-        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-        <text class="temperature">22</text>
-      </view>
-    </view>
-    <view class="item-hour">
-      <view class="hourStepWeather">
-        <text class="time">22:00</text>
-        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-        <text class="temperature">22</text>
-      </view>
-    </view>
-    <view class="item-hour">
-      <view class="hourStepWeather">
-        <text class="time">22:00</text>
-        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-        <text class="temperature">22</text>
-      </view>
-    </view>
-    <view class="item-hour">
-      <view class="hourStepWeather">
-        <text class="time">22:00</text>
-        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-        <text class="temperature">22</text>
-      </view>
-    </view>
-    <view class="item-hour">
-      <view class="hourStepWeather">
-        <text class="time">22:00</text>
-        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-        <text class="temperature">22</text>
-      </view>
-    </view>
-    <view class="item-hour">
-      <view class="hourStepWeather">
-        <text class="time">22:00</text>
-        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-        <text class="temperature">22</text>
+        <text class="temperature">{{hour.tmp}}</text>
       </view>
     </view>
   </scroll-view>
 
 
   <!-- 未来天气列表-->
-  <view class="futureWeather">
-    <view class="fulture-item">
-      <text class="weekitem">星期三</text>
+  <view class="fulture">
+    <view wx:for="{{dailyWeather}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
+      <text class="weekitem">{{daily.date}}</text>
       <image class="weatherImg" src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-      <text class="highestTemperature">30</text>
-      <text class="lowestTemperature">28</text>
-    </view>
-    <view class="fulture-item">
-      <text class="weekitem">星期四</text>
-      <image class="weatherImg" src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
-      <text class="highestTemperature">30</text>
-      <text class="lowestTemperature">28</text>
+      <text class="highestTemperature">{{daily.tmp_max}}</text>
+      <text class="lowestTemperature">{{daily.tmp_min}}</text>
     </view>
   </view>
 

@@ -22,101 +22,117 @@ module.exports = {
 
   // 背景图片列表
   /**
-     * sunny: 100 900
-     * cloudy: 101 102 103
-     * overcast: 104
-     * windy: 200 202 203 204
-     * calm: 201 901 999
-     * storm: 205 206 207 208 209 210 211 212 213
-     * rain: 300 302 305 309 399
-     * hail: 304
-     * moderate_rain: 306 314 315
-     * heavy_rain: 301 303 307 308 310 311 312 316 317 318
-     * freezing_rain: 313 404 405 406
-     * light_snow: 400 408
-     * moderate_snow: 401 407 409 499
-     * heavy_snow: 402 403 409 410
-     * dust: 503 504 507 508
-     * haze: 500 501 502 509 510 511 512 513 514 515
+     * sunny: 100 900  晴天
+     * cloudy: 101 102 103 多云
+     * overcast: 104 阴天
+     * windy: 200 202 203 204 大风
+     * calm: 201 901 999 平静
+     * storm: 205 206 207 208 209 210 211 212 213  风暴
+     * rain: 300 302 305 309 399 下雨
+     * hail: 304  冰雹
+     * moderate_rain: 306 314 315  温和的雨
+     * heavy_rain: 301 303 307 308 310 311 312 316 317 318 暴雨
+     * freezing_rain: 313 404 405 406 冷雨
+     * light_snow: 400 408 小雪
+     * moderate_snow: 401 407 409 499 温雪
+     * heavy_snow: 402 403 409 410 暴雪
+     * dust: 503 504 507 508 灰尘
+     * haze: 500 501 502 509 510 511 512 513 514 515 雾霾
      */
   bgImgList: [
     {
       name: 'calm',
+      // cnName: "晴",
       codes: [201, 901, 999],
       color: '#404e75'
     },
     {
       name: 'sunny',
+      // cnName: "晴",
       codes: [100, 900],
       color: '#7bc6ed'
     },
     {
       name: 'cloudy',
+      // cnName: "多云",
       codes: [101, 102, 103],
       color: '#4b97d3'
     },
     {
       name: 'overcast',
+      // cnName: "阴天",
       codes: [104],
       color: '#92a4ae'
     },
     {
       name: 'windy',
+      // cnName: "大风",
       codes: [200, 202, 203, 204],
       color: '#679ad1'
     },
     {
       name: 'storm',
+      // cnName: "暴风",
       codes: [205, 206, 207, 208, 209, 210, 211, 212, 213],
       color: '#43ccf0'
     },
     {
       name: 'rain',
+      // cnName: "雨",
       codes: [300, 302, 305, 309, 399],
       color: '#1186b1'
     },
     {
       name: 'hail',
+      // cnName: "冰雹",
       codes: [304],
       color: '#809fbe'
     },
     {
       name: 'moderate_rain',
+      // cnName: "小雨",
       codes: [306, 314, 315],
       color: '#1865b7'
     },
     {
       name: 'heavy_rain',
+      // cnName: "暴雨",
       codes: [301, 303, 307, 308, 310, 311, 312, 316, 317, 318],
       color: '#7f95a2'
     },
     {
       name: 'freezing_rain',
+      // cnName: "冷雨",
       codes: [313, 404, 405, 406],
       color: '#2f81cd'
     },
     {
       name: 'light_snow',
+      // cnName: "雪",
       codes: [400, 408],
       color: '#5fbbe0'
     },
     {
       name: 'moderate_snow',
+      // cnName: "小雪",
       codes: [401, 407, 409, 499],
       color: '#5cb4e4'
     },
     {
       name: 'heavy_snow',
+      // cnName: "大雪",
       codes: [402, 403, 409, 410],
       color: '#5caceb'
     },
     {
       name: 'dust',
+      // cnName: "尘",
       codes: [503, 504, 507, 508],
       color: '#a59156'
     },
     {
       name: 'haze',
+      // cnName: "雾霾",
       codes: [500, 501, 502, 509, 510, 511, 512, 513, 514, 515],
       color: '#6b7e8c'
     }
