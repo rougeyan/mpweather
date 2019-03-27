@@ -21,6 +21,14 @@ function getNowWeather(self,index) {
     })
   })
 }
+
+function updateData(self,fuc,data){
+  fuc().then((res)=>{
+    self.setData({
+      //具体data 书
+    })
+  })
+}
 // 逐日三小时天气
 function getHourlyWeather(self) {
   api.heWeatherApi.getHourlyWeather().then((res) => {
