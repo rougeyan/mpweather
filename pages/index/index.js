@@ -5,7 +5,10 @@ const app = getApp()
 const config = app.globalData.config
 const api = app.globalData.api
 const util = app.globalData.util
+const QQMapWX = app.globalData.qqmap
 const indexPageSetData = require("./setData")
+
+var qqmapsdk;
 
 Page({
   data: {
@@ -49,6 +52,21 @@ Page({
     // 获取逐日天气
     indexPageSetData.getDailyWeather(self);
   },
+  useQQMapApi() {
+    // 调用接口
+    qqmapsdk.search({
+      keyword: '酒店',
+      success: function (res) {
+        console.log(res);
+      },
+      fail: function (res) {
+        console.log(res);
+      },
+      complete: function (res) {
+        console.log(res);
+      }
+    })
+  },
   //事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
@@ -82,6 +100,11 @@ Page({
         }
       })
     }
+
+    // 实例化API核心类
+    qqmapsdk = new QQMapWX({
+      key: '申请的key'
+    });
   },
   getUserInfo: function(e) {
     console.log(e);

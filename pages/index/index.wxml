@@ -5,7 +5,7 @@
 
 <view class="container">
   
-  <!-- 用户信息 -->  
+  <!-- 用户信息 -->
   <!-- 条件判定class -->
   <view class="userinfo {{userinfoha=='0'?'black':'red'}}">
     <open-data type="userAvatarUrl" class="userinfo-avatar"/>
