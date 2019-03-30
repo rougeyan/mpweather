@@ -17,10 +17,10 @@
   <swiper bindchange="changeSwiper" indicator-dots="true" class="weatherSwiper" >
     <!-- 这里要渲染要读出配置城市的list -->
     <swiper-item wx:for="{{presentWeather}}" wx:key="unique" wx:for-item="locationItem" class="weatherSummary" bindtap="tapswiperitem">
-      <text class="location">{{locationItem.location}}</text>
+      <text class="location" bindtap="updateWeahter">{{locationItem.location}}</text>
       <text class="Summary">{{locationItem.cond_txt}}</text>
       <text class="temperature">{{locationItem.tmp}}</text>
-      <view class="latestUpdate">{{"最后更新于"+locationItem.update_time}}</view>
+      <view class="latestUpdate" bindtap="getLocation">{{"最后更新于"+locationItem.update_time}}</view>
     </swiper-item>
   </swiper>
 
@@ -38,7 +38,7 @@
 
 
   <!-- 未来天气列表-->
-  <view class="fulture">
+  <view class="fulture" bindtap="bindViewTap">
     <view wx:for="{{dailyWeather}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
       <text class="weekitem">{{daily.date}}</text>
       <image class="weatherImg" src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>

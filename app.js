@@ -1,7 +1,6 @@
 //app.js
 const api = require('./api/api');
-const util = require('./utils/util.js')
-const qqmap = requeir('./lib/qqmap-wx-jssdk.min.js')
+const util = require('./utils/util.js');
 App({
   onLaunch: function () {
     // 展示本地存储能力
@@ -39,6 +38,5 @@ App({
     userInfo: null,
     api,
     util,
-    qqmap
   }
 })

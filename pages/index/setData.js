@@ -3,35 +3,31 @@
 const app = getApp();
 const api = app.globalData.api
 // 更新现在天气
-function getNowWeather(self,index) {
-  index = (index+1)?index:0;
-  var presentIndex = "presentWeather[" + index + "]"
-  api.heWeatherApi.getNowWeather().then((res) => {
-    let data = res.HeWeather6[0]
-    self.setData({
-      [presentIndex]: {
-        tmp: data.now.tmp, // 温度
-        lat: data.basic.lat, // 纬度
-        lon: data.basic.lon, // 经度
-        location: data.basic.location, // 城市定位
-        cond_txt: data.now.cond_txt, // 天气状况
-        cond_code: data.now.cond_code,
-        update_time: data.update.loc // 当地时间(最后更新时间)
-      }
-    })
-  })
-}
-
-function updateData(self,fuc,data){
-  fuc().then((res)=>{
-    self.setData({
-      //具体data 书
+function updateNowWeather(self,params,index) {
+  return new Promise((resolve)=>{
+    index = (index+1)?index:0;
+    var presentIndex = "presentWeather[" + index + "]"
+    api.heWeatherApi.getNowWeather(params).then((res) => {
+      let data = res.HeWeather6[0];
+      self.setData({
+        [presentIndex]: {
+          tmp: data.now.tmp, // 温度
+          lat: data.basic.lat, // 纬度
+          lon: data.basic.lon, // 经度
+          location: data.basic.location, // 城市定位
+          cond_txt: data.now.cond_txt, // 天气状况
+          cond_code: data.now.cond_code,
+          update_time: data.update.loc // 当地时间(最后更新时间)
+        }
+      })
+      // 更新完再resolve;
+      resolve();
     })
   })
 }
 // 逐日三小时天气
-function getHourlyWeather(self) {
-  api.heWeatherApi.getHourlyWeather().then((res) => {
+function updateHourlyWeather(self,params) {
+  api.heWeatherApi.getHourlyWeather(params).then((res) => {
     let arr = res.HeWeather6[0].hourly;
     var filterDateARR = [];
     // 过滤数据
@@ -52,8 +48,8 @@ function getHourlyWeather(self) {
 }
 
 // 更新未来逐日天气
-function getDailyWeather(self, index) {
-  api.heWeatherApi.getDailyWeather().then((res) => {
+function updateDailyWeather(self, params) {
+  api.heWeatherApi.getDailyWeather(params).then((res) => {
     let arr = res.HeWeather6[0].daily_forecast;
     var filterDateARR = [];
     // 过滤数据
@@ -88,8 +84,9 @@ function getDailyWeather(self, index) {
     });
   })
 }
+
 module.exports = {
-  getNowWeather,
-  getHourlyWeather,
-  getDailyWeather
+  updateNowWeather,
+  updateHourlyWeather,
+  updateDailyWeather
 }

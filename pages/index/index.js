@@ -2,11 +2,10 @@
 //获取应用实例
 // 全局共享API;
 const app = getApp()
-const config = app.globalData.config
 const api = app.globalData.api
 const util = app.globalData.util
-const QQMapWX = app.globalData.qqmap
-const indexPageSetData = require("./setData")
+const updateData = require("./setData")
+const regeneratorRuntime = require('../../lib/regenerator')
 
 var qqmapsdk;
 
@@ -18,57 +17,34 @@ Page({
     // 自定义数据列表;
     // 当下天气信息 [{对应城市},{}]
     grettings: "",
-    textData: "数据没有被更新",
     // 初始化默认城市 作判定 是否允许定位; 不允许使用默认城市
-    defaultCity:{
-
-    },
-    // presentWeather 里面的数据会被更新掉;
-    // 而且这个不能写在data里面 应该被引入; 
-    // 如localStorage
-    // 应该读取
-    presentWeather: [],
-    hourlyWeather:[],
-    dailyWeather:[],
+    location: {},
+    defaultCity: {}, // 若不授权的情况下 只取默认城市同时不给选
+    presentWeather: [], // 现在天气
+    hourlyWeather: [], // 现在小时天气
+    dailyWeather: [], // 逐日天气
   },
   // 页面显示/切入前台时触发。
-  onShow(){
+  onShow() {
     this.init()
     // 格式化问候语
     this.setData({
-      grettings:util.getGreetings()
+      grettings: util.getGreetings()
     })
   },
   // 初始化函数
-  init(){
+  init() {
     var self = this;
-    // 获取
     // 这里有优化的地方:建议使用async funcname{ await funcname(); await funcname2();}
-
     // 获取现在天气
-    indexPageSetData.getNowWeather(self);
+    updateData.updateNowWeather(self);
     // 获取逐步三小时天气
-    indexPageSetData.getHourlyWeather(self);
+    updateData.updateHourlyWeather(self);
     // 获取逐日天气
-    indexPageSetData.getDailyWeather(self);
-  },
-  useQQMapApi() {
-    // 调用接口
-    qqmapsdk.search({
-      keyword: '酒店',
-      success: function (res) {
-        console.log(res);
-      },
-      fail: function (res) {
-        console.log(res);
-      },
-      complete: function (res) {
-        console.log(res);
-      }
-    })
+    updateData.updateDailyWeather(self);
   },
   //事件处理函数
-  bindViewTap: function() {
+  bindViewTap: function () {
     wx.navigateTo({
       url: '../logs/logs'
     })
@@ -79,7 +55,7 @@ Page({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
-    } else if (this.data.canIUse){
+    } else if (this.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
@@ -100,13 +76,8 @@ Page({
         }
       })
     }
-
-    // 实例化API核心类
-    qqmapsdk = new QQMapWX({
-      key: '申请的key'
-    });
   },
-  getUserInfo: function(e) {
+  getUserInfo: function (e) {
     console.log(e);
     // 设置全局globalDatauserInfo;
     app.globalData.userInfo = e.detail.userInfo
@@ -116,16 +87,71 @@ Page({
       hasUserInfo: true
     })
   },
+  getLocation() {
+    api.wxApi.getLocation().then((res) => {
+      this.setData({
+        location: {
+          latitude: res.latitude,
+          longitude: res.longitude
+        }
+      })
+    }, err => {
+      console.log(err)
+      // 若用户设置授权失败后
+      // 此代码调用允许用户手动操作全选
+      wx.openSetting({
+        success(res) {
+          console.log(res)
+          // res.authSetting = {
+          //   "scope.userInfo": true,
+          //   "scope.userLocation": true
+          // }
+        },
+        fail(res) {
+          console.log(res);
+        }
+      })
+    })
+  },
+  async updateWeahter() {
+    var self = this;
+    //  String化坐标;
+
+    var params = {
+      data: {
+        location: `${self.data.location.latitude},${self.data.location.longitude}`
+      }
+    };
+    // 更新天气; 因为这里也
+    await updateData.updateNowWeather(self, params); // 这里更新了一次location;
+    // reverseGeoCoder 应该是只更新一次;
+    // 或者
+    // 逆地址一次;
+
+    // 这里是有bug的 因为执行先后顺序的问题 往往是 qqmap 先返回 然后 NowWeather 后返回 因此先更新了 地图的location 再更新了天气接口的 location;
+
+    //所以是有问题的;
+    // setTimeout(()=>{
+      await api.qqmapApi.reverseGeocoder(self.data.location).then((res) => {
+        // 更新某一项子key[{key}]
+        var presentIndex = "presentWeather[" + 0 + "].location";
+        this.setData({
+          [presentIndex]: res.address
+        })
+  
+      })
+    
+  },
   // 改变swiper的时候更新 location;
-  changeSwiper: function(e){
+  changeSwiper: function (e) {
     // changgeSwiper 之前
     // 这里已经添加到到列表里面;
     // 但是仍未更新;
-    console.log(e);
-    console.log("do changeSwiper");
+    // console.log(e);
+    // console.log("do changeSwiper");
   },
-  tapswiperitem: function(e){
-    console.log(e);
-    console.log("do tapswiperitem");
+  tapswiperitem: function (e) {
+    // console.log(e);
+    // console.log("do tapswiperitem");
   }
 })
