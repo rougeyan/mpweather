@@ -7,8 +7,6 @@ const util = app.globalData.util
 const updateData = require("./setData")
 const regeneratorRuntime = require('../../lib/regenerator')
 
-var qqmapsdk;
-
 Page({
   data: {
     userInfo: {},
