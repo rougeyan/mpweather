@@ -1,5 +1,5 @@
+@import "./iconfont.wxss";
 /**index.wxss**/
-
 .bg{
   background-color: #ffab00;
   height: 100vh;
