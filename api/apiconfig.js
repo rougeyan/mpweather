@@ -39,16 +39,17 @@ module.exports = {
      * dust: 503 504 507 508 灰尘
      * haze: 500 501 502 509 510 511 512 513 514 515 雾霾
      */
+    // 对应图标图片;
   bgImgList: [
     {
       name: 'calm',
-      // cnName: "晴",
+      // cnName: "小晴",
       codes: [201, 901, 999],
       color: '#404e75'
     },
     {
       name: 'sunny',
-      // cnName: "晴",
+      // cnName: "大晴",
       codes: [100, 900],
       color: '#7bc6ed'
     },

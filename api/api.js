@@ -40,7 +40,7 @@ function weatherPromiseRequest(option){
 }
 /**
  * 因为 封装了weatherPromiseRequest
- * option 格式为{data:{具体参数}}
+ * option 格式为 {data:{具体参数}}
  *  例子: 本质就是传正个
  *  wx.request(obj)
  *  obj = {
@@ -97,6 +97,31 @@ wxApi.getLocation = ()=>{
     })
   })
 
+}
+
+// 隐藏;
+wxApi.hideLoading = ()=>{
+  return new Promise((resolve)=>{
+    wx.hideLoading()
+    resolve();
+  })
+}
+// 显示加载中
+wxApi.showLoading = ()=>{
+  return new Promise((resolve,reject)=>{
+    wx.showLoading({
+      title: '正在加载中',
+      mask: true,
+      success(){
+        var msgres = "this is some Msg resolve"
+        resolve(msgres)
+      },
+      fail(error){
+        reject(error)
+      }
+    })
+
+  })
 }
 
 // 实例化qqmap 

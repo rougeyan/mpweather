@@ -33,6 +33,24 @@
   margin-right: 20rpx;
 }
 
+.swiperBlock{
+  position: relative;
+}
+.swiperBlock .locatCity{
+  position: absolute;
+  bottom: 40rpx;
+  left: 0;
+  font-size: 40rpx;
+  background-color: tomato;
+}
+.swiperBlock .addCity{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 40rpx;
+  background: paleturquoise;
+}
+
 .weatherSwiper{
   /* swiper位置是固定的 需要定义高度;*/
   height:360rpx;

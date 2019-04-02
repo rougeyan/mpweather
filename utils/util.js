@@ -14,6 +14,23 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+// 过滤日期
+const formatWeatherTime = n =>{
+  return !!n?n.toString().split(" ")[1]:""; 
+}
+
+// 节流;
+const throttle = function(fn, delay) {
+  let lastTime = 0
+  return function () {
+    let nowTime = Date.now()
+    if (nowTime - lastTime > delay || !lastTime) {
+      fn.apply(this, arguments)
+      lastTime = nowTime
+    }
+  }
+}
+
 
 // 格式化问候语
 const getGreetings = () => {
@@ -41,6 +58,8 @@ const getGreetings = () => {
 
 module.exports = {
   formatTime: formatTime,
-  getGreetings: getGreetings
+  getGreetings: getGreetings,
+  throttle: throttle,
+  formatWeatherTime: formatWeatherTime
 }
 
