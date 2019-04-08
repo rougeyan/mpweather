@@ -4,7 +4,6 @@
 <view class="bg"></view>
 
 <view class="container">
-  
   <!-- 用户信息 -->
   <!-- 条件判定class -->
   <view class="userinfo {{userinfoha=='0'?'black':'red'}}">
@@ -43,7 +42,7 @@
 
 
   <!-- 未来天气列表-->
-  <view class="fulture" bindtap="bindViewTap">
+  <view class="fulture">
     <view wx:for="{{dailyWeather}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
       <text class="weekitem">{{daily.date}}</text>
       <image class="weatherImg" src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
@@ -54,6 +53,6 @@
 
   <!-- 今天其他信息(概述:风向/湿度/体感温度/气压/能见度/紫外线/) -->
   
-  <!-- 查看更多,穿衣 == 之类 -->
+  <!-- 查看更多,穿衣,体感之类 -->
   
 </view>

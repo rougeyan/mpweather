@@ -1,0 +1,5 @@
+<!--pages/locatePage/locatePage.wxml-->
+<view class="locatePage">
+  <text>pages/geolocate/locatePage.wxml</text>
+</view>
+

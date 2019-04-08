@@ -1,7 +1,7 @@
 const config = require('./apiconfig');
 const QQMapWX = require('../lib/qqmap-wx-jssdk.min');
 
-// 天气 默认参数
+// 和风天气 默认参数
 const weatherDefaultParams = {
   key: config.weatherKey,
   location: 'beijing',
@@ -15,7 +15,9 @@ let wxApi ={};
 // qqmap api
 let qqmapApi ={};
 
-// 天气接口请求
+
+// -------------------和风天气服务 api---------------------------------
+// 封装天气接口请求
 function weatherPromiseRequest(option){
   // 解构 (依据wx.request接口)
   let {url,data,header,method,dataType,responseType,success,fail,complete} = option;
@@ -81,6 +83,8 @@ heWeatherApi.getLifestyle = (option) =>{
   })
 }
 
+// -------------------微信原生 api---------------------------------
+
 // 获取定位坐标
 wxApi.getLocation = ()=>{
   return new Promise((resolve, reject)=>{
@@ -123,6 +127,41 @@ wxApi.showLoading = ()=>{
 
   })
 }
+// 设置storage(同步)
+wxApi.setStorageSync = (key,value)=>{
+  return new Promise((resolve,reject)=>{
+    wx.setStorageSync({
+      key: key,
+      data: value,
+      success:	function(){
+        resolve(`set${key}into Storage success`);
+      },
+      fail:	function(){
+        reject(`set${key}into Storage fail`)
+      }
+    })
+  })
+}
+
+// 注意区分 getStorageInfoSync 和 getStorageSync 一个是填key筛选 一个是返回所有的stroage信息
+
+// Sync只有一个参数 是string(key)  非sync的话参数 是object {key,succes,fail}
+
+// 获取storage(同步)
+wxApi.getStorageSync = (key)=>{
+  return new Promise((resolve,reject)=>{
+    var res = wx.getStorageSync(key);
+    console.log(res);
+    if(!!res){
+      resolve(res)
+    }else{
+      reject(`error get ${key} storageSync`)
+    }
+  })
+}
+
+
+// -------------------腾讯地图服务 api---------------------------------
 
 // 实例化qqmap 
 var qqmapsdk;
@@ -146,6 +185,35 @@ qqmapApi.reverseGeocoder = (option) => {
       fail (err) {
         reject(err)
       }
+    })
+  })
+}
+// 这里要把这部分数据存入localStorage里面;
+// 这里增加缓存操作
+// 无须每次都执行请求节省流量;
+qqmapApi.getCityList = (cityKey)=>{
+  return new Promise((resolve, reject) => { 
+    if(!cityKey){
+      throw new Error(`cityKey not found`)
+    }
+    wxApi.getStorageSync(cityKey).then((res)=>{
+      console.log(res)
+    },(error)=>{
+      console.log(error)
+      qqmapsdk.getCityList({
+        success: function (res) { //成功后的回调
+          // console.log(res);
+          console.log('省份数据：', res.result[0]); //打印省份数据
+          console.log('城市数据：', res.result[1]); //打印城市数据
+          console.log('区县数据：', res.result[2]); //打印区县数据
+        },
+        fail: function (error) {
+          console.error(error);
+        },
+        complete: function (res) {
+          console.log(res);
+        }
+      })
     })
   })
 }

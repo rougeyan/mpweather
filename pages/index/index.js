@@ -62,8 +62,8 @@ Page({
   async init() {
     var self = this;
     // 这里每一个都是new Promise 实例;
-
-    // 做一个事件5分钟的时间; 在storage中
+    // 实例之间resolve / reject 不能传递;
+    // 做一个事件55分钟的时间限制; 在storage中;
     await api.wxApi.showLoading();
     // 当前天气
     await updateData.updateNowWeather(self);
@@ -76,8 +76,9 @@ Page({
   },
   //事件处理函数
   bindViewTap: function () {
+    // 可以设置id;以及hash值;
     wx.navigateTo({
-      url: '../logs/logs'
+      url: '../locatePage/locatePage?id=10086&hash=fromFirstPage'
     })
   },
   getUserInfo: function (e) {
