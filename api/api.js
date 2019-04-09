@@ -1,4 +1,5 @@
 const config = require('./apiconfig');
+const util = require('../utils/util');
 const QQMapWX = require('../lib/qqmap-wx-jssdk.min');
 
 // 和风天气 默认参数
@@ -148,18 +149,6 @@ wxApi.setStorageSync = (key,value)=>{
 // Sync只有一个参数 是string(key)  非sync的话参数 是object {key,succes,fail}
 
 // 获取storage(同步)
-wxApi.getStorageSync = (key)=>{
-  return new Promise((resolve,reject)=>{
-    var res = wx.getStorageSync(key);
-    console.log(res);
-    if(!!res){
-      resolve(res)
-    }else{
-      reject(`error get ${key} storageSync`)
-    }
-  })
-}
-
 
 // -------------------腾讯地图服务 api---------------------------------
 
@@ -188,32 +177,33 @@ qqmapApi.reverseGeocoder = (option) => {
     })
   })
 }
+
 // 这里要把这部分数据存入localStorage里面;
 // 这里增加缓存操作
 // 无须每次都执行请求节省流量;
-qqmapApi.getCityList = (cityKey)=>{
+qqmapApi.getCityList = ()=>{
+  // 优先同步取缓存中的城市列表;
+  let CITY_LIST = wx.getStorageSync('CITY_LIST');
+  console.log(CITY_LIST);
+  if(CITY_LIST){
+    return Promise.resolve(CITY_LIST)
+  }
   return new Promise((resolve, reject) => { 
-    if(!cityKey){
-      throw new Error(`cityKey not found`)
-    }
-    wxApi.getStorageSync(cityKey).then((res)=>{
-      console.log(res)
-    },(error)=>{
-      console.log(error)
-      qqmapsdk.getCityList({
-        success: function (res) { //成功后的回调
-          // console.log(res);
-          console.log('省份数据：', res.result[0]); //打印省份数据
-          console.log('城市数据：', res.result[1]); //打印城市数据
-          console.log('区县数据：', res.result[2]); //打印区县数据
-        },
-        fail: function (error) {
-          console.error(error);
-        },
-        complete: function (res) {
-          console.log(res);
-        }
-      })
+    qqmapsdk.getCityList({
+      success: function (res) {
+        let citydata = util.sortCityList(res.result[1] || [])
+        wx.setStorage({
+          key: 'CITY_LIST',
+          data: citydata //打印城市数据
+        })
+        resolve(res)
+        // console.log('省份数据：', res.result[0]); //打印省份数据
+        // console.log('城市数据：', res.result[1]); //打印城市数据
+        // console.log('区县数据：', res.result[2]); //打印区县数据
+      },
+      fail: function (error) {
+        reject(error)
+      }
     })
   })
 }

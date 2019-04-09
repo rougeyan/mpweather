@@ -56,10 +56,33 @@ const getGreetings = () => {
   return `${w}`
 }
 
+// 城市排序
+const sortCityList = (data) => {
+  if (!Array.isArray(data)) {
+    return []
+  }
+
+  let d = data.reduce((pre, cur) => {
+    let { pinyin, ...attr } = cur
+    pre.push({
+      initial: pinyin.join('').toUpperCase(),
+      ...attr // 把其余所有的可遍历的遍历出来;
+    })
+    return pre
+  }, [])
+
+  d.sort((a, b) => {
+    return (a.initial > b.initial) ? 1 : -1
+  })
+
+  return d
+}
+
 module.exports = {
   formatTime: formatTime,
   getGreetings: getGreetings,
   throttle: throttle,
-  formatWeatherTime: formatWeatherTime
+  formatWeatherTime: formatWeatherTime,
+  sortCityList: sortCityList
 }
 

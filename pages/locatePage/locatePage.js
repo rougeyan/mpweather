@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    cityList: [], // 城市列表
   },
 
   /**
@@ -28,7 +28,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    api.qqmapApi.getCityList('cityList')
+    api.qqmapApi.getCityList();
   },
 
   /**

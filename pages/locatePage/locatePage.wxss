@@ -1,1 +1,4 @@
 /* pages/geolocate.wxss */
+.locate-container{
+  
+}

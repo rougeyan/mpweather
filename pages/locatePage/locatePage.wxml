@@ -1,5 +1,16 @@
 <!--pages/locatePage/locatePage.wxml-->
-<view class="locatePage">
-  <text>pages/geolocate/locatePage.wxml</text>
+<view class="locate-container">
+
+  <scroll-view class="citylistWrapper">
+    <block wx:for="{{cityList}}" wx:key="{{index}}">
+     字母索引条
+      <block wx:if="{{index === 0 || (cityList[index - 1].initial[0] !== item.initial[0])}}">
+        <view class="city-list-title" id="{{'title_' + item.initial[0]}}">{{item.initial[0]}}</view>
+      </block>
+      <view bindtap="tapCityItem" data-item="{{item}}" class="city-list-item">{{item.fullname}}</view>
+    </block>
+
+
+  </scroll-view>
 </view>
 
