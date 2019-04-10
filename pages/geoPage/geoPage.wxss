@@ -1,0 +1,37 @@
+/* pages/geolocate.wxss */
+.geo-container{
+  position: relative;
+}
+.letterSideBar{
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #999;
+  color: #000;
+  height: 100vh;
+  z-index: 10;
+}
+.lettert-item{
+  text-align: center;
+}
+.city-list-wrapper{
+
+}
+.city-list-letter{
+  background-color: #ccc;
+  padding-left: 35rpx;
+}
+.city-list-item{
+  padding-left: 35rpx;
+  position: relative;
+  overflow: hidden;
+}
+.city-list-item::after{
+  content: "";
+  width: 94%;
+  height:  1rpx;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: #333;
+}

@@ -8,6 +8,7 @@ Page({
    */
   data: {
     cityList: [], // 城市列表
+    letterSlideBar: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z']
   },
 
   /**
@@ -28,7 +29,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    api.qqmapApi.getCityList();
+    api.qqmapApi.getCityList().then((res)=>{
+      this.setData({
+        cityList: res
+      })
+    });
   },
 
   /**
@@ -64,5 +69,9 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  tapCityItem: function(e){
+    console.log(e)
+    // 触摸后 添加到 userCityList
   }
 })

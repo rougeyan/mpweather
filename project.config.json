@@ -48,8 +48,8 @@
 				},
 				{
 					"id": 1,
-					"name": "locatePage",
-					"pathName": "pages/locatePage/locatePage",
+					"name": "geoPage",
+					"pathName": "pages/geoPage/geoPage",
 					"query": "",
 					"scene": null
 				}
