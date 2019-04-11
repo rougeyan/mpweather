@@ -20,6 +20,9 @@ let qqmapApi ={};
 // -------------------和风天气服务 api---------------------------------
 // 封装天气接口请求
 function weatherPromiseRequest(option){
+  if(!Object.prototype.toString.call(option) === '[Object Object]'){
+    option = {};
+  }
   // 解构 (依据wx.request接口)
   let {url,data,header,method,dataType,responseType,success,fail,complete} = option;
   return new Promise((resolve,reject)=>{
@@ -56,6 +59,7 @@ function weatherPromiseRequest(option){
  */
 // 现时天气
 heWeatherApi.getNowWeather = (option)=>{
+  
   return weatherPromiseRequest({
     ...option,
     url: config.nowWeatherUrl
@@ -86,28 +90,43 @@ heWeatherApi.getLifestyle = (option) =>{
 
 // -------------------微信原生 api---------------------------------
 
+
 // 获取定位坐标
-wxApi.getLocation = (self)=>{
+wxApi.getLocation = (self,getLatestRecord)=>{
+  const cityGeo = 'cityList.geo';
+  // 初始化的最后一次定位数据;
+  if(getLatestRecord && !!getLatestRecord){
+    let LATEST_LOCATE = wx.getStorageSync('LATEST_LOCATE');
+    if(JSON.stringify(LATEST_LOCATE) !== "{}"){
+      self.setData({
+        [cityGeo]: latestGeo
+      })
+      return Promise.resolve(LATEST_LOCATE)
+    }
+  }
   return new Promise((resolve, reject)=>{
     wx.getLocation({
       type: 'gcj02',
       // altitude: true,
       success (res) {
-        const citygeo = 'cityList.geo';
+        let latestGeo = {
+          latitude: res.latitude,
+          longitude: res.longitude
+        }
         self.setData({
-          [citygeo]: {
-            latitude: res.latitude,
-            longitude: res.longitude
-          }
+          [cityGeo]: latestGeo
+        })
+        // 存最后一次定位数据;
+        wx.setStorage({
+          key: 'LATEST_LOCATE',
+          data: latestGeo //打印城市数据
         })
       },
       fail (err) {
         reject()
       },
       complete(){
-        setTimeout(() => {
-          resolve()
-        }, 2000);
+        resolve()
       }
     })
   })
@@ -138,27 +157,6 @@ wxApi.showLoading = (text)=>{
 
   })
 }
-// 设置storage(同步)
-wxApi.setStorageSync = (key,value)=>{
-  return new Promise((resolve,reject)=>{
-    wx.setStorageSync({
-      key: key,
-      data: value,
-      success:	function(){
-        resolve(`set${key}into Storage success`);
-      },
-      fail:	function(){
-        reject(`set${key}into Storage fail`)
-      }
-    })
-  })
-}
-
-// 注意区分 getStorageInfoSync 和 getStorageSync 一个是填key筛选 一个是返回所有的stroage信息
-
-// Sync只有一个参数 是string(key)  非sync的话参数 是object {key,succes,fail}
-
-// 获取storage(同步)
 
 // -------------------腾讯地图服务 api---------------------------------
 
@@ -222,5 +220,6 @@ qqmapApi.getCityList = ()=>{
 module.exports = {
   heWeatherApi,
   wxApi,
-  qqmapApi
+  qqmapApi,
+  weatherDefaultParams
 }

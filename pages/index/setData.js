@@ -10,7 +10,7 @@ const updateNowWeather =(self,params,index)=>{
   return new Promise((resolve)=>{
     index = (index+1)?index:defaultIndex;
     var presentIndex = "presentWeather[" + index + "]"
-    var locationIndex = index==0?"location.geo":"location.custMake["+index+"]"
+    var cityListIndex = index==0?"cityList.geo":"cityList.custMake["+index+"]"
     api.heWeatherApi.getNowWeather(params).then((res) => {
       let data = res.HeWeather6[0];
       self.setData({
@@ -21,14 +21,16 @@ const updateNowWeather =(self,params,index)=>{
           cond_code: data.now.cond_code,
           update_time: util.formatWeatherTime(data.update.loc) // 当地时间(最后更新时间)
         },
-        [locationIndex]:{
+        [cityListIndex]:{
           lat: data.basic.lat, // 纬度
           lon: data.basic.lon, // 经度
         }
       })
       // 防止函数使用await 的时候 先后顺序setData问题;
       // 更新完再resolve;
-      resolve();
+      // console.log(self.data.cityList.geo)
+      // debugger;
+      resolve(self.data.cityList.geo);
     })
   })
 }
@@ -97,8 +99,23 @@ const updateDailyWeather =(self, params)=>{
   })
 }
 
+// 逆坐标(只会存在定位的时候转换逆坐标)
+const toReverseGeocoder = (self,params) =>{
+  return new Promise(resolve=>{
+    api.qqmapApi.reverseGeocoder(params).then((res) => {
+      // 更新某一项子key[{key}]
+      debugger;
+      let presentIndex = "presentWeather[" + 0 + "].location";
+      self.setData({
+        [presentIndex]: res.address
+      })
+      resolve()
+    })
+  })
+}
 module.exports = {
   updateNowWeather,
   updateHourlyWeather,
-  updateDailyWeather
+  updateDailyWeather,
+  toReverseGeocoder
 }

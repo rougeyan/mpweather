@@ -78,11 +78,20 @@ const sortCityList = (data) => {
   return d
 }
 
+// 
+const locationParamsToString = (obj)=>{
+  return {
+    data: {
+      location: `${obj.latitude},${obj.longitude}`
+    }
+  }
+}
 module.exports = {
   formatTime: formatTime,
   getGreetings: getGreetings,
   throttle: throttle,
   formatWeatherTime: formatWeatherTime,
-  sortCityList: sortCityList
+  sortCityList: sortCityList,
+  locationParamsToString: locationParamsToString
 }
 
