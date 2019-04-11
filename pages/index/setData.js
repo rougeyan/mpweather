@@ -10,7 +10,7 @@ const updateNowWeather =(self,params,index)=>{
   return new Promise((resolve)=>{
     index = (index+1)?index:defaultIndex;
     var presentIndex = "presentWeather[" + index + "]"
-    var locationIndex = "location[" + index + "]"
+    var locationIndex = index==0?"location.geo":"location.custMake["+index+"]"
     api.heWeatherApi.getNowWeather(params).then((res) => {
       let data = res.HeWeather6[0];
       self.setData({

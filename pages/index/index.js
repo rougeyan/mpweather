@@ -12,14 +12,16 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    
+    // 变相打开授权页;
     showOpenSettingBtn: false,
     // 自定义数据列表;
     // 当下天气信息 [{对应城市},{}]
     grettings: "",
     // 初始化默认城市 作判定 是否允许定位; 不允许使用默认城市
-    location: [],
-    defaultCity: {}, // 若不授权的情况下 只取默认城市同时不给选
+    cityList: {
+      geo:{}, // 定位
+      custMake:[] // 自定义城市
+    },
     presentWeather: [], // array obj现在天气
     hourlyWeather: [], // array obj 现在小时天气
     dailyWeather: [], // array obj 逐日天气
@@ -63,7 +65,7 @@ Page({
   },
   // 初始化函数
   async init() {
-    var self = this;
+    let self = this;
     // 这里每一个都是new Promise 实例;
     // 实例之间resolve / reject 不能传递;
     // 做一个事件55分钟的时间限制; 在storage中;
@@ -96,40 +98,19 @@ Page({
   },
 
   // 获取用户定位;
-  getLocation() {
-    api.wxApi.getLocation().then((res) => {
-      console.log(success);
-      this.setData({
-        location: {
-          latitude: res.latitude,
-          longitude: res.longitude
-        }
-      })
-    }, err => {
-      // 不予授权后点击
-      // console.log(err) // getLocation:fail auth deny
-      this.setData({
-        showOpenSettingBtn:true
-      })
-      wx.getSetting({
-        success: function (res) {
-          // 没有授权
-          if (!res.authSetting["scope.userLocation"]) {
-            // 手动打开openSetting
-            // 若用户设置授权失败后
-            // 此代码调用允许用户手动操作全选
-          }
-        },
-        fail: function (error) {
-          console.log(error)
-        }
-      })
+  async geoLocation() {
+    const geoStart = "定位中..";
+    const geoEnd = "定位结束";
+    let geoTips = "";
+    await api.wxApi.showLoading(geoStart);
 
-    })
+    await api.wxApi.getLocation(self)
+
+    await api.wxApi.hideLoading();
   },
+  //
   handleLocationSetting: function(){
-    var self = this;
-    console.log("打开openType")
+    let self = this;
     wx.getSetting({
       success: function (res) {
         // 没有授权
@@ -143,30 +124,32 @@ Page({
     })
   },
   //
-  async updateWeahter() {
-    var self = this;
+  async updateItemCityWeahter(e) {
+    // 点击索引
+    let self = this;
+    let clickCityIndex = e.target.dataset.cityindex
     //  String化坐标;
-    var params = {
+    let params = {
       data: {
-        location: `${self.data.location.latitude},${self.data.location.longitude}`
+        location: `${self.data.cityList.geo.latitude},${self.data.cityList.geo.longitude}`
       }
     };
     // 更新天气; 因为这里也
-    try {
+    // try {
       await api.wxApi.showLoading();
       await updateData.updateNowWeather(self, params);
       // 逆坐标
-      await api.qqmapApi.reverseGeocoder(self.data.location).then((res) => {
+      await api.qqmapApi.reverseGeocoder(self.data.cityList.geo).then((res) => {
         // 更新某一项子key[{key}]
-        var presentIndex = "presentWeather[" + 0 + "].location";
+        let presentIndex = "presentWeather[" + 0 + "].location";
         this.setData({
           [presentIndex]: res.address
         })
       })
       await api.wxApi.hideLoading();
-    } catch (error) {
-      throw new Error(error)
-    }
+    // } catch (error) {
+    //   throw new Error(error)
+    // }
     // reverseGeoCoder 应该是只更新一次;
     // 或者
     // 逆地址一次;

@@ -87,17 +87,27 @@ heWeatherApi.getLifestyle = (option) =>{
 // -------------------微信原生 api---------------------------------
 
 // 获取定位坐标
-wxApi.getLocation = ()=>{
+wxApi.getLocation = (self)=>{
   return new Promise((resolve, reject)=>{
     wx.getLocation({
       type: 'gcj02',
       // altitude: true,
       success (res) {
-        // 同时调用所有接口
-        resolve(res)
+        const citygeo = 'cityList.geo';
+        self.setData({
+          [citygeo]: {
+            latitude: res.latitude,
+            longitude: res.longitude
+          }
+        })
       },
       fail (err) {
-        reject(err)
+        reject()
+      },
+      complete(){
+        setTimeout(() => {
+          resolve()
+        }, 2000);
       }
     })
   })
@@ -112,10 +122,10 @@ wxApi.hideLoading = ()=>{
   })
 }
 // 显示加载中
-wxApi.showLoading = ()=>{
+wxApi.showLoading = (text)=>{
   return new Promise((resolve,reject)=>{
     wx.showLoading({
-      title: '正在加载中',
+      title: text?text:'正在加载中',
       mask: true,
       success(){
         var msgres = "this is some Msg resolve"
