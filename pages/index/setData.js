@@ -26,7 +26,6 @@ const updateNowWeather =(self,params,index)=>{
           lon: data.basic.lon, // 经度
         }
       })
-      console.log(self.data.location)
       // 防止函数使用await 的时候 先后顺序setData问题;
       // 更新完再resolve;
       resolve();

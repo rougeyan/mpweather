@@ -12,15 +12,17 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    
+    showOpenSettingBtn: false,
     // 自定义数据列表;
     // 当下天气信息 [{对应城市},{}]
     grettings: "",
     // 初始化默认城市 作判定 是否允许定位; 不允许使用默认城市
     location: [],
     defaultCity: {}, // 若不授权的情况下 只取默认城市同时不给选
-    presentWeather: [], // 现在天气
-    hourlyWeather: [], // 现在小时天气
-    dailyWeather: [], // 逐日天气
+    presentWeather: [], // array obj现在天气
+    hourlyWeather: [], // array obj 现在小时天气
+    dailyWeather: [], // array obj 逐日天气
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
@@ -52,11 +54,12 @@ Page({
   },
   // 页面显示/切入前台时触发。
   onShow() {
-    this.init()
-    // 格式化问候语
+    // 格式化问候语;
     this.setData({
       grettings: util.getGreetings()
     })
+    // 初始化;
+    this.init()
   },
   // 初始化函数
   async init() {
@@ -71,14 +74,14 @@ Page({
     await updateData.updateHourlyWeather(self);
     // 获取逐日天气
     await updateData.updateDailyWeather(self);
-    
+
     await api.wxApi.hideLoading();
   },
   //事件处理函数
   bindViewTap: function () {
     // 可以设置id;以及hash值;
     wx.navigateTo({
-      url: '../locatePage/locatePage?id=10086&hash=fromFirstPage'
+      url: '../geoPage/geoPage?id=10086&hash=fromFirstPage'
     })
   },
   getUserInfo: function (e) {
@@ -91,9 +94,11 @@ Page({
       hasUserInfo: true
     })
   },
+
   // 获取用户定位;
   getLocation() {
     api.wxApi.getLocation().then((res) => {
+      console.log(success);
       this.setData({
         location: {
           latitude: res.latitude,
@@ -101,21 +106,40 @@ Page({
         }
       })
     }, err => {
-      console.log(err)
-      // 若用户设置授权失败后
-      // 此代码调用允许用户手动操作全选
-      wx.openSetting({
-        success(res) {
-          console.log(res)
-          // res.authSetting = {
-          //   "scope.userInfo": true,
-          //   "scope.userLocation": true
-          // }
+      // 不予授权后点击
+      // console.log(err) // getLocation:fail auth deny
+      this.setData({
+        showOpenSettingBtn:true
+      })
+      wx.getSetting({
+        success: function (res) {
+          // 没有授权
+          if (!res.authSetting["scope.userLocation"]) {
+            // 手动打开openSetting
+            // 若用户设置授权失败后
+            // 此代码调用允许用户手动操作全选
+          }
         },
-        fail(res) {
-          console.log(res);
+        fail: function (error) {
+          console.log(error)
         }
       })
+
+    })
+  },
+  handleLocationSetting: function(){
+    var self = this;
+    console.log("打开openType")
+    wx.getSetting({
+      success: function (res) {
+        // 没有授权
+        if (res.authSetting["scope.userLocation"]) {
+          self.setData({
+            showOpenSettingBtn:false
+          })
+        }
+      },
+      fail:function (err) {}
     })
   },
   //
@@ -150,8 +174,8 @@ Page({
     // 这里是有bug的 因为执行先后顺序的问题 往往是 qqmap 先返回 然后 NowWeather 后返回 因此先更新了 地图的location 再更新了天气接口的 location;
 
     //所以是有问题的;
-      
-    
+
+
   },
   // 改变swiper的时候更新 location;
   changeSwiper: function (e) {

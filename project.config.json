@@ -12,7 +12,7 @@
 		"autoAudits": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.0.4",
+	"libVersion": "2.0.9",
 	"appid": "wx86be3e38f371012b",
 	"projectname": "mpweather",
 	"debugOptions": {

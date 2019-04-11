@@ -36,12 +36,15 @@
 .swiperBlock{
   position: relative;
 }
-.swiperBlock .locatCity{
+.swiperBlock .locateCity{
   position: absolute;
   bottom: 40rpx;
   left: 0;
   font-size: 40rpx;
   background-color: tomato;
+}
+.swiperBlock .locateCity.locatebutton{
+  background-color: blue;
 }
 .swiperBlock .addCity{
   position: absolute;
