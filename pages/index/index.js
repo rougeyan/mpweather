@@ -92,6 +92,7 @@ Page({
       url: '../geoPage/geoPage?id=10086&hash=fromFirstPage'
     })
   },
+
   getUserInfo: function (e) {
     console.log(e);
     // 设置全局globalDatauserInfo;
@@ -109,15 +110,18 @@ Page({
     const geoTips = "定位中..";
     await api.wxApi.showLoading(geoTips);
 
-    await api.wxApi.getLocation(self);
-
-    // 连带整个逻辑更新;
-    await this.updateItemCityWeahter();
+    const lock = await api.wxApi.getLocation(self);
+    
+    await this.updateItemCityWeahter(lock);
 
     await api.wxApi.hideLoading();
   },
+  // 更新独立城市
+  async updateItemCityWeahter(lock) {
+    if(!lock){
+      return Promise.resolve();
+    }
 
-  async updateItemCityWeahter(e) {
     // 点击索引
     let self = this;
     // let clickCityIndex = e.target.dataset.cityindex;
@@ -132,6 +136,24 @@ Page({
     // 获取逐日天气
     await setData.updateDailyWeather(self, stringGeo);
   },
+
+  // 处理定位;
+  handleLocationSetting: function () {
+    let self = this;
+    wx.getSetting({
+      success: function (res) {
+        // 没有授权
+        if (res.authSetting["scope.userLocation"]) {
+          self.setData({
+            showOpenSettingBtn: false
+          })
+        }
+      },
+      fail: function (err) { }
+    })
+  },
+  //
+
   // 改变swiper的时候更新 location;
   changeSwiper: function (e) {
     // changgeSwiper 之前

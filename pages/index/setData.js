@@ -97,7 +97,6 @@ const updateDailyWeather =(self, params)=>{
     })
   })
 }
-
 // 逆坐标(只会存在定位的时候转换逆坐标)
 const toReverseGeocoder = (self,params) =>{
   return new Promise(resolve=>{
@@ -111,6 +110,7 @@ const toReverseGeocoder = (self,params) =>{
     })
   })
 }
+
 module.exports = {
   updateNowWeather,
   updateHourlyWeather,

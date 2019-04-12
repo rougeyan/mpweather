@@ -89,19 +89,19 @@ heWeatherApi.getLifestyle = (option) =>{
 
 
 // 获取定位坐标
-wxApi.getLocation = (self,getLatestRecord)=>{
+wxApi.getLocation = (self) => {
   const cityGeo = 'cityList.geo';
-  // 初始化的最后一次定位数据;
-  if(getLatestRecord && !!getLatestRecord){
-    let LATEST_LOCATE = wx.getStorageSync('LATEST_LOCATE');
-    if(JSON.stringify(LATEST_LOCATE) !== "{}"){
-      self.setData({
-        [cityGeo]: latestGeo
-      })
-      return Promise.resolve(LATEST_LOCATE)
-    }
-  }
-  return new Promise((resolve, reject)=>{
+  // // 初始化的最后一次定位数据;
+  // // if(getLatestRecord && !!getLatestRecord){
+  // //   let LATEST_LOCATE = wx.getStorageSync('LATEST_LOCATE');
+  // //   if(JSON.stringify(LATEST_LOCATE) !== "{}"){
+  // //     self.setData({
+  // //       [cityGeo]: latestGeo
+  // //     })
+  // //     return Promise.resolve(LATEST_LOCATE)
+  // //   }
+  // // }
+  return new Promise((resolve)=>{
     wx.getLocation({
       type: 'gcj02',
       // altitude: true,
@@ -118,16 +118,16 @@ wxApi.getLocation = (self,getLatestRecord)=>{
           key: 'LATEST_LOCATE',
           data: latestGeo //打印城市数据
         })
+        resolve(true)
       },
       fail (err) {
-        reject()
-      },
-      complete(){
-        resolve()
+        self.setData({
+          showOpenSettingBtn:true
+        })
+        resolve(false)
       }
     })
-  })
-
+  },)
 }
 
 // 隐藏;
