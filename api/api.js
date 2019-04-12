@@ -20,9 +20,7 @@ let qqmapApi ={};
 // -------------------和风天气服务 api---------------------------------
 // 封装天气接口请求
 function weatherPromiseRequest(option){
-  if(!Object.prototype.toString.call(option) === '[Object Object]'){
-    option = {};
-  }
+  // 判定参数
   // 解构 (依据wx.request接口)
   let {url,data,header,method,dataType,responseType,success,fail,complete} = option;
   return new Promise((resolve,reject)=>{
@@ -59,7 +57,6 @@ function weatherPromiseRequest(option){
  */
 // 现时天气
 heWeatherApi.getNowWeather = (option)=>{
-  
   return weatherPromiseRequest({
     ...option,
     url: config.nowWeatherUrl
@@ -172,8 +169,8 @@ qqmapApi.reverseGeocoder = (option) => {
   return new Promise((resolve, reject) => {
     qqmapsdk.reverseGeocoder({
       location: {
-        latitude: option.latitude,
-        longitude: option.longitude
+        latitude: option.latitude || option.lat,
+        longitude: option.longitude || option.lon
       },
       success (res) {
         console.log(res);

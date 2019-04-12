@@ -5,8 +5,8 @@ const api = app.globalData.api
 const util = app.globalData.util
 // 更新现在天气
 const updateNowWeather =(self,params,index)=>{
-  // 默认数组第一个为default
-  const defaultIndex = 0
+  // 判定天气参数;
+  const defaultIndex = 0;
   return new Promise((resolve)=>{
     index = (index+1)?index:defaultIndex;
     var presentIndex = "presentWeather[" + index + "]"
@@ -28,14 +28,13 @@ const updateNowWeather =(self,params,index)=>{
       })
       // 防止函数使用await 的时候 先后顺序setData问题;
       // 更新完再resolve;
-      // console.log(self.data.cityList.geo)
-      // debugger;
       resolve(self.data.cityList.geo);
     })
   })
 }
 // 逐日三小时天气
 const updateHourlyWeather = (self,params)=>{
+  // 判定天气参数;
   return new Promise((resolve)=>{
     api.heWeatherApi.getHourlyWeather(params).then((res) => {
       let arr = res.HeWeather6[0].hourly;
@@ -104,7 +103,6 @@ const toReverseGeocoder = (self,params) =>{
   return new Promise(resolve=>{
     api.qqmapApi.reverseGeocoder(params).then((res) => {
       // 更新某一项子key[{key}]
-      debugger;
       let presentIndex = "presentWeather[" + 0 + "].location";
       self.setData({
         [presentIndex]: res.address

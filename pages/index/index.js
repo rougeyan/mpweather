@@ -66,18 +66,22 @@ Page({
   // 初始化函数
   async init() {
     let self = this;
+    // 已经有缓存的情况下;
+    let latestLocated = wx.getStorageSync('LATEST_LOCATE');
 
-    let latestLocated = wx.getStorageSync('LATEST_LOCATE')
-
+    if(latestLocated){
+      latestLocated = JSON.stringify(latestLocated) == "{}" ||latestLocated ==""?undefined:util.locationParamsToString(latestLocated);
+    }
+    
     await api.wxApi.showLoading();
-    // 当前天气
-    let params = await setData.updateNowWeather(self);
+    // 初始化天气
+    const latestGeo = await setData.updateNowWeather(self,latestLocated);
     // 逆坐标
-    // await setData.toReverseGeocoder(self);
+    await setData.toReverseGeocoder(self,latestGeo);
     // 获取逐步三小时天气
-    await setData.updateHourlyWeather(self);
+    await setData.updateHourlyWeather(self,latestLocated);
     // 获取逐日天气
-    await setData.updateDailyWeather(self);
+    await setData.updateDailyWeather(self,latestLocated);
 
     await api.wxApi.hideLoading();
   },
@@ -102,47 +106,31 @@ Page({
   // 获取用户定位;
   async geoLocation() {
     let self = this;
-    const geoStart = "定位中..";
-    const geoEnd = "定位结束";
-    let geoTips = "";
-    await api.wxApi.showLoading(geoStart);
+    const geoTips = "定位中..";
+    await api.wxApi.showLoading(geoTips);
 
     await api.wxApi.getLocation(self);
 
+    // 连带整个逻辑更新;
+    await this.updateItemCityWeahter();
+
     await api.wxApi.hideLoading();
   },
 
-  handleLocationSetting: function () {
-    let self = this;
-    wx.getSetting({
-      success: function (res) {
-        // 没有授权
-        if (res.authSetting["scope.userLocation"]) {
-          self.setData({
-            showOpenSettingBtn: false
-          })
-        }
-      },
-      fail: function (err) { }
-    })
-  },
-  //
   async updateItemCityWeahter(e) {
     // 点击索引
     let self = this;
-    let clickCityIndex = e.target.dataset.cityindex;
+    // let clickCityIndex = e.target.dataset.cityindex;
+    // 天气入参
+    let stringGeo = util.locationParamsToString(self.data.cityList.geo);
 
-    await api.wxApi.showLoading();
-
-    const cityGeo = await setData.updateNowWeather(self,util.locationParamsToString(self.data.cityList.geo));
-
+    const params = await setData.updateNowWeather(self,stringGeo);
     // 逆坐标
-    await setData.toReverseGeocoder(self, cityGeo);
+    await setData.toReverseGeocoder(self, params);
     // 更新小时天气
-    await setData.updateHourlyWeather(self, util.locationParamsToString(self.data.cityList.geo));
+    await setData.updateHourlyWeather(self, stringGeo);
     // 获取逐日天气
-    await setData.updateDailyWeather(self, util.locationParamsToString(self.data.cityList.geo));
-    await api.wxApi.hideLoading();
+    await setData.updateDailyWeather(self, stringGeo);
   },
   // 改变swiper的时候更新 location;
   changeSwiper: function (e) {
