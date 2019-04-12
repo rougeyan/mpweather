@@ -121,7 +121,6 @@ Page({
     if(!lock){
       return Promise.resolve();
     }
-
     // 点击索引
     let self = this;
     // let clickCityIndex = e.target.dataset.cityindex;

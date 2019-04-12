@@ -1,5 +1,17 @@
 <!--pages/geoPage/geoPage.wxml-->
 <view class="geo-container">
+  <view class="searchBlock">
+    
+    <view class="searchInputWrapper">
+      <input placeholder="搜索城市"/>
+    </view>
+    <view class="searchResultList">
+      <view class="searchResultItem">
+        <!-- <view class=""></view> -->
+      </view>
+    </view>
+    
+  </view>
   <!-- 左侧字母栏目 -->
   <view class="letterSideBar">
     <view class="letter-item" wx:for="{{letterSlideBar}}" wx:key="{{index}}">{{item}}</view>

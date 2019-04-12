@@ -21,9 +21,10 @@ const updateNowWeather =(self,params,index)=>{
           cond_code: data.now.cond_code,
           update_time: util.formatWeatherTime(data.update.loc) // 当地时间(最后更新时间)
         },
+        // 设置经纬度;
         [cityListIndex]:{
-          lat: data.basic.lat, // 纬度
-          lon: data.basic.lon, // 经度
+          latitude: data.basic.lat, // 纬度
+          longitude: data.basic.lon, // 经度
         }
       })
       // 防止函数使用await 的时候 先后顺序setData问题;
