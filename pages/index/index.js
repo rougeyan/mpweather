@@ -22,9 +22,9 @@ Page({
       geo: {}, // 定位
       custMake: [] // 自定义城市
     },
-    presentWeather: [], // array-obj现在天气
-    hourlyWeather: [], // array-obj 现在小时天气
-    dailyWeather: [], // array-obj 逐日天气
+    presentWeather: [], // [{城市1(必须定位);城市2;城市3}] 当前城市列表;
+    hourlyWeather: [], // [] 现在小时天气
+    dailyWeather: [], // [] 逐日天气
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
@@ -116,16 +116,17 @@ Page({
 
     await api.wxApi.hideLoading();
   },
-  // 更新独立城市
+  // 点击title独立城市
   async updateItemCityWeahter(lock) {
-    if(!lock){
-      return Promise.resolve();
-    }
     // 点击索引
     let self = this;
     // let clickCityIndex = e.target.dataset.cityindex;
     // 天气入参
     let stringGeo = util.locationParamsToString(self.data.cityList.geo);
+
+    if(!lock){
+      return Promise.resolve();
+    }
 
     const params = await setData.updateNowWeather(self,stringGeo);
     // 逆坐标

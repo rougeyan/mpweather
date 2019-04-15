@@ -17,24 +17,47 @@
     <swiper bindchange="changeSwiper" indicator-dots="true" class="weatherSwiper" >
       <!-- 这里要渲染要读出配置城市的list -->
       <swiper-item wx:for="{{presentWeather}}" wx:key="unique" wx:for-item="locationItem" class="weatherSummary">
-        <!-- 自定义title id -->
-        <view bindtap="updateItemCityWeahter" data-cityindex="{{index}}"><text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
-        <text class="location">{{locationItem.location}}</text></view>
+        <!-- 判定index -->
+        <view wx:if="{{index == 0}}">
+          <!-- 已开启权限 -->
+          <block wx:if="{{!showOpenSettingBtn}}">
+            <view catchtap="geoLocation" data-cityindex="{{index}}">
+              <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
+              <text class="location">{{locationItem.location}}</text>
+            </view>
+          </block>
+          <!-- 未开启权限-打开权限页 -->
+          <block wx:elif="{{showOpenSettingBtn}}">
+            <button class="locateCity locatebutton" open-type="openSetting" bindopensetting="handleLocationSetting">
+              <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
+              <text class="location">{{locationItem.location}}</text>
+            </button>
+          </block>
+        </view>
+
+        <view wx:elif="{{index !== 0}}">
+          <view bindtap="updateItemCityWeahter" data-cityindex="{{index}}">
+            <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
+            <text class="location">{{locationItem.location}}</text>
+          </view>
+        </view>
+
         <text class="Summary">{{locationItem.cond_txt}}</text>
         <text class="temperature">{{locationItem.tmp}}</text>
         <view class="latestUpdate">{{"最后更新于"+locationItem.update_time}}</view>
+        
       </swiper-item>
     </swiper>
     
     <!-- 初次定位 -->
-    <block wx:if="{{!showOpenSettingBtn}}">
+    <!-- <block wx:if="{{!showOpenSettingBtn}}">
       <view class="locateCity" catchtap="geoLocation">定位</view>
-    </block>
+    </block> -->
     <!-- 若失败 替换成授权打开定位 -->
-    <block wx:if="{{showOpenSettingBtn}}">
+    <!-- <block wx:if="{{showOpenSettingBtn}}">
       <button class="locateCity locatebutton" open-type="openSetting" bindopensetting="handleLocationSetting">定位</button>
-    </block>
-    <view class="addCity" catchtap="bindViewTap">自定义城市</view>
+    </block> -->
+    <view class="addCity" catchtap="bindViewTap">添加自定义城市</view>
   </view>
 
 
