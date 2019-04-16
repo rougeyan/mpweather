@@ -1,5 +1,6 @@
 const app = getApp()
 const api = app.globalData.api
+const util = app.globalData.util
 // pages/geolocate.js
 Page({
 
@@ -29,11 +30,30 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var self = this;
     api.qqmapApi.getCityList().then((res)=>{
       this.setData({
         cityList: res
       })
     });
+    api.qqmapApi.getSuggestion().then((res)=>{
+      var sug = [];
+      for (var i = 0; i < res.data.length; i++) {
+        sug.push({ // 获取返回结果，放到sug数组中
+          title: res.data[i].title,
+          id: res.data[i].id,
+          addr: res.data[i].address,
+          city: res.data[i].city,
+          district: res.data[i].district,
+          latitude: res.data[i].location.lat,
+          longitude: res.data[i].location.lng
+        });
+      }
+      console.log(sug);
+      self.setData({ //设置suggestion属性，将关键词搜索结果以列表形式展示
+        suggestion: sug
+      });
+    })
   },
 
   /**
@@ -73,5 +93,11 @@ Page({
   tapCityItem: function(e){
     console.log(e)
     // 触摸后 添加到 userCityList
-  }
+  },
+  searchInputEvent: util.debounce(function(event){
+    // 使用防抖
+    // arguments[0] = event;
+    let val = event.detail.value;
+    console.log(val);
+  },1200)
 })

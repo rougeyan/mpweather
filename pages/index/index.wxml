@@ -14,9 +14,9 @@
 
   <!-- 实时天气概况 -->
   <view class="swiperBlock">
-    <swiper bindchange="changeSwiper" indicator-dots="true" class="weatherSwiper" >
+    <swiper indicator-dots="true" class="weatherSwiper" >
       <!-- 这里要渲染要读出配置城市的list -->
-      <swiper-item wx:for="{{presentWeather}}" wx:key="unique" wx:for-item="locationItem" class="weatherSummary">
+      <swiper-item wx:for="{{presentGeneralWeather}}" wx:key="unique" wx:for-item="locationItem" class="weatherSummary">
         <!-- 判定index -->
         <view wx:if="{{index == 0}}">
           <!-- 已开启权限 -->

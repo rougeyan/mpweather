@@ -1,15 +1,19 @@
 <!--pages/geoPage/geoPage.wxml-->
 <view class="geo-container">
+
   <view class="searchBlock">
-    
-    <view class="searchInputWrapper">
-      <input placeholder="搜索城市"/>
+    <view class="search-Input-Wrapper">
+      <input placeholder="搜索城市"  bindinput="searchInputEvent"/>
     </view>
-    <view class="searchResultList">
-      <view class="searchResultItem">
-        <!-- <view class=""></view> -->
+    <view class="search-Bottom">搜索</view>
+    <!-- 搜索结果列表 -->
+    <block>
+      <view class="searchResultList">
+        <view class="searchResultItem">
+          <!-- <view class=""></view> -->
+        </view>
       </view>
-    </view>
+    </block>
     
   </view>
   <!-- 左侧字母栏目 -->

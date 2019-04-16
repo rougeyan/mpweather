@@ -31,6 +31,19 @@ const throttle = function(fn, delay) {
   }
 }
 
+// 防抖
+const debounce = function(fun, delay) {
+  return function (args) {
+      //获取函数的作用域和变量
+      let that = this
+      let _args = args
+      //每次事件被触发，都会清除当前的timeer，然后重写设置超时调用
+      clearTimeout(fun.id)
+      fun.id = setTimeout(function () {
+          fun.call(that, _args)
+      }, delay)
+  }
+}
 
 // 格式化问候语
 const getGreetings = () => {
@@ -78,18 +91,26 @@ const sortCityList = (data) => {
   return d
 }
 
-// 
+// 天气参数obj转为string
 const locationParamsToString = (obj)=>{
-  return {
-    data: {
-      location: `${obj.latitude},${obj.longitude}`
+  // 非空判判定
+  if(JSON.stringify(obj) == "{}" ||obj ==""){
+    return undefined
+  }else{
+    return {
+      data: {
+        location: `${obj.latitude},${obj.longitude}`
+      }
     }
-  }
+  }  
 }
+
+
 module.exports = {
   formatTime: formatTime,
   getGreetings: getGreetings,
   throttle: throttle,
+  debounce,debounce,
   formatWeatherTime: formatWeatherTime,
   sortCityList: sortCityList,
   locationParamsToString: locationParamsToString

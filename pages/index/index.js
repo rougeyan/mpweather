@@ -22,7 +22,7 @@ Page({
       geo: {}, // 定位
       custMake: [] // 自定义城市
     },
-    presentWeather: [], // [{城市1(必须定位);城市2;城市3}] 当前城市列表;
+    presentGeneralWeather: [], // [{城市1(必须定位);城市2;城市3}] 当前城市列表;
     hourlyWeather: [], // [] 现在小时天气
     dailyWeather: [], // [] 逐日天气
   },
@@ -67,12 +67,13 @@ Page({
   async init() {
     let self = this;
     // 已经有缓存的情况下;
-    let latestLocated = wx.getStorageSync('LATEST_LOCATE');
-
-    if(latestLocated){
-      latestLocated = JSON.stringify(latestLocated) == "{}" ||latestLocated ==""?undefined:util.locationParamsToString(latestLocated);
-    }
+    let latestLocated = util.locationParamsToString(wx.getStorageSync('LATEST_LOCATE'))
     
+    // let latestLocated = wx.getStorageSync('LATEST_LOCATE');
+    // if(latestLocated){
+    //   latestLocated = JSON.stringify(latestLocated) == "{}" ||latestLocated ==""?undefined:util.locationParamsToString(latestLocated);
+    // }
+
     await api.wxApi.showLoading();
     // 初始化天气
     const latestGeo = await setData.updateNowWeather(self,latestLocated);
@@ -152,18 +153,8 @@ Page({
       fail: function (err) { }
     })
   },
-  //
-
   // 改变swiper的时候更新 location;
   changeSwiper: function (e) {
-    // changgeSwiper 之前
-    // 这里已经添加到到列表里面;
-    // 但是仍未更新;
-    // console.log(e);
-    // console.log("do changeSwiper");
+    // 这里优先取city-item请求的data;
   },
-  tapswiperitem: function (e) {
-    // console.log(e);
-    // console.log("do tapswiperitem");
-  }
 })
