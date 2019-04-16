@@ -209,21 +209,6 @@ qqmapApi.getSuggestion = (value)=>{
       //region:'北京', //设置城市名，限制关键词所示的地域范围，非必填参数
       success: function(res) {//搜索成功后的回调
         resolve(res)
-        // var sug = [];
-        // for (var i = 0; i < res.data.length; i++) {
-        //   sug.push({ // 获取返回结果，放到sug数组中
-        //     title: res.data[i].title,
-        //     id: res.data[i].id,
-        //     addr: res.data[i].address,
-        //     city: res.data[i].city,
-        //     district: res.data[i].district,
-        //     latitude: res.data[i].location.lat,
-        //     longitude: res.data[i].location.lng
-        //   });
-        // }
-        // _this.setData({ //设置suggestion属性，将关键词搜索结果以列表形式展示
-        //   suggestion: sug
-        // });
       },
       fail: function(error) {
       },
