@@ -1,54 +1,47 @@
-<!--index.wxml-->
-
+<!-- index.wxml -->
 <!-- 背景 -->
 <view class="bg"></view>
-
 <view class="container">
   <!-- 用户信息 -->
   <!-- 条件判定class -->
   <view class="userinfo {{userinfoha=='0'?'black':'red'}}">
-    <open-data type="userAvatarUrl" class="userinfo-avatar"/>
-    <open-data type="userNickName"/>
+    <open-data type="userAvatarUrl" class="userinfo-avatar" />
+    <open-data type="userNickName" />
     <text class="greetings">{{grettings}}</text>
   </view>
 
   <!-- 实时天气概况 -->
   <view class="swiperBlock">
-    <swiper indicator-dots="true" class="weatherSwiper" >
+    <swiper indicator-dots="true" class="weatherSwiper">
       <!-- 这里要渲染要读出配置城市的list -->
       <swiper-item wx:for="{{presentGeneralWeather}}" wx:key="unique" wx:for-item="locationItem" class="weatherSummary">
-        <!-- 判定index -->
+        <!-- index == 0 -->
         <view wx:if="{{index == 0}}">
-          <!-- 已开启权限 -->
-          <block wx:if="{{!showOpenSettingBtn}}">
-            <view catchtap="geoLocation" data-cityindex="{{index}}">
+          <block>
+            <!-- 已开启权限 -->
+            <view wx:if="{{!renderOpenSettingBtn}}" class="general-weather-addr pink" catchtap="geoLocation" data-cityindex="{{index}}">
               <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
-              <text class="location">{{locationItem.location}}</text>
+              <text class="location">{{"已授权"+locationItem.location}}</text>
             </view>
-          </block>
-          <!-- 未开启权限-打开权限页 -->
-          <block wx:elif="{{showOpenSettingBtn}}">
-            <button class="locateCity locatebutton" open-type="openSetting" bindopensetting="handleLocationSetting">
+            <!-- 未开启权限-打开权限页 -->
+            <button wx:else class="remove-btn-default-style blue" open-type="openSetting" bindopensetting="handleLocationSetting">
               <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
-              <text class="location">{{locationItem.location}}</text>
+              <text class="location">{{"未授权"+locationItem.location}}</text>
             </button>
+            
           </block>
         </view>
-
         <view wx:elif="{{index !== 0}}">
           <view bindtap="updateItemCityWeahter" data-cityindex="{{index}}">
             <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
             <text class="location">{{locationItem.location}}</text>
           </view>
         </view>
-
         <text class="Summary">{{locationItem.cond_txt}}</text>
         <text class="temperature">{{locationItem.tmp}}</text>
         <view class="latestUpdate">{{"最后更新于"+locationItem.update_time}}</view>
-        
       </swiper-item>
     </swiper>
-    
     <!-- 初次定位 -->
     <!-- <block wx:if="{{!showOpenSettingBtn}}">
       <view class="locateCity" catchtap="geoLocation">定位</view>
@@ -57,35 +50,29 @@
     <!-- <block wx:if="{{showOpenSettingBtn}}">
       <button class="locateCity locatebutton" open-type="openSetting" bindopensetting="handleLocationSetting">定位</button>
     </block> -->
-    
     <view class="addCity" catchtap="bindViewTap">添加自定义城市</view>
   </view>
 
-
-  <!-- 逐三小时预报   -->
+  <!-- 逐三小时预报 -->
   <scroll-view class="hourly" scroll-x="true">
     <view wx:for="{{hourlyWeather}}" wx:key="unique" wx:for-item="hour" class="item-hour">
       <view class="hourStepWeather">
         <text class="time">{{hour.time}}</text>
-        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png" />
         <text class="temperature">{{hour.tmp}}</text>
       </view>
     </view>
   </scroll-view>
 
-
-  <!-- 未来天气列表-->
+  <!-- 未来天气列表 -->
   <view class="fulture">
     <view wx:for="{{dailyWeather}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
       <text class="weekitem">{{daily.date}}</text>
-      <image class="weatherImg" src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png"/>
+      <image class="weatherImg" src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png" />
       <text class="highestTemperature">{{daily.tmp_max}}</text>
       <text class="lowestTemperature">{{daily.tmp_min}}</text>
     </view>
   </view>
-
   <!-- 今天其他信息(概述:风向/湿度/体感温度/气压/能见度/紫外线/) -->
-  
   <!-- 查看更多,穿衣,体感之类 -->
-  
 </view>

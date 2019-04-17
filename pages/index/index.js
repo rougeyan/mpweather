@@ -12,9 +12,8 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    // 变相打开授权页;
-    showOpenSettingBtn: false,
     // 自定义数据列表;
+    renderOpenSettingBtn: false,
     // 当下天气信息 [{对应城市},{}]
     grettings: "",
     // 初始化默认城市 作判定 是否允许定位; 不允许使用默认城市
@@ -53,6 +52,27 @@ Page({
         }
       })
     }
+    // onLoad 的操作一般都是对渲染数据进行操作;
+    // 然后Dom 一句操作完的数据渲染;
+    // 也就是说 DOM 的某些条件渲染{{condition}} condition 的判定逻辑可以放在onLoad 里面执行去setData 
+    // 类似vue的create 生命和周期;
+    // this.identify()
+    this.getUserLocation();
+  },
+  getUserLocation(){
+    // 取授权信息
+    const USERLOCATION = wx.getStorageSync('userLocation');
+    console.log(USERLOCATION)
+    if(!USERLOCATION && typeof(USERLOCATION) !="boolean"){
+      // 第一次问也不知道是否被授权了 因为授权的操作不在这个getUserLocation上;
+      this.setData({
+        renderOpenSettingBtn: false
+      })
+    }else{
+      this.setData({
+        renderOpenSettingBtn: !USERLOCATION
+      })
+    }
   },
   // 页面显示/切入前台时触发。
   onShow() {
@@ -68,7 +88,7 @@ Page({
     let self = this;
     // 已经有缓存的情况下;
     let latestLocated = util.locationParamsToString(wx.getStorageSync('LATEST_LOCATE'))
-    
+
     // let latestLocated = wx.getStorageSync('LATEST_LOCATE');
     // if(latestLocated){
     //   latestLocated = JSON.stringify(latestLocated) == "{}" ||latestLocated ==""?undefined:util.locationParamsToString(latestLocated);
@@ -76,13 +96,13 @@ Page({
 
     await api.wxApi.showLoading();
     // 初始化天气
-    const latestGeo = await setData.updateNowWeather(self,latestLocated);
+    const latestGeo = await setData.updateNowWeather(self, latestLocated);
     // 逆坐标
-    await setData.toReverseGeocoder(self,latestGeo);
+    await setData.toReverseGeocoder(self, latestGeo);
     // 获取逐步三小时天气
-    await setData.updateHourlyWeather(self,latestLocated);
+    await setData.updateHourlyWeather(self, latestLocated);
     // 获取逐日天气
-    await setData.updateDailyWeather(self,latestLocated);
+    await setData.updateDailyWeather(self, latestLocated);
 
     await api.wxApi.hideLoading();
   },
@@ -112,7 +132,7 @@ Page({
     await api.wxApi.showLoading(geoTips);
 
     const lock = await api.wxApi.getLocation(self);
-    
+
     await this.updateItemCityWeahter(lock);
 
     await api.wxApi.hideLoading();
@@ -125,11 +145,11 @@ Page({
     // 天气入参
     let stringGeo = util.locationParamsToString(self.data.cityList.geo);
 
-    if(!lock){
+    if (!lock) {
       return Promise.resolve();
     }
 
-    const params = await setData.updateNowWeather(self,stringGeo);
+    const params = await setData.updateNowWeather(self, stringGeo);
     // 逆坐标
     await setData.toReverseGeocoder(self, params);
     // 更新小时天气
@@ -144,10 +164,11 @@ Page({
     wx.getSetting({
       success: function (res) {
         // 没有授权
-        if (res.authSetting["scope.userLocation"]) {
+        if (!!res.authSetting["scope.userLocation"]) {
           self.setData({
-            showOpenSettingBtn: false
+            renderOpenSettingBtn: false
           })
+          wx.setStorageSync('userLocation',true);
         }
       },
       fail: function (err) { }

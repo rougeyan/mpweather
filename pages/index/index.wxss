@@ -1,4 +1,5 @@
 @import "./iconfont.wxss";
+@import "../../asset/wxss/reset.wxss";
 /**index.wxss**/
 .bg{
   background-color: #ffab00;
@@ -11,6 +12,12 @@
   bottom: 0;
   left: 0;
   z-index: -1;
+}
+.blue{
+  background-color: blue
+}
+.pink{
+  background-color: pink
 }
 
 .container{
@@ -43,9 +50,7 @@
   font-size: 40rpx;
   background-color: tomato;
 }
-.swiperBlock .locateCity.locatebutton{
-  background-color: blue;
-}
+/* 去除默认样式 */
 .swiperBlock .addCity{
   position: absolute;
   bottom: 0;

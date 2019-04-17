@@ -1,0 +1,11 @@
+/* 去除按钮默认样式 */
+.remove-btn-default-style{
+  border-radius:0;
+  background-color: transparent;
+  padding: 0;
+  line-height: 1;
+  color: #333;
+}
+.remove-btn-default-style::after{
+  border: none;
+}

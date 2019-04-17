@@ -108,11 +108,15 @@ wxApi.getLocation = (self) => {
           key: 'LATEST_LOCATE',
           data: latestGeo //打印城市数据
         })
+        // 定位已经授权
+        wx.setStorageSync('userLocation',true);
         resolve(true)
       },
       fail (err) {
+        // 定位未被授权
+        wx.setStorageSync('userLocation',false)
         self.setData({
-          showOpenSettingBtn:true
+          renderOpenSettingBtn:false
         })
         resolve(false);
       }
