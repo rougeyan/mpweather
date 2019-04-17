@@ -21,12 +21,12 @@
             <!-- 已开启权限 -->
             <view wx:if="{{!renderOpenSettingBtn}}" class="general-weather-addr pink" catchtap="geoLocation" data-cityindex="{{index}}">
               <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
-              <text class="location">{{"已授权"+locationItem.location}}</text>
+              <text class="location">{{"view"+locationItem.location}}</text>
             </view>
             <!-- 未开启权限-打开权限页 -->
             <button wx:else class="remove-btn-default-style blue" open-type="openSetting" bindopensetting="handleLocationSetting">
               <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
-              <text class="location">{{"未授权"+locationItem.location}}</text>
+              <text class="location">{{"button"+locationItem.location}}</text>
             </button>
             
           </block>

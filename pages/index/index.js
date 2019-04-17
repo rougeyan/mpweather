@@ -62,13 +62,14 @@ Page({
   getUserLocation(){
     // 取授权信息
     const USERLOCATION = wx.getStorageSync('userLocation');
-    console.log(USERLOCATION)
     if(!USERLOCATION && typeof(USERLOCATION) !="boolean"){
+      // undefined 默认都是
       // 第一次问也不知道是否被授权了 因为授权的操作不在这个getUserLocation上;
       this.setData({
         renderOpenSettingBtn: false
       })
     }else{
+      // boolen状态下取反;
       this.setData({
         renderOpenSettingBtn: !USERLOCATION
       })

@@ -116,7 +116,7 @@ wxApi.getLocation = (self) => {
         // 定位未被授权
         wx.setStorageSync('userLocation',false)
         self.setData({
-          renderOpenSettingBtn:false
+          renderOpenSettingBtn:true
         })
         resolve(false);
       }
