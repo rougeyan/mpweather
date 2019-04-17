@@ -24,6 +24,7 @@ Page({
     presentGeneralWeather: [], // [{城市1(必须定位);城市2;城市3}] 当前城市列表;
     hourlyWeather: [], // [] 现在小时天气
     dailyWeather: [], // [] 逐日天气
+    testlocation:""
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
@@ -145,6 +146,7 @@ Page({
     // let clickCityIndex = e.target.dataset.cityindex;
     // 天气入参
     let stringGeo = util.locationParamsToString(self.data.cityList.geo);
+    console.log(stringGeo)
 
     if (!lock) {
       return Promise.resolve();
@@ -179,4 +181,22 @@ Page({
   changeSwiper: function (e) {
     // 这里优先取city-item请求的data;
   },
+  testlocation(){
+    var self = this;
+    wx.getLocation({
+      type: 'gcj02',
+      success(res){
+        self.setData({
+          testlocation:`${res.latitude}/${res.longitude}`
+        })
+        console.log(`${res.latitude}/${res.longitude}`)
+        // 现在          23.15792,113.27324
+        // 家里 ip地址   23.15792/113.27324
+        //              23.17095184326172,113.25672912597656
+        // 家=手机面地址 23.170900344848633/113.25675964355469
+
+        // 实际请求地址(bug)一直是这个 {location: {lat: 23.162281, lng: 113.262833}
+      }
+    })
+  }
 })

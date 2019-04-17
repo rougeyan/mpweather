@@ -26,7 +26,7 @@ const updateNowWeather =(self,params,index)=>{
           cond_code: cond_code, // 图标code
           update_time: util.formatWeatherTime(loc) // 当地时间(最后更新时间)
         },
-        // 设置经纬度;
+        // 设置经纬度;(bug;这里又重设了geo?)
         [cityListIndex]:{
           latitude: lat, // 纬度
           longitude: lon, // 经度
@@ -34,6 +34,7 @@ const updateNowWeather =(self,params,index)=>{
       })
       // 防止函数使用await 的时候 先后顺序setData问题;
       // 更新完再resolve;
+      console.log(lat,lon);
       resolve(self.data.cityList.geo);
     })
   })
