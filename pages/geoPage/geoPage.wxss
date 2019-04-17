@@ -2,7 +2,7 @@
 .geo-container{
   position: relative;
 }
-.letterSideBar{
+.letter-side-bar{
   position: fixed;
   top: 0;
   right: 0;
@@ -12,9 +12,15 @@
   z-index: 10;
 }
 .lettert-item{
+  color: #000;
+}
+.letter-item.active{
+  color: red;
 }
 .city-list-wrapper{
-
+  /* 规定高度 */
+  /* height: 90vh; */
+  height: calc(100vh-200rpx)
 }
 .city-list-letter{
   background-color: #ccc;

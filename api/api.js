@@ -199,6 +199,7 @@ qqmapApi.getCityList = ()=>{
   })
 }
 
+// 搜索建议
 qqmapApi.getSuggestion = (value)=>{
   value = !value?"广州":value
   return new Promise((resolve, reject) => { 

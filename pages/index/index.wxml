@@ -57,6 +57,7 @@
     <!-- <block wx:if="{{showOpenSettingBtn}}">
       <button class="locateCity locatebutton" open-type="openSetting" bindopensetting="handleLocationSetting">定位</button>
     </block> -->
+    
     <view class="addCity" catchtap="bindViewTap">添加自定义城市</view>
   </view>
 

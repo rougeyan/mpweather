@@ -1,6 +1,7 @@
-const app = getApp()
-const api = app.globalData.api
-const util = app.globalData.util
+const app = getApp();
+const api = app.globalData.api;
+const util = app.globalData.util;
+const geoSetData = require('./geoSetData');
 // pages/geolocate.js
 Page({
 
@@ -9,7 +10,10 @@ Page({
    */
   data: {
     cityList: [], // 城市列表
-    letterSlideBar: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z']
+    letterSlideBar: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z'],
+    searchResultSugList: [],
+    switchSearchResult: false,
+    barIndex: 0, // 侧边栏索引值;
   },
 
   /**
@@ -31,29 +35,12 @@ Page({
    */
   onShow: function () {
     var self = this;
+    // 获取城市列表;
     api.qqmapApi.getCityList().then((res)=>{
       this.setData({
         cityList: res
       })
     });
-    api.qqmapApi.getSuggestion().then((res)=>{
-      var sug = [];
-      for (var i = 0; i < res.data.length; i++) {
-        sug.push({ // 获取返回结果，放到sug数组中
-          title: res.data[i].title,
-          id: res.data[i].id,
-          addr: res.data[i].address,
-          city: res.data[i].city,
-          district: res.data[i].district,
-          latitude: res.data[i].location.lat,
-          longitude: res.data[i].location.lng
-        });
-      }
-      console.log(sug);
-      self.setData({ //设置suggestion属性，将关键词搜索结果以列表形式展示
-        suggestion: sug
-      });
-    })
   },
 
   /**
@@ -90,14 +77,48 @@ Page({
   onShareAppMessage: function () {
 
   },
-  tapCityItem: function(e){
-    console.log(e)
-    // 触摸后 添加到 userCityList
+  catchGeo: function(e){
+    // 触摸定位位置
+    wx.navigateBack({
+      url: '../index/index?id=10086&hash=fromGeoPage'
+    })
   },
+  // 输入框(防抖功能) 并且 增加搜索;
   searchInputEvent: util.debounce(function(event){
-    // 使用防抖
-    // arguments[0] = event;
-    let val = event.detail.value;
-    console.log(val);
-  },1200)
+    var self = this;
+    let inputVal = event.detail.value;  // arguments[0] = event;
+    
+    geoSetData.setSearchResultSugList(self,inputVal);
+
+  },1200),
+  // 字母关联
+  letterScroll: util.throttle(function () {
+    // [NodesRef.boundingClientRect](https://developers.weixin.qq.com/miniprogram/dev/api/NodesRef.boundingClientRect.html?search-key=boundingClientRect)
+    // 使用说明
+    console.log("scroll");
+
+    wx.createSelectorQuery().selectAll('.city-list-letter')  // 所有字母;
+      .boundingClientRect((rects) => {
+        // 添加节点的布局位置的查询请求
+        let index = rects.findIndex((item) => {
+          return item.top >= 0
+        })
+        if (index === -1) {
+          index = rects.length
+        }
+        this.setIndex(index - 1)
+      }).exec()
+
+  }, 20),
+
+  // 设置字母索引号
+  setIndex (index) {
+    if (this.data.barIndex === index) {
+      return false
+    } else {
+      this.setData({
+        barIndex: index
+      })
+    }
+  },
 })

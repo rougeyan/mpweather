@@ -1,36 +1,44 @@
 <!--pages/geoPage/geoPage.wxml-->
 <view class="geo-container">
 
-  <view class="searchBlock">
-    <view class="search-Input-Wrapper">
+  <!-- 搜索板块 -->
+  <view class="search-block">
+    <!-- 遮罩 -->
+    <view class="search-mask"></view>
+    <!-- 搜索框 -->
+    <view class="search-input-wrap">
       <input placeholder="搜索城市"  bindinput="searchInputEvent"/>
+      <view class="search-buttom">搜索</view>
     </view>
-    <view class="search-Bottom">搜索</view>
+    
     <!-- 搜索结果列表 -->
     <block>
-      <view class="searchResultList">
-        <view class="searchResultItem">
-          <!-- <view class=""></view> -->
+      <view wx:if="{{switchSearchResult && searchResultSugList.length>0}}" class="search-result-list">
+        <view wx:for="{{searchResultSugList}}" wx:key="{{unique}}" class="search-result-item">
+          <text class="place-title">{{item.title}}</text>
+          <text class="place-address">{{item.addr}}</text>
         </view>
       </view>
     </block>
-    
   </view>
+
   <!-- 左侧字母栏目 -->
-  <view class="letterSideBar">
-    <view class="letter-item" wx:for="{{letterSlideBar}}" wx:key="{{index}}">{{item}}</view>
+  <view class="letter-side-bar">
+    <view class="letter-item {{(barIndex === index) ? 'active' : ''}}" wx:for="{{letterSlideBar}}" wx:key="{{index}}">{{item}}</view>
   </view>
+
   <!-- 城市列表 -->
-  <scroll-view class="city-list-wrapper">
+  <scroll-view class="city-list-wrapper" scroll-y="{{true}}" bindscroll="letterScroll">
     <block wx:for="{{cityList}}" wx:key="{{index}}">
      <!-- 字母索引条 -->
       <block wx:if="{{index === 0 || (cityList[index - 1].initial[0] !== item.initial[0])}}">
-        <view class="city-list-letter" id="{{'title_' + item.initial[0]}}">{{item.initial[0]}}</view>
+        <view catchTap="{{catchGeo}}" class="city-list-letter" id="{{'title_' + item.initial[0]}}">{{item.initial[0]}}</view>
       </block>
       <view bindtap="tapCityItem" data-item="{{item}}" class="city-list-item">{{item.fullname}}</view>
     </block>
 
 
   </scroll-view>
+
 </view>
 
