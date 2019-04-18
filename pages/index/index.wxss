@@ -2,7 +2,6 @@
 @import "../../asset/wxss/reset.wxss";
 /**index.wxss**/
 .bg{
-  background-color: #ffab00;
   height: 100vh;
   /* background-repeat: no-repeat;
   background-size: cover; */
@@ -14,14 +13,15 @@
   z-index: -1;
 }
 .blue{
-  background-color: blue
+  background-color: rgb(39, 235, 218);
 }
 .pink{
-  background-color: pink
+  background-color: pink;
 }
 
 .container{
-  color: #333;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .userinfo {
@@ -30,7 +30,7 @@
   overflow: hidden;
   display: flex;
   align-items:center;
-  font-size: rpx;
+  font-size: 32rpx;
 }
 .userinfo .userinfo-avatar {
   width: 72rpx;
@@ -40,56 +40,62 @@
   margin-right: 20rpx;
 }
 
-.swiperBlock{
+.container .swiper-wrap{
   position: relative;
+  border: 1rpx solid #ccc;
+  border-radius: 8rpx;
+  margin-bottom: 16rpx;
 }
-.swiperBlock .locateCity{
+.swiper-wrap .add-user-citys{
   position: absolute;
-  bottom: 40rpx;
-  left: 0;
+  bottom: 4rpx;
+  left: 4rpx;
   font-size: 40rpx;
-  background-color: tomato;
-}
-/* 去除默认样式 */
-.swiperBlock .addCity{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  font-size: 40rpx;
-  background: paleturquoise;
+  border-radius: 8rpx;
+  padding: 8rpx 16rpx;
+  overflow: hidden;
+  background: aqua;
+  font-size: 32rpx;
 }
 
-.weatherSwiper{
+.swiper-wrap .weatherSwiper{
   /* swiper位置是固定的 需要定义高度;*/
   height:360rpx;
+  background: #ffc336;
 }
-.weatherSummary{
+.swiper-item{
+  padding-top: 16rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #333;
   position: relative;
-  box-sizing: border-box;
-  padding-top: 80rpx;
 }
-.weatherSummary .location{
-  font-size: 48rpx;
-}
-.weatherSummary .Summary{
-  font-size: 32rpx;
-}
-.weatherSummary .temperature{
-  font-size: 80rpx;
+.swiper-item .address{
   display: block;
-  height: 100rpx;
-  padding-bottom: 60rpx;
+  padding: 12rpx 16rpx;
+  font-size: 32rpx;
+  color: #000;
+  box-sizing: border-box;
 }
-.weatherSummary .latestUpdate{
+.swiper-item .summary{
+  font-size: 28rpx;
+  padding: 10rpx;
+}
+.swiper-item .temp{
+  font-size: 80rpx;
+  vertical-align: top;
+  color: #fff;
+}
+.swiper-item .temp .fuhao{
+  font-size: 36rpx;
+  vertical-align: super;
+}
+.swiper-item .update-time{
   position: absolute;
-  bottom: 20rpx;
-  right: 0;
+  bottom: 28rpx;
+  right: 32rpx;
   font-size: 24rpx;
-  margin-right: 32rpx;
+  /* color: #000; */
 }
 
 /* 逐三小时预报 */

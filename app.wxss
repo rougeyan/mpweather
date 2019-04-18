@@ -2,6 +2,7 @@
 /**app.wxss**/
 .container {
   height: 100vh;
-  padding: 16rpx;
+  padding: 32rpx;
   box-sizing: border-box;
+  color: #333;
 }

@@ -16,5 +16,7 @@
 }
 
 .icondingwei:before {
+  color: #fff;
+  font-size: rpx;
   content: "\e63c";
 }

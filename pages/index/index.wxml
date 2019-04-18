@@ -11,36 +11,36 @@
   </view>
 
   <!-- 实时天气概况 -->
-  <view class="swiperBlock">
-    <view>{{testlocation}}</view>
+  <view class="swiper-wrap">
     <swiper indicator-dots="true" class="weatherSwiper">
-      <!-- 这里要渲染要读出配置城市的list -->
-      <swiper-item wx:for="{{presentGeneralWeather}}" wx:key="unique" wx:for-item="locationItem" class="weatherSummary">
-        <!-- index == 0 -->
+      <swiper-item wx:for="{{presentGeneralWeather}}" wx:key="unique" wx:for-item="locationItem" class="swiper-item">
         <view wx:if="{{index == 0}}">
           <block>
             <!-- 已开启权限 -->
-            <view wx:if="{{!renderOpenSettingBtn}}" class="general-weather-addr pink" catchtap="geoLocation" data-cityindex="{{index}}">
-              <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
-              <text class="location">{{"view"+locationItem.location}}</text>
+            <view wx:if="{{!renderOpenSettingBtn}}" class="address pink" catchtap="geoLocation" data-cityindex="{{index}}">
+              <text class='iconfont icondingwei'></text>
+              <text>{{"view"+locationItem.location}}</text>
             </view>
             <!-- 未开启权限-打开权限页 -->
-            <button wx:else class="remove-btn-default-style blue" open-type="openSetting" bindopensetting="handleLocationSetting">
-              <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
-              <text class="location">{{"button"+locationItem.location}}</text>
+            <button wx:else class="remove-btn-default-style address pink " open-type="openSetting" bindopensetting="handleLocationSetting">
+              <text class='iconfont icondingwei'></text>
+              <text>{{"button"+locationItem.location}}</text>
             </button>
             
           </block>
         </view>
         <view wx:elif="{{index !== 0}}">
           <view bindtap="updateItemCityWeahter" data-cityindex="{{index}}">
-            <text class='iconfont icondingwei' style='color:#7F8389;font-size:60rpx;'></text>
-            <text class="location">{{locationItem.location}}</text>
+            <text class='iconfont icondingwei'></text>
+            <text>{{locationItem.location}}</text>
           </view>
         </view>
-        <text class="Summary">{{locationItem.cond_txt}}</text>
-        <text class="temperature">{{locationItem.tmp}}</text>
-        <view class="latestUpdate">{{"最后更新于"+locationItem.update_time}}</view>
+        <text class="summary">{{locationItem.cond_txt}}</text>
+        <view class="temp">
+          <text>{{locationItem.tmp}}</text>
+          <text class="fuhao">℃</text>
+        </view>
+        <view class="update-time">{{"最后更新于"+locationItem.update_time}}</view>
       </swiper-item>
     </swiper>
     <!-- 初次定位 -->
@@ -51,7 +51,7 @@
     <!-- <block wx:if="{{showOpenSettingBtn}}">
       <button class="locateCity locatebutton" open-type="openSetting" bindopensetting="handleLocationSetting">定位</button>
     </block> -->
-    <view class="addCity" catchtap="bindViewTap">添加自定义城市</view>
+    <view class="add-user-citys" catchtap="bindViewTap">添加自定义城市</view>
   </view>
 
   <!-- 逐三小时预报 -->
