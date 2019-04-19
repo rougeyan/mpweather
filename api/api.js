@@ -16,65 +16,84 @@ let wxApi ={};
 // qqmap api
 let qqmapApi ={};
 
-
-// -------------------和风天气服务 api---------------------------------
-// 封装天气接口请求
-function weatherPromiseRequest(option){
-  // 判定参数
-  // 解构 (依据wx.request接口)
-  let {url,data,header,method,dataType,responseType,success,fail,complete} = option;
-  return new Promise((resolve,reject)=>{
-    wx.request({
-      "url": url,
-      "header": header ? header : {"content-type": "application/json"},
-      "method": method ? method : 'GET',
-      // 这里 解构 /否则不传参;
-      "data": data?Object.assign(weatherDefaultParams,data):weatherDefaultParams,
-      "dataType": dataType ? dataType : "json",
-      "responseType" : responseType ? responseType : "text",
-      // 这里resolve 读不到;
-      "success": success ? success : (res) => {resolve(res.data)},
-      "fail": fail ? fail : (err) => {
-        reject(err)
-        // 此处应有 请求失败弹窗;
-      },
-      "complete": complete ? complete : ()=>{},
-    })
-  })
+/**
+ * [一个通用request的封装](https://developers.weixin.qq.com/community/develop/article/doc/000cac14f44e70059368f3c1b5bc13)
+ */
+// 判定状态码;
+function isHttpSuccess(status) {
+  return status >= 200 && status < 300 || status === 304;
 }
 /**
- * 因为 封装了weatherPromiseRequest
- * option 格式为 {data:{具体参数}}
- *  例子: 本质就是传正个
- *  wx.request(obj)
- *  obj = {
- *   data:{
- *     location: 'beijing', 
- *     lang: 'zh-cn', 
- *     unit: 'm'
- *   }
- *  }
+ * promise请求
+ * 参数：参考wx.request
+ * 返回值：[promise]res
  */
-// 现时天气
-heWeatherApi.getNowWeather = (option)=>{
-  return weatherPromiseRequest({
-    ...option,
-    url: config.nowWeatherUrl
-  })
+function requestPromisefy(options = {}) {
+  const {
+    success,
+    fail,
+  } = options;
+  // success 之作resolve操作;
+  // 所有success 的操作都放再.then(res=>{
+  //  // 这里, 什么setData 什么resolve;
+  // 但是我需要使用 resolve;, 这里已经被resolve了, 所以return Promise.resolve()
+  // 我需要在then里面 resolve
+  // })
+  return new Promise((res, rej) => {
+    wx.request(Object.assign(
+      {},
+      options,
+      {
+        success(r) {
+          const isSuccess = isHttpSuccess(r.statusCode);
+          if (isSuccess) {  // 成功的请求状态
+            res(r.data);
+          } else {
+            rej({
+              msg: `网络错误:${r.statusCode}`,
+              status: r.statusCode,
+              detail: r
+            });
+          }
+        },
+        fail: rej,
+      },
+    ));
+  });
 }
-// 逐日天气
-heWeatherApi.getDailyWeather = (option)=>{
-  return weatherPromiseRequest({
-    ...option,
-    url: config.dailyWeatherUrl
+
+// -------------------和风天气服务 api---------------------------------
+
+// 实时天气
+heWeatherApi.getNowWeather = (option)=>{
+  return requestPromisefy({
+    url: config.nowWeatherUrl,
+    data: {
+      ...weatherDefaultParams,
+      ...option
+    },
   })
 }
 
 // 逐三小时天气
 heWeatherApi.getHourlyWeather = (option)=>{
-  return weatherPromiseRequest({
-    ...option,
-    url: config.hourlyWeatherUrl
+  return requestPromisefy({
+    url: config.hourlyWeatherUrl,
+    data: {
+      ...weatherDefaultParams,
+      ...option,
+    },
+  })
+}
+
+// 逐日天气
+heWeatherApi.getDailyWeather = (option)=>{
+  return requestPromisefy({
+    url: config.dailyWeatherUrl,
+    data: {
+      ...weatherDefaultParams,
+      ...option
+    },
   })
 }
 

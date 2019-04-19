@@ -21,6 +21,7 @@ Page({
       geo: {}, // 定位
       custMake: [] // 自定义城市
     },
+    userCityList: [], //
     presentGeneralWeather: [], // [{城市1(必须定位);城市2;城市3}] 当前城市列表;
     hourlyWeather: [], // [] 现在小时天气
     dailyWeather: [], // [] 逐日天气
