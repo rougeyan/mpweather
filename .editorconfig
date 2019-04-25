@@ -1,0 +1,10 @@
+# 告诉EditorConfig插件，这是根文件，不用继续往上查找
+root = true
+# 匹配全部文件
+[*]
+charset = utf-8
+indent_style = tab
+tab_width = 2
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true

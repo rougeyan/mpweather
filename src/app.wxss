@@ -1,0 +1,19 @@
+/* 全局样式 */
+/**app.wxss**/
+page{
+  font-size: 28rpx;
+  line-height: 1.42857143;
+  height: 100vh;
+  box-sizing: border-box;
+  color: #333;
+}
+.container {
+  padding: 32rpx;
+}
+.flex {
+  display: -webkit-flex;
+  display: flex;
+}
+.flex-item {
+  flex: 1
+}

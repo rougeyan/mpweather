@@ -19,6 +19,8 @@
 		"hidedInDevtools": []
 	},
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -42,14 +44,14 @@
 				{
 					"id": -1,
 					"name": "index",
-					"pathName": "pages/index/index",
+					"pathName": "src/pages/index/index",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": 1,
 					"name": "geoPage",
-					"pathName": "pages/geoPage/geoPage",
+					"pathName": "src/pages/geoPage/geoPage",
 					"query": "",
 					"scene": null
 				}
