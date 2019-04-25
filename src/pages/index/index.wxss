@@ -1,4 +1,4 @@
-@import "./iconfont.wxss";
+@import "../../asset/wxss/iconfont.wxss";
 @import "../../asset/wxss/reset.wxss";
 /**index.wxss**/
 .bg{

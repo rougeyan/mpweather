@@ -6,7 +6,7 @@ const rename = require('gulp-rename')
 // const replace = require('gulp-replace')
 const config = require('./gulpConfig')
 
-gulp.task('sass',gulp.series(watcher));
+gulp.task('watch',gulp.series(watcher));
 
 // sass 编译任务
 function sassCompile(){
