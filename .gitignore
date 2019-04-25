@@ -6,7 +6,7 @@ node_modules
 _old
 config.custom.js
 
-src/assets/bgimages/**/*
+src/asset/bgimages/**/**
 
 src/assets/bgimages/filetype.png
 

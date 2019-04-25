@@ -1,6 +1,6 @@
 @charset "UTF-8";
-@import "../../asset/wxss/iconfont.wxss"; 
-@import "../../asset/wxss/reset.wxss"; 
+@import "../../asset/css/iconfont.wxss"; 
+@import "../../asset/css/resetnative.wxss"; 
 /**index.wxss**/
 .bg {
   height: 100vh;
@@ -14,7 +14,8 @@
   z-index: -1; }
 
 .blue {
-  background-color: #27ebda; }
+  background-color: #27ebda;
+  color: #333; }
 
 .pink {
   background-color: pink; }

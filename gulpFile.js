@@ -12,7 +12,7 @@ const replace = require('gulp-replace')
 const clean = require('gulp-clean');
 const tap = require('gulp-tap');
 const path = require('path');
-const config = require('./gulpConfig')
+const config = require('./gulpconfig')
 const hasRmCssFiles = new Set();
 
 gulp.task('watch', gulp.series(watcher));
@@ -54,7 +54,7 @@ function sassCompile() {
 		.pipe(gulp.dest(config.dest.wxss))
 }
 // 清理无用的wxss文件
-gulp.task('clean:wxss', () => {
+gulp.task('cleanwxss', () => {
 	const arr = [];
 	hasRmCssFiles.forEach((item) => {
 		arr.push(item);

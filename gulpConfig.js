@@ -1,22 +1,16 @@
 const setting = {
 	// enterPath
   src:{
-    sass: './src/pages/**/*.+(scss|sass)',
-    // js: './src/js/**/*.js',
-    // image: './src/common/images/**/*'
+    sass: './src/**/*.+(scss|sass)',
 	},
 	// injectPath
   inject:{
-    // css: './build/css/**/*.css',
-    // js: './build/js/**/*.js',
 	},
 	// output
   dest:{
-    // pug: './build/html/',
-    wxss: './src/pages/',
-    // js:'./build/js/',
-    // image: './build/common/images/'
+    wxss: './src/',
   },
-  cssFilterFiles: ['scss/var.scss'],
+  // 对 变量 函数不注释处理,交给sass处理;
+  cssFilterFiles: ['css/var.scss'],
 }
 module.exports = setting
