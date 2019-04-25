@@ -55,11 +55,16 @@
   </view>
 
   <!-- 逐三小时预报 -->
+  <view >星期四
+    <text > 今天</text>
+    <text >32</text>
+    <text >24</text>
+  </view>
   <scroll-view class="hourly" scroll-x="true">
     <view wx:for="{{hourlyWeather}}" wx:key="unique" wx:for-item="hour" class="item-hour">
       <view class="hourStepWeather">
         <text class="time">{{hour.time}}</text>
-        <image src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png" />
+        <text class='iconfont icondingwei'></text>
         <text class="temperature">{{hour.tmp}}</text>
       </view>
     </view>
@@ -69,7 +74,7 @@
   <view class="fulture">
     <view wx:for="{{dailyWeather}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
       <text class="weekitem">{{daily.date}}</text>
-      <image class="weatherImg" src="https://6465-demo-57510e-1257978613.tcb.qcloud.la/miniWeather/images/icon/location_s_w.png" />
+      <text class='weatherImg iconfont icondingwei'></text>
       <text class="highestTemperature">{{daily.tmp_max}}</text>
       <text class="lowestTemperature">{{daily.tmp_min}}</text>
     </view>

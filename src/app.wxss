@@ -8,12 +8,5 @@ page{
   color: #333;
 }
 .container {
-  padding: 32rpx;
-}
-.flex {
-  display: -webkit-flex;
-  display: flex;
-}
-.flex-item {
-  flex: 1
+  padding: 16rpx 32rpx;
 }

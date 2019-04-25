@@ -17,7 +17,7 @@
 }
 
 .blue {
-  background-color: rgb(39, 235, 218);
+  background-color: cyan;
   @include font-black;
 }
 
@@ -28,6 +28,7 @@
 .container {
   height: 100vh;
   overflow: hidden;
+  background-color: skyblue;
 }
 
 .userinfo {
@@ -90,8 +91,7 @@
     padding: 10rpx;
   }
   .temp {
-    font-size: 80rpx;
-    vertical-align: top;
+    font-size: 100rpx;
     color: #fff;
     .fuhao {
       font-size: 36rpx;
@@ -110,27 +110,22 @@
 /* 逐三小时预报 */
 
 .hourly {
-  height: 300rpx;
-  background-color: violet;
+  height: 160rpx;
   width: unset;
   white-space: nowrap;
+  margin-bottom: 16rpx;
+  background-color: bisque;
   .item-hour {
-    width: 200rpx;
+    width: 116rpx;
     height: 100%;
-    background-color: teal;
     display: inline-block;
     vertical-align: top;
   }
-  .hourStepWeather {
-    width: 200rpx;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    image {
-      width: 100%;
-    }
-  }
+}
+.hourStepWeather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* 未来天气预报 */

@@ -43,7 +43,7 @@ const updateHourlyWeather = (self,params)=>{
     let arr = res.HeWeather6[0].hourly;
     let filterArr = arr.map((currentValue)=>{
       return {
-        time:currentValue.time, // 时间
+        time:util.formatWeatherTime(currentValue.time), // 时间
         cond_code: currentValue.cond_code, // 天气状况代 
         cond_txt: currentValue.cond_txt, // 天气状况代(中文)
         tmp: currentValue.tmp, // 温度

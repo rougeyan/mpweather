@@ -37,7 +37,7 @@ function sassCompile() {
 					hasRmCssFiles.add(filea);
 				}
 			});
-			console.log('rm', hasRmCssFiles);
+			// console.log('rm', hasRmCssFiles);
 		}))
 		.pipe(replace(/(@import.+;)/g, ($1, $2) => {
 			const hasFilter = config.cssFilterFiles.filter(item => $1.indexOf(item) > -1);
