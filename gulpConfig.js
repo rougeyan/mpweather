@@ -16,7 +16,7 @@ const setting = {
     wxss: './src/pages/',
     // js:'./build/js/',
     // image: './build/common/images/'
-  }
-
+  },
+  cssFilterFiles: ['scss/var.scss'],
 }
 module.exports = setting
