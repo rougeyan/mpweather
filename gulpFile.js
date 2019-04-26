@@ -1,8 +1,8 @@
 /**
- * // cnpm install --save-dev gulp gulp-sass gulp-rename gulp-replace
- * 
+ * // cnpm install --save-dev gulp gulp-sass gulp-rename gulp-replace gulp-changed
+ *
  * 参考:[在微信小程序中愉快地使用sass](https://segmentfault.com/a/1190000015807708)
- * 
+ *
  * 理解正常编译的话 会把import 中的所有内容都import到当前的wxss的,造成冗余, 需要将原本的import命令同行地导回去wxss的页面内;因此与文章做同样的余下处理;
  */
 const gulp = require('gulp')
@@ -12,6 +12,8 @@ const replace = require('gulp-replace')
 const clean = require('gulp-clean');
 const tap = require('gulp-tap');
 const path = require('path');
+const debug = require('gulp-debug');
+const changed = require('gulp-changed'); // 只编译修改过的文件;
 const config = require('./gulpconfig')
 const hasRmCssFiles = new Set();
 
@@ -51,6 +53,8 @@ function sassCompile() {
 		.pipe(rename({
 			extname: '.wxss',
 		}))
+		.pipe(changed(config.dest.wxss))
+		// .pipe(debug({title: '编译:'}))
 		.pipe(gulp.dest(config.dest.wxss))
 }
 // 清理无用的wxss文件
