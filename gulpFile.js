@@ -54,7 +54,7 @@ function sassCompile() {
 			extname: '.wxss',
 		}))
 		.pipe(changed(config.dest.wxss))
-		// .pipe(debug({title: '编译:'}))
+		.pipe(debug({title: '编译:'}))
 		.pipe(gulp.dest(config.dest.wxss))
 }
 // 清理无用的wxss文件

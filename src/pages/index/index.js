@@ -9,7 +9,7 @@ const regeneratorRuntime = require('../../lib/regenerator')
 
 Page({
   data: {
-    userInfo: {},
+		userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     // 自定义数据列表;
@@ -56,7 +56,7 @@ Page({
     }
     // onLoad 的操作一般都是对渲染数据进行操作;
     // 然后Dom 一句操作完的数据渲染;
-    // 也就是说 DOM 的某些条件渲染{{condition}} condition 的判定逻辑可以放在onLoad 里面执行去setData 
+    // 也就是说 DOM 的某些条件渲染{{condition}} condition 的判定逻辑可以放在onLoad 里面执行去setData
     // 类似vue的create 生命和周期;
     // this.identify()
     this.getUserLocation();
