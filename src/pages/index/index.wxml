@@ -18,20 +18,20 @@
           <block>
             <!-- 已开启权限 -->
             <view wx:if="{{!renderOpenSettingBtn}}" class="address pink" catchtap="geoLocation" data-cityindex="{{index}}">
-              <text class='iconfont icondingwei'></text>
+              <text class='iconfont icon-dingwei'></text>
               <text>{{"view"+locationItem.location}}</text>
             </view>
             <!-- 未开启权限-打开权限页 -->
             <button wx:else class="remove-btn-default-style address pink " open-type="openSetting" bindopensetting="handleLocationSetting">
-              <text class='iconfont icondingwei'></text>
+              <text class='iconfont icon-dingwei'></text>
               <text>{{"button"+locationItem.location}}</text>
             </button>
-            
+
           </block>
         </view>
         <view wx:elif="{{index !== 0}}">
           <view bindtap="updateItemCityWeahter" data-cityindex="{{index}}">
-            <text class='iconfont icondingwei'></text>
+            <text class='iconfont icon-dingwei'></text>
             <text>{{locationItem.location}}</text>
           </view>
         </view>
@@ -64,7 +64,7 @@
     <view wx:for="{{hourlyWeather}}" wx:key="unique" wx:for-item="hour" class="item-hour">
       <view class="hourStepWeather">
         <text class="time">{{hour.time}}</text>
-        <text class='iconfont icondingwei'></text>
+        <text class='iconfont icon-dingwei'></text>
         <text class="temperature">{{hour.tmp}}</text>
       </view>
     </view>
@@ -74,7 +74,7 @@
   <view class="fulture">
     <view wx:for="{{dailyWeather}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
       <text class="weekitem">{{daily.date}}</text>
-      <text class='weatherImg iconfont icondingwei'></text>
+      <text class='weatherImg iconfont icon-dingwei'></text>
       <text class="highestTemperature">{{daily.tmp_max}}</text>
       <text class="lowestTemperature">{{daily.tmp_min}}</text>
     </view>

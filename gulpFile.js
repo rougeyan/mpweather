@@ -17,8 +17,23 @@ const debug = require('gulp-debug');
 const changed = require('gulp-changed'); // 只编译修改过的文件;
 const config = require('./gulpconfig')
 const hasRmCssFiles = new Set();
+const stream = require('stream');
 
-gulp.task('watch', gulp.series(watcher));
+
+gulp.task('watch', gulp.series(sassCompile,watcher));
+
+function showMsgOfBuffer(){
+	var fileStream = new stream.Transform({ objectMode: true });
+	fileStream._transform = function (file, unused, callback) {
+
+		// 插件主体
+		console.log(file.contents.toString());//把传入的文件内容log出来
+
+		this.push(file);//注意的是这个file是也必须是vinyl对象
+		callback();
+	};
+	return fileStream;
+}
 
 // sass 编译任务
 function sassCompile() {
@@ -50,15 +65,14 @@ function sassCompile() {
 			return `/** ${$2} **/`;
 		}))
 		.pipe(sass().on('error', sass.logError))
-		.pipe(replace(/(\/\*\*\s{0,})(@.+)(\s{0,}\*\*\/)/g, ($1, $2, $3) => $3.replace(/\.scss/g, '.wxss'))) // 还原注释
-		// .pipe(cleanCss({
-		// 	level:{
-		// 		0:{
-		// 			inline:['remote']}
-		// 	}
-		// }),(res)=>{
-		// 	// 对 本地内联进行处理; 还原为正常的@import '../xx.wxss'
-		// })
+		// 针对sass编译后且还原注释的css的 进行clean 操作;
+		// @include 'xxx.scss'
+		.pipe(replace(/(\/\*\*\s{0,})(@.+)(\s{0,}\*\*\/)/g, ($1, $2, $3) => $3.replace(/\.scss/g, '.wxss'))) // 打开注释并且还原为wxss文件;
+		// .pipe(showMsgOfBuffer())
+		// 此阶段已经sass编译完毕, 是一个css文件;  且是@include 'xxx.wxss'
+		.pipe(cleanCss({inline:['remote']}),()=>{
+			// 只对css远程作操作; 不会对 本地 ../做操作;
+		})
 		.pipe(rename({
 			extname: '.wxss',
 		}))
