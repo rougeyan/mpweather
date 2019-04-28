@@ -8,5 +8,5 @@ page{
   color: #333;
 }
 .container {
-  padding: 16rpx 32rpx;
+  padding: 0 32rpx;
 }
