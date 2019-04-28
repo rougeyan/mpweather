@@ -11,6 +11,7 @@ const rename = require('gulp-rename')
 const replace = require('gulp-replace')
 const clean = require('gulp-clean');
 const tap = require('gulp-tap');
+const cleanCss = require('gulp-clean-css')
 const path = require('path');
 const debug = require('gulp-debug');
 const changed = require('gulp-changed'); // 只编译修改过的文件;
@@ -49,7 +50,15 @@ function sassCompile() {
 			return `/** ${$2} **/`;
 		}))
 		.pipe(sass().on('error', sass.logError))
-		.pipe(replace(/(\/\*\*\s{0,})(@.+)(\s{0,}\*\*\/)/g, ($1, $2, $3) => $3.replace(/\.scss/g, '.wxss')))
+		.pipe(replace(/(\/\*\*\s{0,})(@.+)(\s{0,}\*\*\/)/g, ($1, $2, $3) => $3.replace(/\.scss/g, '.wxss'))) // 还原注释
+		// .pipe(cleanCss({
+		// 	level:{
+		// 		0:{
+		// 			inline:['remote']}
+		// 	}
+		// }),(res)=>{
+		// 	// 对 本地内联进行处理; 还原为正常的@import '../xx.wxss'
+		// })
 		.pipe(rename({
 			extname: '.wxss',
 		}))
