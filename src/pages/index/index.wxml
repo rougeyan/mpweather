@@ -26,7 +26,7 @@
               <text class='iconfont icon-dingwei'></text>
               <text>{{"button"+locationItem.location}}</text>
             </button>
-            
+
           </block>
         </view>
         <view wx:elif="{{index !== 0}}">
