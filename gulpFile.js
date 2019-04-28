@@ -28,7 +28,7 @@ const del = require('del');
 
 
 gulp.task('watch', gulp.series(sassCompile,watcher));
-
+// test debugger;
 function showMsgOfBuffer(){
 	var fileStream = new stream.Transform({ objectMode: true });
 	fileStream._transform = function (file, unused, callback) {
@@ -107,8 +107,8 @@ function cleanBuild() {
   return del('./build');
 }
 function buildProgram(){
-	return gulp.src(['src/*/**','!src/**/*.scss','!src/**/var.wxss'])
-				.pipe(gulp.dest('./build'))
+	return gulp.src(config.buildFilterFiles)
+				.pipe(gulp.dest(config.build))
 }
 gulp.task('build',gulp.series(sassCompile,cleanBuild,buildProgram));
 gulp.task('clean',gulp.series(cleanBuild));
