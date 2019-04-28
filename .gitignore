@@ -5,6 +5,11 @@ tmp
 node_modules
 _old
 config.custom.js
+node_modules
+build
+*.zip
+*.7z
+.vscode
 
 src/assets/bgimages/filetype.png
 

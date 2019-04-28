@@ -4,6 +4,12 @@
  * 参考:[在微信小程序中愉快地使用sass](https://segmentfault.com/a/1190000015807708)
  *
  * 理解正常编译的话 会把import 中的所有内容都import到当前的wxss的,造成冗余, 需要将原本的import命令同行地导回去wxss的页面内;因此与文章做同样的余下处理;
+ * 参考:
+ * [@import 使用方式](https://www.sass.hk/docs/)
+ * [gulp-clean-css](https://github.com/jakubpawlowicz/clean-css#inlining-options;)
+ * [clean-css](https://www.npmjs.com/package/gulp-clean-css;)
+ * [pipe方法](https://blog.csdn.net/mrfano/article/details/78179735)
+ * [gulp pipe 流中如何插入自己写的代码？](https://segmentfault.com/q/1010000009464566)
  */
 const gulp = require('gulp')
 const sass = require('gulp-sass')
@@ -18,6 +24,7 @@ const changed = require('gulp-changed'); // 只编译修改过的文件;
 const config = require('./gulpconfig')
 const hasRmCssFiles = new Set();
 const stream = require('stream');
+const del = require('del');
 
 
 gulp.task('watch', gulp.series(sassCompile,watcher));
@@ -26,7 +33,7 @@ function showMsgOfBuffer(){
 	var fileStream = new stream.Transform({ objectMode: true });
 	fileStream._transform = function (file, unused, callback) {
 
-		// 插件主体
+		// 插件主体;
 		console.log(file.contents.toString());//把传入的文件内容log出来
 
 		this.push(file);//注意的是这个file是也必须是vinyl对象
@@ -95,3 +102,13 @@ function watcher(done) {
 	gulp.watch(config.src.sass, gulp.series(sassCompile))
 	done()
 }
+
+function cleanBuild() {
+  return del('./build');
+}
+function buildProgram(){
+	return gulp.src(['src/*/**','!src/**/*.scss','!src/**/var.wxss'])
+				.pipe(gulp.dest('./build'))
+}
+gulp.task('build',gulp.series(sassCompile,cleanBuild,buildProgram));
+gulp.task('clean',gulp.series(cleanBuild));
