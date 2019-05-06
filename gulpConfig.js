@@ -1,7 +1,8 @@
 const setting = {
 	// enterPath
   src:{
-    sass: './src/**/*.+(scss|sass)',
+		sass: ['./src/**/*.+(scss|sass)','!./src/**/iconfont.scss'],
+		import:'./src/**/iconfont.+(scss|sass)'
 	},
 	// injectPath
   inject:{

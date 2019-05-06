@@ -1,158 +1,171 @@
+@charset "UTF-8";
 @import "../../asset/css/var.scss";
 @import "../../asset/css/iconfont.wxss";
 @import "../../asset/css/resetnative.wxss";
 
 /**index.wxss**/
-
 .bg {
-  height: 100vh;
-  /* background-repeat: no-repeat;
+	height: 100vh;
+	/* background-repeat: no-repeat;
   background-size: cover; */
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
 }
 
 .blue {
-  background-color: cyan;
-  @include font-black;
+	background-color: cyan;
+	color: #333;
 }
 
 .pink {
-  background-color: pink;
+	background-color: pink;
 }
 
 .container {
-  height: 100vh;
-  overflow: hidden;
-  background-color: skyblue;
+	height: 100vh;
+	overflow: hidden;
+	background-color: skyblue;
 }
 
 .userinfo {
-  height: 80rpx;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  font-size: 32rpx;
-  .userinfo-avatar {
-    width: 72rpx;
-    height: 72rpx;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 20rpx;
-  }
+	height: 80rpx;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	font-size: 32rpx;
+
+	.userinfo-avatar {
+		width: 72rpx;
+		height: 72rpx;
+		border-radius: 50%;
+		overflow: hidden;
+		margin-right: 20rpx;
+	}
 }
 
 .container .swiper-wrap {
-  position: relative;
-  border: 1rpx solid #ccc;
-  border-radius: 8rpx;
-  margin-bottom: 16rpx;
+	position: relative;
+	border: 1rpx solid #000;
+	border-radius: 8rpx;
+	margin-bottom: 16rpx;
 }
 
 .swiper-wrap {
-  .add-user-citys {
-    position: absolute;
-    bottom: 4rpx;
-    left: 4rpx;
-    font-size: 40rpx;
-    border-radius: 8rpx;
-    padding: 8rpx 16rpx;
-    overflow: hidden;
-    background: aqua;
-    font-size: 32rpx;
-  }
-  .weatherSwiper {
-    /* swiper位置是固定的 需要定义高度;*/
-    height: 360rpx;
-    background: #ffc336;
-  }
+	.add-user-citys {
+		position: absolute;
+		bottom: 4rpx;
+		left: 4rpx;
+		font-size: 40rpx;
+		border-radius: 8rpx;
+		padding: 8rpx 16rpx;
+		overflow: hidden;
+		background: aqua;
+		font-size: 32rpx;
+	}
+
+	.weatherSwiper {
+		/* swiper位置是固定的 需要定义高度;*/
+		height: 360rpx;
+	}
 }
 
 .swiper-item {
-  padding-top: 16rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  .address {
-    display: block;
-    padding: 12rpx 16rpx;
-    font-size: 32rpx;
-    color: #000;
-    box-sizing: border-box;
-  }
-  .summary {
-    font-size: 28rpx;
-    padding: 10rpx;
-  }
-  .temp {
-    font-size: 100rpx;
-    color: #fff;
-    .fuhao {
-      font-size: 36rpx;
-      vertical-align: super;
-    }
-  }
-  .update-time {
-    position: absolute;
-    bottom: 28rpx;
-    right: 32rpx;
-    font-size: 24rpx;
-    /* color: #000; */
-  }
+	padding-top: 16rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+
+	.address {
+		display: block;
+		padding: 12rpx 16rpx;
+		font-size: 32rpx;
+		color: #000;
+		box-sizing: border-box;
+	}
+
+	.summary {
+		font-size: 28rpx;
+		padding: 10rpx;
+	}
+
+	.temp {
+		font-size: 120rpx;
+		color: #fff;
+
+		.fuhao {
+			font-size: 36rpx;
+			vertical-align: super;
+		}
+	}
+
+	.update-time {
+		position: absolute;
+		bottom: 28rpx;
+		right: 32rpx;
+		font-size: 24rpx;
+	}
 }
 
 /* 逐三小时预报 */
 
 .hourly {
-  height: 160rpx;
-  width: unset;
-  white-space: nowrap;
-  margin-bottom: 16rpx;
-  background-color: bisque;
-  .item-hour {
-    width: 116rpx;
-    height: 100%;
-    display: inline-block;
-    vertical-align: top;
-  }
+	height: 160rpx;
+	width: unset;
+	white-space: nowrap;
+	margin-bottom: 16rpx;
+	border: 1px solid #000;
+
+	.item-hour {
+		width: 116rpx;
+		height: 100%;
+		display: inline-block;
+		vertical-align: top;
+	}
 }
+
 .hourStepWeather {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 /* 未来天气预报 */
 
-.fulture .fulture-item {
-  width: 100%;
-  height: 100rpx;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: tomato;
-  .weekitem {
-    width: 200rpx;
-  }
-  .weatherImg {
-    flex: 1;
-    height: 80%;
-  }
-  .highestTemperature {
-    width: 100rpx;
-    font-size: 36rpx;
-    text-align: center;
-  }
+.fulture {
+	border: 1px solid #000;
+}
+
+.fulture-item {
+	width: 100%;
+	height: 72rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+	.weekitem {
+		width: 200rpx;
+	}
+
+	.weatherImg {
+		flex: 1;
+		height: 80%;
+	}
+
+	.highestTemperature {
+		width: 100rpx;
+		font-size: 36rpx;
+		text-align: center;
+	}
 }
 
 .lowestTemperature {
-  width: 100rpx;
-  font-size: 36rpx;
-  text-align: center;
+	width: 100rpx;
+	font-size: 36rpx;
+	text-align: center;
 }

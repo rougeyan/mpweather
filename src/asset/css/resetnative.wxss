@@ -1,1 +1,9 @@
-@charset "UTF-8";.remove-btn-default-style{border-radius:0;background-color:transparent;line-height:1.42857143;padding:0}.remove-btn-default-style::after{border:none}
+@charset "UTF-8";
+/* 去除按钮默认样式 */
+.remove-btn-default-style {
+  border-radius: 0;
+  background-color: transparent;
+  line-height: 1.42857143;
+  padding: 0; }
+  .remove-btn-default-style::after {
+    border: none; }

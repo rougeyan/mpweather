@@ -27,7 +27,7 @@ const stream = require('stream');
 const del = require('del');
 
 
-gulp.task('watch', gulp.series(sassCompile,watcher));
+gulp.task('watch', gulp.series(sassCompile,cssImportComplie,watcher));
 // test debugger;
 function showMsgOfBuffer(){
 	var fileStream = new stream.Transform({ objectMode: true });
@@ -76,16 +76,26 @@ function sassCompile() {
 		// @include 'xxx.scss'
 		.pipe(replace(/(\/\*\*\s{0,})(@.+)(\s{0,}\*\*\/)/g, ($1, $2, $3) => $3.replace(/\.scss/g, '.wxss'))) // 打开注释并且还原为wxss文件;
 		// .pipe(showMsgOfBuffer())
-		// 此阶段已经sass编译完毕, 是一个css文件;  且是@include 'xxx.wxss'
-		.pipe(cleanCss({inline:['remote']}),()=>{
-			// 只对css远程作操作; 不会对 本地 ../做操作;
-		})
 		.pipe(rename({
 			extname: '.wxss',
 		}))
 		.pipe(changed(config.dest.wxss))
 		.pipe(debug({title: '编译:'}))
 		.pipe(gulp.dest(config.dest.wxss))
+}
+// 因为gulp-clean-css 会把 css中的@import "../../xxx.wxss" 编译成@import url(../../xxx.wxss) 暂时把这部分任务翻译单独抽出来;
+// 针对import的图标http的文件进行引入编译;
+// 编译图标;
+function cssImportComplie(){
+	return gulp.src(config.src.import)
+				.pipe(sass().on('error', sass.logError))
+				.pipe(cleanCss({inline:['remote']}),(cb)=>{
+				})
+				.pipe(rename({
+					extname: '.wxss',
+				}))
+				.pipe(changed(config.dest.wxss))
+				.pipe(gulp.dest(config.dest.wxss))
 }
 // 清理无用的wxss文件
 gulp.task('cleanwxss', () => {
@@ -100,6 +110,7 @@ gulp.task('cleanwxss', () => {
 // 监听任务;
 function watcher(done) {
 	gulp.watch(config.src.sass, gulp.series(sassCompile))
+	gulp.watch(config.src.import, gulp.series(cssImportComplie))
 	done()
 }
 
