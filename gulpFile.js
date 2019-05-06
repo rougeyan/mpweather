@@ -26,8 +26,6 @@ const hasRmCssFiles = new Set();
 const stream = require('stream');
 const del = require('del');
 
-
-gulp.task('watch', gulp.series(sassCompile,cssImportComplie,watcher));
 // test debugger;
 function showMsgOfBuffer(){
 	var fileStream = new stream.Transform({ objectMode: true });
@@ -83,9 +81,13 @@ function sassCompile() {
 		.pipe(debug({title: '编译:'}))
 		.pipe(gulp.dest(config.dest.wxss))
 }
-// 因为gulp-clean-css 会把 css中的@import "../../xxx.wxss" 编译成@import url(../../xxx.wxss) 暂时把这部分任务翻译单独抽出来;
-// 针对import的图标http的文件进行引入编译;
-// 编译图标;
+
+/**
+ * 编译图标
+ * 因为 `gulp-clean-css` 会把 css中的
+ * @import "../../xxx.wxss" 编译成 @import url(../../xxx.wxss)
+ * (暂)把这任务从`sassCompile`抽出来;
+ */
 function cssImportComplie(){
 	return gulp.src(config.src.import)
 				.pipe(sass().on('error', sass.logError))
@@ -117,9 +119,12 @@ function watcher(done) {
 function cleanBuild() {
   return del('./build');
 }
+
 function buildProgram(){
 	return gulp.src(config.buildFilterFiles)
 				.pipe(gulp.dest(config.build))
 }
+
+gulp.task('watch', gulp.series(sassCompile,cssImportComplie,watcher));
 gulp.task('build',gulp.series(sassCompile,cleanBuild,buildProgram));
 gulp.task('clean',gulp.series(cleanBuild));
