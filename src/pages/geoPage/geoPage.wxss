@@ -1,42 +1,86 @@
 /* pages/geolocate.wxss */
-.geo-container{
-  position: relative;
-}
-.letter-side-bar{
-  position: fixed;
-  top: 0;
-  right: 0;
-  background-color: #999;
-  color: #000;
-  height: 100vh;
-  z-index: 10;
-}
-.lettert-item{
-  color: #000;
-}
-.letter-item.active{
-  color: red;
-}
-.city-list-wrapper{
-  /* 规定高度 */
-  /* height: 90vh; */
-  height: calc(100vh-200rpx)
-}
-.city-list-letter{
+.geo-container {
+  position: relative; }
+  .geo-container .letter-side-bar {
+    position: fixed;
+    top: 80rpx;
+    right: 0;
+    background-color: #999;
+    color: #000;
+    height: 100vh;
+    width: 30rpx;
+    z-index: 10;
+    text-align: center; }
+  .geo-container .city-list-wrapper {
+    height: calc(100vh - 80rpx); }
+
+.search-block {
+  height: 80rpx;
+  background-color: #fff; }
+  .search-block .search-bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 20rpx;
+    z-index: 5;
+    position: relative;
+    background-color: #fff; }
+    .search-block .search-bar .search-input-wrap {
+      flex: 1;
+      border: 1px solid #ddd;
+      height: 56rpx;
+      border-radius: 8rpx;
+      padding-left: 60rpx;
+      position: relative; }
+      .search-block .search-bar .search-input-wrap .search-input {
+        padding-right: 60rpx;
+        height: 100%;
+        display: block; }
+      .search-block .search-bar .search-input-wrap .iconfont {
+        position: absolute;
+        top: 2rpx;
+        left: 10rpx;
+        color: #ddd;
+        font-size: 36rpx; }
+    .search-block .search-bar .search-btn {
+      text-align: center;
+      color: #1aad16;
+      height: 100%;
+      line-height: 80rpx;
+      padding-left: 20rpx;
+      display: none; }
+      .search-block .search-bar .search-btn.active {
+        display: block; }
+  .search-block .search-mask {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 4;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none; }
+    .search-block .search-mask.active {
+      display: block; }
+
+.letter-side-bar .lettert-item {
+  color: #000; }
+  .letter-side-bar .lettert-item.active {
+    color: red; }
+
+.city-list-wrapper .city-list-letter {
   background-color: #ccc;
-  padding-left: 35rpx;
-}
-.city-list-item{
+  padding-left: 35rpx; }
+
+.city-list-wrapper .city-list-item {
   padding-left: 35rpx;
   position: relative;
-  overflow: hidden;
-}
-.city-list-item::after{
-  content: "";
-  width: 100%;
-  height:  1rpx;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  background: #333;
-}
+  overflow: hidden; }
+  .city-list-wrapper .city-list-item:after {
+    content: "";
+    width: 100%;
+    height: 1rpx;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: #333; }

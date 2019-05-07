@@ -4,11 +4,14 @@
   <!-- 搜索板块 -->
   <view class="search-block">
     <!-- 遮罩 -->
-    <view class="search-mask"></view>
+    <view class="search-mask {{focusSearchInput?'active':''}}"></view>
     <!-- 搜索框 -->
-    <view class="search-input-wrap">
-      <input placeholder="搜索城市"  bindinput="searchInputEvent"/>
-      <view class="search-buttom">搜索</view>
+    <view class="search-bar">
+      <view class="search-input-wrap">
+        <text class="iconfont icon-search"></text>
+        <input class="search-input" placeholder="搜索城市"  bindinput="searchInputEvent"/>
+      </view>
+      <view class="search-btn {{focusSearchInput?'active':''}}">搜索</view>
     </view>
     
     <!-- 搜索结果列表 -->

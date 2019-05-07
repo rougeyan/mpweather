@@ -89,7 +89,9 @@
 				<!-- 今天其他信息(概述:风向/湿度/体感温度/气压/能见度/紫外线/) -->
 				<!-- 查看更多,穿衣,体感之类 -->
 			</scroll-view>
-			<view class="bottom-operation">
+		</swiper-item>
+	</swiper>
+	<view class="bottom-operation">
 				<view class="bottom-item aboutme">{{"about"+'\n'+"me"}}</view>
 				<view class="bottom-item">城市</view>
 				<!-- <text class="iconfont icon-sunny"></text>
@@ -109,6 +111,4 @@
 				<text class="iconfont icon-dust"></text>
 				<text class="iconfont icon-haze"></text> -->
 			</view>
-		</swiper-item>
-	</swiper>
 </view>

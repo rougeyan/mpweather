@@ -14,6 +14,7 @@ Page({
     searchResultSugList: [],
     switchSearchResult: false,
     barIndex: 0, // 侧边栏索引值;
+    focusSearchInput: false // 搜索输入框焦点
   },
 
   /**

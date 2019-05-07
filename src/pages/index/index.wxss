@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@import "../../asset/css/iconfont.wxss"; 
 @import "../../asset/css/resetnative.wxss"; 
 /**index.wxss**/
 .bg {
@@ -48,7 +47,6 @@
   margin-bottom: 20rpx; }
   .general .city-general {
     height: 100%;
-    padding-top: 16rpx;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -93,11 +91,11 @@
   font-size: 24rpx; }
 
 .city-swiper {
-  height: calc(100vh - 80rpx); }
+  height: calc(100vh - 200rpx); }
 
 .detail-wrap {
   margin-bottom: 20rpx;
-  height: calc(100vh - 600rpx); }
+  height: calc(100vh - 580rpx); }
 
 .tmp-status {
   padding-bottom: 20rpx;

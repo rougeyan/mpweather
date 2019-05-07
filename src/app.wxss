@@ -1,5 +1,6 @@
 /* 全局样式 */
 /**app.wxss**/
+@import "asset/css/iconfont.wxss";
 page{
   font-size: 28rpx;
   line-height: 1.42857143;
