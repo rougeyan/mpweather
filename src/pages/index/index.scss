@@ -18,7 +18,6 @@
 
 .blue {
 	background-color: cyan;
-	color: #333;
 }
 
 .pink {
@@ -48,11 +47,13 @@
 	}
 }
 
-.container .swiper-wrap {
-	position: relative;
-	border: 1rpx solid #000;
-	border-radius: 8rpx;
-	margin-bottom: 16rpx;
+.container {
+	.swiper-wrap {
+		position: relative;
+		border: 1rpx solid #000;
+		border-radius: 8rpx;
+		margin-bottom: 12rpx;
+	}
 }
 
 .swiper-wrap {
@@ -112,15 +113,44 @@
 	}
 }
 
+.detail-wrap{
+	height: calc(100vh - 488rpx);
+}
+//
+.tmp-status{
+	display: flex;
+	justify-content: space-between;
+	padding-bottom: 12rpx;
+	border-bottom: 1rpx solid #000;
+	.week{
+	}
+	.tmp{
+		text{
+			padding-right: 24rpx;
+			display: inline-block;
+			vertical-align: top;
+		}
+		.max{
+			position: relative;
+			&:after{
+				content: "";
+				position: absolute;
+				top: 4rpx;
+				right: 11.5rpx;
+				width: 1rpx;
+				height: 32rpx;
+				background-color: #000;
+			}
+		}
+	}
+}
 /* 逐三小时预报 */
-
-.hourly {
+.hourly-wrap {
 	height: 160rpx;
 	width: unset;
 	white-space: nowrap;
-	margin-bottom: 16rpx;
-	border: 1px solid #000;
-
+	margin-bottom: 12rpx;
+	border-bottom: 1rpx solid #000;
 	.item-hour {
 		width: 116rpx;
 		height: 100%;
@@ -128,11 +158,20 @@
 		vertical-align: top;
 	}
 }
-
-.hourStepWeather {
+.hourlyWeather {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: space-between;
+	height: 100%;
+	.rainpop{
+		display: block;
+		font-size: 20rpx;
+		width: 100%;
+		height: 20rpx;
+		line-height: 20rpx;
+		text-align: center;
+	}
 }
 
 /* 未来天气预报 */
@@ -152,20 +191,30 @@
 		width: 200rpx;
 	}
 
-	.weatherImg {
+	.weather-Icon-pop {
 		flex: 1;
-		height: 80%;
+		.iconfont{
+			display: block;
+			height: 52rpx;
+			text-align: center;
+		}
+		.rainpop{
+			height: 20rpx;
+			line-height: 20rpx;
+			font-size: 20rpx;
+			text-align: center;
+		}
 	}
 
-	.highestTemperature {
+	.max-tmp {
+		width: 100rpx;
+		font-size: 36rpx;
+		text-align: center;
+	}
+	.min-tmp {
 		width: 100rpx;
 		font-size: 36rpx;
 		text-align: center;
 	}
 }
 
-.lowestTemperature {
-	width: 100rpx;
-	font-size: 36rpx;
-	text-align: center;
-}

@@ -16,7 +16,10 @@ Page({
     renderOpenSettingBtn: false,
     // 当下天气信息 [{对应城市},{}]
     grettings: "",
-    // 初始化默认城市 作判定 是否允许定位; 不允许使用默认城市
+		// 初始化默认城市 作判定 是否允许定位; 不允许使用默认城市
+		time:{
+			weekday: util.WeekDay[new Date().getDay()]
+		},
     cityList: {
       geo: {}, // 定位
       custMake: [] // 自定义城市

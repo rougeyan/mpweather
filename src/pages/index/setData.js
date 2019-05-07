@@ -44,10 +44,10 @@ const updateHourlyWeather = (self,params)=>{
     let filterArr = arr.map((currentValue)=>{
       return {
         time:util.formatWeatherTime(currentValue.time), // 时间
-        cond_code: currentValue.cond_code, // 天气状况代 
+        cond_code: currentValue.cond_code, // 天气状况代
         cond_txt: currentValue.cond_txt, // 天气状况代(中文)
         tmp: currentValue.tmp, // 温度
-        pop: currentValue.pop // 降水概率
+        rainpop: currentValue.pop>0?`${currentValue.pop}%`:'' // 降水概率
       }
     })
     self.setData({
@@ -62,7 +62,7 @@ const updateDailyWeather =(self, params)=>{
     let arr = res.HeWeather6[0].daily_forecast;
     let filterArr = arr.map(function (cur) {
       return {
-        date:cur.date, //预报日期  //2013-12-30
+        date:util.WeekDay[new Date(cur.date).getDay()], //预报日期  //2013-12-30
         // sr:cur.sr, //日出时间  //07:36
         // ss:cur.ss, //日落时间  //16:58
         // mr:cur.mr, //月升时间  //04:47
@@ -79,7 +79,7 @@ const updateDailyWeather =(self, params)=>{
         // wind_spd:cur.wind_spd, //风速，公里/小时  //14
         // hum:cur.hum, //相对湿度  //37
         // pcpn:cur.pcpn, //降水量  //0
-        pop:cur.pop, //降水概率  //0
+        rainpop:cur.pop>0?`${cur.pop}%`:'', //降水概率  //0
         // pres:cur.pres, //大气压强  //1018
         // uv_index:cur.uv_index, //紫外线强度指数  //3
         // vis:cur.vis, //能见度，单位：公里  //10

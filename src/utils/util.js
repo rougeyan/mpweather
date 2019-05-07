@@ -14,9 +14,11 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+const WeekDay = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
+
 // 过滤日期
 const formatWeatherTime = n =>{
-  return !!n?n.toString().split(" ")[1]:""; 
+  return `${!!n?n.toString().split(" ")[1].split(":")[0]:""}时`;
 }
 
 // 节流;
@@ -102,7 +104,7 @@ const locationParamsToString = (obj)=>{
         location: `${obj.latitude},${obj.longitude}`
       }
     }
-  }  
+  }
 }
 
 
@@ -113,6 +115,7 @@ module.exports = {
   debounce,debounce,
   formatWeatherTime: formatWeatherTime,
   sortCityList: sortCityList,
-  locationParamsToString: locationParamsToString
+	locationParamsToString: locationParamsToString,
+	WeekDay: WeekDay
 }
 

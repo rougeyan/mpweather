@@ -53,32 +53,48 @@
     </block> -->
     <view class="add-user-citys" catchtap="bindViewTap">添加更多城市</view>
   </view>
+	<!-- 实时天气详细信息 -->
+	<scroll-view class="detail-wrap" scroll-y="{{true}}">
 
-  <!-- 逐三小时预报 -->
-  <view >星期四
-    <text > 今天</text>
-    <text >32</text>
-    <text >24</text>
-  </view>
-  <scroll-view class="hourly" scroll-x="true">
-    <view wx:for="{{hourlyWeather}}" wx:key="unique" wx:for-item="hour" class="item-hour">
-      <view class="hourStepWeather">
-        <text class="time">{{hour.time}}</text>
-        <text class='iconfont icon-dingwei'></text>
-        <text class="temperature">{{hour.tmp}}</text>
-      </view>
-    </view>
-  </scroll-view>
+		<!-- 当天天气信息 -->
+		<view class="tmp-status">
+			<view class="week">
+				<text>{{time.weekday}}</text>
+				<text>23</text>
+			</view>
+			<view class="tmp">
+				<text class="max">32</text>
+				<text class="min">24</text>
+			</view>
+		</view>
 
-  <!-- 未来天气列表 -->
-  <view class="fulture">
-    <view wx:for="{{dailyWeather}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
-      <text class="weekitem">{{daily.date}}</text>
-      <text class='weatherImg iconfont icon-dingwei'></text>
-      <text class="highestTemperature">{{daily.tmp_max}}</text>
-      <text class="lowestTemperature">{{daily.tmp_min}}</text>
-    </view>
-  </view>
-  <!-- 今天其他信息(概述:风向/湿度/体感温度/气压/能见度/紫外线/) -->
-  <!-- 查看更多,穿衣,体感之类 -->
+		<!-- 逐三小时预报 -->
+		<scroll-view class="hourly-wrap" scroll-x="true">
+			<view wx:for="{{hourlyWeather}}" wx:key="unique" wx:for-item="hour" class="item-hour">
+				<view class="hourlyWeather">
+					<text class="day">{{hour.time}}</text>
+					<text class='iconfont icon-dingwei'></text>
+					<text class="rainpop">{{hour.rainpop}}</text>
+					<text class="tmp">{{hour.tmp}}</text>
+				</view>
+			</view>
+		</scroll-view>
+
+		<!-- 未来天气列表 -->
+		<view class="fulture">
+			<view wx:for="{{dailyWeather}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
+				<text class="day">{{daily.date}}</text>
+				<view class="weather-Icon-pop">
+					<text class='iconfont icon-dingwei'></text>
+					<view class="rainpop">{{daily.rainpop}}</view>
+				</view>
+				<text class="max-tmp">{{daily.tmp_max}}</text>
+				<text class="min-tmp">{{daily.tmp_min}}</text>
+			</view>
+		</view>
+
+		<!-- <view class="load-other-Msg">加载更多信息</view> -->
+		<!-- 今天其他信息(概述:风向/湿度/体感温度/气压/能见度/紫外线/) -->
+		<!-- 查看更多,穿衣,体感之类 -->
+	</scroll-view>
 </view>
