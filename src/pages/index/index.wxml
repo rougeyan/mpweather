@@ -20,20 +20,20 @@
 							<view wx:if="{{!renderOpenSettingBtn}}" class="address pink" catchtap="geoLocation"
 								data-cityindex="{{index}}">
 								<text class='iconfont icon-dingwei'></text>
-								<text>{{"view"+city.general.location}}</text>
+								<text>{{"view"+city.general.locationText}}</text>
 							</view>
 							<!-- 未开启权限-打开权限页 -->
 							<button wx:else class="remove-btn-default-style address pink " open-type="openSetting"
 								bindopensetting="handleLocationSetting">
 								<text class='iconfont icon-dingwei'></text>
-								<text>{{"button"+city.general.location}}</text>
+								<text>{{"button"+city.general.locationText}}</text>
 							</button>
 						</block>
 					</view>
 					<view wx:elif="{{index !== 0}}">
 						<view bindtap="updateItemCityWeahter" data-cityindex="{{index}}">
 							<text class='iconfont icon-dingwei'></text>
-							<text>{{city.general.location}}</text>
+							<text>{{city.general.locationText}}</text>
 						</view>
 					</view>
 					<text class="summary">{{city.general.cond_txt}}</text>

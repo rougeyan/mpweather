@@ -31,6 +31,7 @@ Page({
 			hourly:[],// 逐3小时
 			daily:[], // 逐日
 		}],
+		latestLocated: util.locationParamsToString(wx.getStorageSync('LATEST_LOCATE')), // 用户最后一次定位;
     userCityList: [], //
     presentGeneralWeather: [], // [{城市1(必须定位);城市2;城市3}] 当前城市列表;
   },
@@ -96,23 +97,20 @@ Page({
   // 初始化函数
   async init() {
     let self = this;
-    // 已经有缓存的情况下;
-    let latestLocated = util.locationParamsToString(wx.getStorageSync('LATEST_LOCATE'))
-
     // let latestLocated = wx.getStorageSync('LATEST_LOCATE');
     // if(latestLocated){
     //   latestLocated = JSON.stringify(latestLocated) == "{}" ||latestLocated ==""?undefined:util.locationParamsToString(latestLocated);
     // }
-
+		console.log(self.latestLocated);
     await api.wxApi.showLoading();
     // 初始化天气
-    const latestGeo = await setData.updateNowWeather(self, latestLocated);
+    const latestGeo = await setData.updateNowWeather(self, self.latestLocated);
     // 逆坐标
     await setData.toReverseGeocoder(self, latestGeo);
     // 获取逐步三小时天气
-    await setData.updateHourlyWeather(self, latestLocated);
+    await setData.updateHourlyWeather(self, self.latestLocated);
     // 获取逐日天气
-    await setData.updateDailyWeather(self, latestLocated);
+    await setData.updateDailyWeather(self, self.latestLocated);
 
     await api.wxApi.hideLoading();
   },

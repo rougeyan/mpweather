@@ -8,6 +8,7 @@ const DEFAULT_INDEX = 0;
 const GENERAL = 'general';
 const DAILY = 'daily';
 const HOURLY = 'hourly';
+const LOCATION = 'location';
 
 
 const cityIndexType = function(index,type){
@@ -20,8 +21,8 @@ const cityIndexType = function(index,type){
 }
 // 更新现在天气
 const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
-  var citys = cityIndexType(index,GENERAL); // 天气概况;
-  var cityListIndex = index==0?"cityList.geo":"cityList.custMake["+index+"]."
+  let citys = cityIndexType(index,GENERAL); // 天气概况;
+  let cityListIndex = index==0?"cityList.geo":"cityList.custMake["+index+"]."
   return api.heWeatherApi.getNowWeather(params).then(res=>{
     let data = res.HeWeather6[0];
     let {now:{tmp,cond_txt,cond_code},basic:{location,lat,lon},update:{loc}} = data;
@@ -29,17 +30,15 @@ const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
       // 设置天气概况
       [citys]: {
         tmp: tmp, // 温度
-        location: location, // 城市定位
+        locationText: location, // 城市定位
         cond_txt: cond_txt, // 天气状况
         cond_code: cond_code, // 图标code
-        update_time: util.formatWeatherTime(loc) // 当地时间(最后更新时间)
+				update_time: util.formatWeatherTime(loc), // 当地时间(最后更新时间)
+				coordinate:{
+					longitude:lon,
+					latitude: lat
+				} // 坐标;
 			},
-
-      // 设置经纬度;(bug;这里又重设了geo?)
-      [cityListIndex]:{
-        latitude: lat, // 纬度
-        longitude: lon, // 经度
-      }
     })
     /**
      * [promise.then](http://es6.ruanyifeng.com/#docs/function)
@@ -48,8 +47,7 @@ const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
      *  res(object)
      * })
      */
-    console.log(self.data.citys);
-    return self.data.cityList.geo
+    return location
   })
 }
 // 逐日三小时天气
@@ -69,7 +67,6 @@ const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
     self.setData({
       [citys]: filterArr
 		});
-		console.log(self.data.citys);
     return
   })
 }
@@ -106,18 +103,15 @@ const updateDailyWeather =(self, params,index = DEFAULT_INDEX)=>{
     self.setData({
       [citys]: filterArr
 		});
-		console.log(self.data.citys);
 		return
   })
 }
 // 逆坐标(只会存在定位的时候转换逆坐标)
 const toReverseGeocoder = (self,params,index = DEFAULT_INDEX) =>{
   return api.qqmapApi.reverseGeocoder(params).then((res) => {
-    // 更新某一项子key[{key}]
-    // index = index && (index+1)?index:DEFAULT_INDEX;
-    let presentIndex = "presentGeneralWeather[" + index + "].location";
+		let citys = cityIndexType(index,LOCATION);
     self.setData({
-      [presentIndex]: res.address
+      [citys]: res.address
     })
   })
 }
