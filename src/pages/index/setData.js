@@ -78,9 +78,10 @@ const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
         cond_code: util.iconNumToString(currentValue.cond_code), // 天气状况代
         cond_txt: currentValue.cond_txt, // 天气状况代(中文)
         tmp: currentValue.tmp, // 温度
-        rainpop: ((currentValue.cond_code>=300 && currentValue.cond_code<= 406) && currentValue.pop>20)?`${Math.round(currentValue.pop/10)*10}%`:'' // 降水概率
+        rainpop: ((currentValue.cond_code>=300 && currentValue.cond_code<= 406) && currentValue.pop>=20)?`${Math.round(currentValue.pop/10)*10}%`:'' // 降水概率
       }
     })
+    console.log(filterArr);
     self.setData({
       [citysHourly]: filterArr
 		});
@@ -111,7 +112,7 @@ const updateDailyWeather =(self, params,index = DEFAULT_INDEX)=>{
         // wind_spd:cur.wind_spd, //风速，公里/小时  //14
         // hum:cur.hum, //相对湿度  //37
         // pcpn:cur.pcpn, //降水量  //0
-        rainpop:((cur.cond_code_d>=300 && cur.cond_code_d<= 406) && cur.pop>20)?`${Math.round(cur.pop/10)*10}%`:'', //降水概率  //0
+        rainpop:((cur.cond_code_d>=300 && cur.cond_code_d<= 406) && cur.pop>=20)?`${Math.round(cur.pop/10)*10}%`:'', //降水概率  //0
         // pres:cur.pres, //大气压强  //1018
         // uv_index:cur.uv_index, //紫外线强度指数  //3
         // vis:cur.vis, //能见度，单位：公里  //10

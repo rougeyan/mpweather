@@ -96,8 +96,6 @@ Page({
     await api.wxApi.showLoading();
     // 初始化天气
     const initCoordinate = await setData.updateNowWeather(self, self.data.latestCoordinate);
-    console.log(self.data.latestCoordinate);
-    console.log(initCoordinate);
     // 逆坐标
     await setData.toReverseGeocoder(self, initCoordinate);
     // 获取逐步三小时天气
