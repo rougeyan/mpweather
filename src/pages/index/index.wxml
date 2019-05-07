@@ -2,99 +2,89 @@
 <!-- 背景 -->
 <view class="bg"></view>
 <view class="container">
-  <!-- 用户信息 -->
-  <!-- 条件判定class -->
-  <view class="userinfo {{userinfoha== 0 ?'black':'red'}}">
-    <open-data type="userAvatarUrl" class="userinfo-avatar" />
-    <open-data type="userNickName" />
-    <text class="greetings">{{grettings}}</text>
-  </view>
-
-  <!-- 实时天气概况 -->
-  <view class="swiper-wrap">
-    <swiper indicator-dots="true" class="weatherSwiper">
-      <swiper-item wx:for="{{presentGeneralWeather}}" wx:key="unique" wx:for-item="locationItem" class="swiper-item">
-        <view wx:if="{{index == 0}}">
-          <block>
-            <!-- 已开启权限 -->
-            <view wx:if="{{!renderOpenSettingBtn}}" class="address pink" catchtap="geoLocation" data-cityindex="{{index}}">
-              <text class='iconfont icon-dingwei'></text>
-              <text>{{"view"+locationItem.location}}</text>
-            </view>
-            <!-- 未开启权限-打开权限页 -->
-            <button wx:else class="remove-btn-default-style address pink " open-type="openSetting" bindopensetting="handleLocationSetting">
-              <text class='iconfont icon-dingwei'></text>
-              <text>{{"button"+locationItem.location}}</text>
-            </button>
-
-          </block>
-        </view>
-        <view wx:elif="{{index !== 0}}">
-          <view bindtap="updateItemCityWeahter" data-cityindex="{{index}}">
-            <text class='iconfont icon-dingwei'></text>
-            <text>{{locationItem.location}}</text>
-          </view>
-        </view>
-        <text class="summary">{{locationItem.cond_txt}}</text>
-        <view class="temp">
-          <text>{{locationItem.tmp}}</text>
-          <text class="fuhao">℃</text>
-        </view>
-        <view class="update-time">{{"最后更新于"+locationItem.update_time}}</view>
-      </swiper-item>
-    </swiper>
-    <!-- 初次定位 -->
-    <!-- <block wx:if="{{!showOpenSettingBtn}}">
-      <view class="locateCity" catchtap="geoLocation">定位</view>
-    </block> -->
-    <!-- 若失败 替换成授权打开定位 -->
-    <!-- <block wx:if="{{showOpenSettingBtn}}">
-      <button class="locateCity locatebutton" open-type="openSetting" bindopensetting="handleLocationSetting">定位</button>
-    </block> -->
-    <view class="add-user-citys" catchtap="bindViewTap">添加更多城市</view>
-  </view>
-	<!-- 实时天气详细信息 -->
-	<scroll-view class="detail-wrap" scroll-y="{{true}}">
-
-		<!-- 当天天气信息 -->
-		<view class="tmp-status">
-			<view class="week">
-				<text>{{time.weekday}}</text>
-				<text>23</text>
-			</view>
-			<view class="tmp">
-				<text class="max">32</text>
-				<text class="min">24</text>
-			</view>
-		</view>
-
-		<!-- 逐三小时预报 -->
-		<scroll-view class="hourly-wrap" scroll-x="true">
-			<view wx:for="{{hourlyWeather}}" wx:key="unique" wx:for-item="hour" class="item-hour">
-				<view class="hourlyWeather">
-					<text class="day">{{hour.time}}</text>
-					<text class='iconfont icon-dingwei'></text>
-					<text class="rainpop">{{hour.rainpop}}</text>
-					<text class="tmp">{{hour.tmp}}</text>
+	<!-- 用户信息 -->
+	<!-- 条件判定class -->
+	<view class="userinfo {{userinfoha== 0 ?'black':'red'}}">
+		<open-data type="userAvatarUrl" class="userinfo-avatar" />
+		<open-data type="userNickName" />
+		<text class="greetings">{{grettings}}</text>
+	</view>
+	<swiper class="city-swiper">
+		<swiper-item class="city-swiper-item" wx:for="{{citys}}" wx:for-item="city" wx:key="unique">
+			<!-- 实时天气概况 -->
+			<view class="general">
+				<view class="city-general">
+					<view wx:if="{{index == 0}}">
+						<block>
+							<!-- 已开启权限 -->
+							<view wx:if="{{!renderOpenSettingBtn}}" class="address pink" catchtap="geoLocation"
+								data-cityindex="{{index}}">
+								<text class='iconfont icon-dingwei'></text>
+								<text>{{"view"+city.general.location}}</text>
+							</view>
+							<!-- 未开启权限-打开权限页 -->
+							<button wx:else class="remove-btn-default-style address pink " open-type="openSetting"
+								bindopensetting="handleLocationSetting">
+								<text class='iconfont icon-dingwei'></text>
+								<text>{{"button"+city.general.location}}</text>
+							</button>
+						</block>
+					</view>
+					<view wx:elif="{{index !== 0}}">
+						<view bindtap="updateItemCityWeahter" data-cityindex="{{index}}">
+							<text class='iconfont icon-dingwei'></text>
+							<text>{{city.general.location}}</text>
+						</view>
+					</view>
+					<text class="summary">{{city.general.cond_txt}}</text>
+					<view class="temp">
+						<text>{{city.general.tmp}}</text>
+						<text class="symblo">℃</text>
+					</view>
+					<view class="update-time">{{"最后更新于"+city.general.update_time}}</view>
 				</view>
+				<view class="add-user-citys" catchtap="bindViewTap">添加更多城市</view>
 			</view>
-		</scroll-view>
-
-		<!-- 未来天气列表 -->
-		<view class="fulture">
-			<view wx:for="{{dailyWeather}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
-				<text class="day">{{daily.date}}</text>
-				<view class="weather-Icon-pop">
-					<text class='iconfont icon-dingwei'></text>
-					<view class="rainpop">{{daily.rainpop}}</view>
+			<!-- 实时天气详细信息 -->
+			<scroll-view class="detail-wrap" scroll-y="{{true}}">
+				<!-- 当天天气信息 -->
+				<view class="tmp-status">
+					<view class="week">
+						<text>{{time.weekday}}</text>
+						<text>23</text>
+					</view>
+					<view class="tmp">
+						<text class="max">32</text>
+						<text class="min">24</text>
+					</view>
 				</view>
-				<text class="max-tmp">{{daily.tmp_max}}</text>
-				<text class="min-tmp">{{daily.tmp_min}}</text>
-			</view>
-		</view>
-
-		<!-- <view class="load-other-Msg">加载更多信息</view> -->
-		<!-- 今天其他信息(概述:风向/湿度/体感温度/气压/能见度/紫外线/) -->
-		<!-- 查看更多,穿衣,体感之类 -->
-	</scroll-view>
+				<!-- 逐三小时预报 -->
+				<scroll-view class="hourly-wrap" scroll-x="true">
+					<view wx:for="{{city.hourly}}" wx:key="unique" wx:for-item="hour" class="item-hour">
+						<view class="hourly-Weather">
+							<text class="day">{{hour.time}}</text>
+							<text class='iconfont icon-dingwei'></text>
+							<text class="rainpop">{{hour.rainpop}}</text>
+							<text class="tmp">{{hour.tmp}}</text>
+						</view>
+					</view>
+				</scroll-view>
+				<!-- 未来天气列表 -->
+				<view class="fulture">
+					<view wx:for="{{city.daily}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
+						<text class="day">{{daily.date}}</text>
+						<view class="weather-Icon-pop">
+							<text class='iconfont icon-dingwei'></text>
+							<view class="rainpop">{{daily.rainpop}}</view>
+						</view>
+						<text class="max-tmp">{{daily.tmp_max}}</text>
+						<text class="min-tmp">{{daily.tmp_min}}</text>
+					</view>
+				</view>
+				<!-- <view class="load-other-Msg">加载更多信息</view> -->
+				<!-- 今天其他信息(概述:风向/湿度/体感温度/气压/能见度/紫外线/) -->
+				<!-- 查看更多,穿衣,体感之类 -->
+			</scroll-view>
+		</swiper-item>
+	</swiper>
 </view>

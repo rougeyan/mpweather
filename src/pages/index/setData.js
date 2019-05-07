@@ -5,22 +5,36 @@ const api = app.globalData.api
 const util = app.globalData.util
 // 其他参数;
 const DEFAULT_INDEX = 0;
+const GENERAL = 'general';
+const DAILY = 'daily';
+const HOURLY = 'hourly';
+
+
+const cityIndexType = function(index,type){
+	var parmasReady = arguments.length ===2;
+	if (parmasReady){
+		return `citys[${index}].${type}`
+	}else{
+		throw new Error('参数有误')
+	}
+}
 // 更新现在天气
 const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
-  var presentIndex = "presentGeneralWeather[" + index + "]"; // 天气概况;
-  var cityListIndex = index==0?"cityList.geo":"cityList.custMake["+index+"]"
+  var citys = cityIndexType(index,GENERAL); // 天气概况;
+  var cityListIndex = index==0?"cityList.geo":"cityList.custMake["+index+"]."
   return api.heWeatherApi.getNowWeather(params).then(res=>{
     let data = res.HeWeather6[0];
     let {now:{tmp,cond_txt,cond_code},basic:{location,lat,lon},update:{loc}} = data;
     self.setData({
       // 设置天气概况
-      [presentIndex]: {
+      [citys]: {
         tmp: tmp, // 温度
         location: location, // 城市定位
         cond_txt: cond_txt, // 天气状况
         cond_code: cond_code, // 图标code
         update_time: util.formatWeatherTime(loc) // 当地时间(最后更新时间)
-      },
+			},
+
       // 设置经纬度;(bug;这里又重设了geo?)
       [cityListIndex]:{
         latitude: lat, // 纬度
@@ -34,12 +48,14 @@ const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
      *  res(object)
      * })
      */
+    console.log(self.data.citys);
     return self.data.cityList.geo
   })
 }
 // 逐日三小时天气
-const updateHourlyWeather = (self,params)=>{
+const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
   return api.heWeatherApi.getHourlyWeather(params).then((res) => {
+		var citys = cityIndexType(index,HOURLY);
     let arr = res.HeWeather6[0].hourly;
     let filterArr = arr.map((currentValue)=>{
       return {
@@ -51,15 +67,17 @@ const updateHourlyWeather = (self,params)=>{
       }
     })
     self.setData({
-      hourlyWeather: filterArr
-    });
+      [citys]: filterArr
+		});
+		console.log(self.data.citys);
     return
   })
 }
 // 逐日天气
-const updateDailyWeather =(self, params)=>{
+const updateDailyWeather =(self, params,index = DEFAULT_INDEX)=>{
   return api.heWeatherApi.getDailyWeather(params).then((res) => {
-    let arr = res.HeWeather6[0].daily_forecast;
+		var citys = cityIndexType(index,DAILY);
+		let arr = res.HeWeather6[0].daily_forecast;
     let filterArr = arr.map(function (cur) {
       return {
         date:util.WeekDay[new Date(cur.date).getDay()], //预报日期  //2013-12-30
@@ -86,8 +104,10 @@ const updateDailyWeather =(self, params)=>{
       }
     })
     self.setData({
-      dailyWeather: filterArr
-    });
+      [citys]: filterArr
+		});
+		console.log(self.data.citys);
+		return
   })
 }
 // 逆坐标(只会存在定位的时候转换逆坐标)

@@ -38,53 +38,58 @@
     overflow: hidden;
     margin-right: 20rpx; }
 
-.container .swiper-wrap {
+.general {
+  height: 360rpx;
+  width: 100%;
+  left: -1rpx;
   position: relative;
   border: 1rpx solid #000;
   border-radius: 8rpx;
-  margin-bottom: 12rpx; }
-
-.swiper-wrap .add-user-citys {
-  position: absolute;
-  bottom: 4rpx;
-  left: 4rpx;
-  font-size: 40rpx;
-  border-radius: 8rpx;
-  padding: 8rpx 16rpx;
-  overflow: hidden;
-  background: aqua;
-  font-size: 32rpx; }
-
-.swiper-wrap .weatherSwiper {
-  /* swiper位置是固定的 需要定义高度;*/
-  height: 360rpx; }
-
-.swiper-item {
-  padding-top: 16rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative; }
-  .swiper-item .address {
-    display: block;
-    padding: 12rpx 16rpx;
-    font-size: 32rpx;
-    color: #000;
-    box-sizing: border-box; }
-  .swiper-item .summary {
-    font-size: 28rpx;
-    padding: 10rpx; }
-  .swiper-item .temp {
-    font-size: 120rpx;
-    color: #fff; }
-    .swiper-item .temp .fuhao {
-      font-size: 36rpx;
-      vertical-align: super; }
-  .swiper-item .update-time {
+  margin-bottom: 20rpx; }
+  .general .city-general {
+    height: 100%;
+    padding-top: 16rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative; }
+  .general .add-user-citys {
     position: absolute;
-    bottom: 28rpx;
-    right: 32rpx;
-    font-size: 24rpx; }
+    bottom: 12rpx;
+    left: 4rpx;
+    font-size: 40rpx;
+    border-radius: 8rpx;
+    padding: 8rpx 16rpx;
+    overflow: hidden;
+    background: aqua;
+    font-size: 32rpx; }
+
+.city-general .address {
+  display: block;
+  padding: 12rpx 16rpx;
+  font-size: 32rpx;
+  color: #000;
+  box-sizing: border-box; }
+
+.city-general .summary {
+  font-size: 28rpx;
+  padding: 10rpx; }
+
+.city-general .temp {
+  font-size: 120rpx;
+  color: #fff; }
+  .city-general .temp .symblo {
+    font-size: 36rpx;
+    vertical-align: super; }
+
+.city-general .update-time {
+  position: absolute;
+  bottom: 36rpx;
+  right: 32rpx;
+  font-size: 24rpx; }
+
+.city-swiper {
+  height: calc(100vh - 80rpx); }
 
 .detail-wrap {
   height: calc(100vh - 488rpx); }
@@ -92,7 +97,7 @@
 .tmp-status {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 12rpx;
+  padding-bottom: 20rpx;
   border-bottom: 1rpx solid #000; }
   .tmp-status .tmp text {
     padding-right: 24rpx;
@@ -114,7 +119,7 @@
   height: 160rpx;
   width: unset;
   white-space: nowrap;
-  margin-bottom: 12rpx;
+  margin-bottom: 20rpx;
   border-bottom: 1rpx solid #000; }
   .hourly-wrap .item-hour {
     width: 116rpx;
@@ -122,13 +127,13 @@
     display: inline-block;
     vertical-align: top; }
 
-.hourlyWeather {
+.hourly-Weather {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   height: 100%; }
-  .hourlyWeather .rainpop {
+  .hourly-Weather .rainpop {
     display: block;
     font-size: 20rpx;
     width: 100%;
@@ -137,22 +142,20 @@
     text-align: center; }
 
 /* 未来天气预报 */
-.fulture {
-  border: 1px solid #000; }
-
 .fulture-item {
   width: 100%;
-  height: 72rpx;
+  height: 80rpx;
   display: flex;
   flex-direction: row;
   align-items: center; }
-  .fulture-item .weekitem {
-    width: 200rpx; }
+  .fulture-item .day {
+    font-size: 40rpx; }
   .fulture-item .weather-Icon-pop {
     flex: 1; }
     .fulture-item .weather-Icon-pop .iconfont {
       display: block;
-      height: 52rpx;
+      height: 40rpx;
+      padding: 10rpx 0;
       text-align: center; }
     .fulture-item .weather-Icon-pop .rainpop {
       height: 20rpx;

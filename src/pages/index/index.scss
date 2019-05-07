@@ -47,19 +47,29 @@
 	}
 }
 
-.container {
-	.swiper-wrap {
-		position: relative;
-		border: 1rpx solid #000;
-		border-radius: 8rpx;
-		margin-bottom: 12rpx;
-	}
-}
+.container {}
 
-.swiper-wrap {
+.general {
+	height: 360rpx;
+	width: 100%;
+	left: -1rpx;
+	position: relative;
+	border: 1rpx solid #000;
+	border-radius: 8rpx;
+	margin-bottom: 20rpx;
+
+	.city-general {
+		height: 100%;
+		padding-top: 16rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		position: relative;
+	}
+
 	.add-user-citys {
 		position: absolute;
-		bottom: 4rpx;
+		bottom: 12rpx;
 		left: 4rpx;
 		font-size: 40rpx;
 		border-radius: 8rpx;
@@ -68,20 +78,9 @@
 		background: aqua;
 		font-size: 32rpx;
 	}
-
-	.weatherSwiper {
-		/* swiper位置是固定的 需要定义高度;*/
-		height: 360rpx;
-	}
 }
 
-.swiper-item {
-	padding-top: 16rpx;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	position: relative;
-
+.city-general {
 	.address {
 		display: block;
 		padding: 12rpx 16rpx;
@@ -99,7 +98,7 @@
 		font-size: 120rpx;
 		color: #fff;
 
-		.fuhao {
+		.symblo {
 			font-size: 36rpx;
 			vertical-align: super;
 		}
@@ -107,32 +106,43 @@
 
 	.update-time {
 		position: absolute;
-		bottom: 28rpx;
+		bottom: 36rpx;
 		right: 32rpx;
 		font-size: 24rpx;
 	}
 }
 
-.detail-wrap{
+
+.city-swiper {
+	height: calc(100vh - 80rpx);
+}
+
+
+
+.detail-wrap {
 	height: calc(100vh - 488rpx);
 }
+
 //
-.tmp-status{
+.tmp-status {
 	display: flex;
 	justify-content: space-between;
-	padding-bottom: 12rpx;
+	padding-bottom: 20rpx;
 	border-bottom: 1rpx solid #000;
-	.week{
-	}
-	.tmp{
-		text{
+
+	.week {}
+
+	.tmp {
+		text {
 			padding-right: 24rpx;
 			display: inline-block;
 			vertical-align: top;
 		}
-		.max{
+
+		.max {
 			position: relative;
-			&:after{
+
+			&:after {
 				content: "";
 				position: absolute;
 				top: 4rpx;
@@ -144,13 +154,15 @@
 		}
 	}
 }
+
 /* 逐三小时预报 */
 .hourly-wrap {
 	height: 160rpx;
 	width: unset;
 	white-space: nowrap;
-	margin-bottom: 12rpx;
+	margin-bottom: 20rpx;
 	border-bottom: 1rpx solid #000;
+
 	.item-hour {
 		width: 116rpx;
 		height: 100%;
@@ -158,13 +170,15 @@
 		vertical-align: top;
 	}
 }
-.hourlyWeather {
+
+.hourly-Weather {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
 	height: 100%;
-	.rainpop{
+
+	.rainpop {
 		display: block;
 		font-size: 20rpx;
 		width: 100%;
@@ -176,29 +190,30 @@
 
 /* 未来天气预报 */
 
-.fulture {
-	border: 1px solid #000;
-}
+.fulture {}
 
 .fulture-item {
 	width: 100%;
-	height: 72rpx;
+	height: 80rpx;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 
-	.weekitem {
-		width: 200rpx;
+	.day {
+		font-size: 40rpx;
 	}
 
 	.weather-Icon-pop {
 		flex: 1;
-		.iconfont{
+
+		.iconfont {
 			display: block;
-			height: 52rpx;
+			height: 40rpx;
+			padding: 10rpx 0;
 			text-align: center;
 		}
-		.rainpop{
+
+		.rainpop {
 			height: 20rpx;
 			line-height: 20rpx;
 			font-size: 20rpx;
@@ -211,10 +226,10 @@
 		font-size: 36rpx;
 		text-align: center;
 	}
+
 	.min-tmp {
 		width: 100rpx;
 		font-size: 36rpx;
 		text-align: center;
 	}
 }
-
