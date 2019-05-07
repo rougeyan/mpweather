@@ -93,20 +93,46 @@ const sortCityList = (data) => {
   return d
 }
 
-// 天气参数obj转为string
-const locationParamsToString = (obj)=>{
-  // 非空判判定
-  if(JSON.stringify(obj) == "{}" ||obj ==""){
-    return undefined
-  }else{
-    return {
-      data: {
-        location: `${obj.latitude},${obj.longitude}`
-      }
+const iconNumToString =(code)=>{
+  let strobj= {
+    sunny: [100,900],
+    cloudy: [101,102,103],
+    overcast: [104],
+    windy: [200,202,203,204],
+    calm: [201,901,999],
+    storm: [205,206,207,208,209,210,211,212,213],
+    rain: [300,302,305,309,399],
+    hail: [304],
+    moderate_rain: [306,314,315],
+    heavy_rain: [301,303,307,308,310,311,312,316,317,318],
+    freezing_rain: [313,404,405,406],
+    light_snow: [400,408],
+    moderate_snow: [401,407,409,499],
+    heavy_snow: [402,403,409,410],
+    dust: [503,504,507,508],
+    haze: [500,501,502,509,510,511,512,513,514,515]
+  }
+  let str = "";
+  for (var key in strobj) {
+    if(!str.length){
+      strobj[key].forEach(cur => {
+        if(cur == code){
+          str = key
+        }
+      });
     }
   }
+  return `icon-${str}`
 }
 
+const cityIndexType = function(index,type){
+	var parmasReady = arguments.length ===2;
+	if (parmasReady){
+		return `citys[${index}].${type}`
+	}else{
+		throw new Error('参数有误')
+	}
+}
 
 module.exports = {
   formatTime: formatTime,
@@ -115,7 +141,8 @@ module.exports = {
   debounce,debounce,
   formatWeatherTime: formatWeatherTime,
   sortCityList: sortCityList,
-	locationParamsToString: locationParamsToString,
-	WeekDay: WeekDay
+  WeekDay: WeekDay,
+  cityIndexType:cityIndexType,
+  iconNumToString:iconNumToString
 }
 

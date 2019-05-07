@@ -71,13 +71,17 @@
   color: #000;
   box-sizing: border-box; }
 
-.city-general .summary {
+.city-general .summary .iconfont {
+  font-size: 48rpx; }
+
+.city-general .summary .text {
   font-size: 28rpx;
   padding: 10rpx; }
 
 .city-general .temp {
   font-size: 120rpx;
-  color: #fff; }
+  color: #fff;
+  line-height: 1; }
   .city-general .temp .symblo {
     font-size: 36rpx;
     vertical-align: super; }
@@ -92,27 +96,12 @@
   height: calc(100vh - 80rpx); }
 
 .detail-wrap {
-  height: calc(100vh - 488rpx); }
+  margin-bottom: 20rpx;
+  height: calc(100vh - 600rpx); }
 
 .tmp-status {
-  display: flex;
-  justify-content: space-between;
   padding-bottom: 20rpx;
   border-bottom: 1rpx solid #000; }
-  .tmp-status .tmp text {
-    padding-right: 24rpx;
-    display: inline-block;
-    vertical-align: top; }
-  .tmp-status .tmp .max {
-    position: relative; }
-    .tmp-status .tmp .max:after {
-      content: "";
-      position: absolute;
-      top: 4rpx;
-      right: 11.5rpx;
-      width: 1rpx;
-      height: 32rpx;
-      background-color: #000; }
 
 /* 逐三小时预报 */
 .hourly-wrap {
@@ -133,6 +122,9 @@
   align-items: center;
   justify-content: space-between;
   height: 100%; }
+  .hourly-Weather .iconfont {
+    font-size: 48rpx;
+    line-height: 1; }
   .hourly-Weather .rainpop {
     display: block;
     font-size: 20rpx;
@@ -142,6 +134,9 @@
     text-align: center; }
 
 /* 未来天气预报 */
+.fulture {
+  margin-bottom: 20rpx; }
+
 .fulture-item {
   width: 100%;
   height: 80rpx;
@@ -154,10 +149,12 @@
     flex: 1; }
     .fulture-item .weather-Icon-pop .iconfont {
       display: block;
-      height: 40rpx;
-      padding: 10rpx 0;
-      text-align: center; }
+      height: 48rpx;
+      text-align: center;
+      font-size: 48rpx;
+      margin-bottom: 12rpx; }
     .fulture-item .weather-Icon-pop .rainpop {
+      display: block;
       height: 20rpx;
       line-height: 20rpx;
       font-size: 20rpx;
@@ -170,3 +167,31 @@
     width: 100rpx;
     font-size: 36rpx;
     text-align: center; }
+
+.other-wrap .other-item {
+  display: inline-block;
+  font-size: 0;
+  vertical-align: top;
+  width: 50%;
+  height: 88rpx;
+  border-bottom: 1px solid #000; }
+  .other-wrap .other-item .title {
+    font-size: 24rpx; }
+  .other-wrap .other-item .msg {
+    font-size: 36rpx;
+    font-weight: 600; }
+
+.bottom-operation {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  height: 80rpx;
+  background-color: tomato; }
+  .bottom-operation .bottom-item {
+    width: 64rpx;
+    height: 64rpx;
+    background-color: #fff; }
+  .bottom-operation .aboutme {
+    color: #333;
+    font-size: 20rpx;
+    text-align: right; }

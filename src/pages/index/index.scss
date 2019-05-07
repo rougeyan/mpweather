@@ -90,14 +90,19 @@
 	}
 
 	.summary {
-		font-size: 28rpx;
-		padding: 10rpx;
+		.iconfont{
+			font-size: 48rpx;
+		}
+		.text{
+			font-size: 28rpx;
+			padding: 10rpx;
+		}
 	}
 
 	.temp {
 		font-size: 120rpx;
 		color: #fff;
-
+		line-height: 1;
 		.symblo {
 			font-size: 36rpx;
 			vertical-align: super;
@@ -120,39 +125,14 @@
 
 
 .detail-wrap {
-	height: calc(100vh - 488rpx);
+	margin-bottom: 20rpx;
+	height: calc(100vh - 600rpx);
 }
 
 //
 .tmp-status {
-	display: flex;
-	justify-content: space-between;
 	padding-bottom: 20rpx;
 	border-bottom: 1rpx solid #000;
-
-	.week {}
-
-	.tmp {
-		text {
-			padding-right: 24rpx;
-			display: inline-block;
-			vertical-align: top;
-		}
-
-		.max {
-			position: relative;
-
-			&:after {
-				content: "";
-				position: absolute;
-				top: 4rpx;
-				right: 11.5rpx;
-				width: 1rpx;
-				height: 32rpx;
-				background-color: #000;
-			}
-		}
-	}
 }
 
 /* 逐三小时预报 */
@@ -177,7 +157,10 @@
 	align-items: center;
 	justify-content: space-between;
 	height: 100%;
-
+	.iconfont{
+		font-size: 48rpx;
+		line-height: 1;
+	}
 	.rainpop {
 		display: block;
 		font-size: 20rpx;
@@ -190,7 +173,9 @@
 
 /* 未来天气预报 */
 
-.fulture {}
+.fulture {
+	margin-bottom: 20rpx;
+}
 
 .fulture-item {
 	width: 100%;
@@ -205,15 +190,15 @@
 
 	.weather-Icon-pop {
 		flex: 1;
-
 		.iconfont {
 			display: block;
-			height: 40rpx;
-			padding: 10rpx 0;
+			height: 48rpx;
 			text-align: center;
+			font-size: 48rpx;
+			margin-bottom: 12rpx;
 		}
-
 		.rainpop {
+			display: block;
 			height: 20rpx;
 			line-height: 20rpx;
 			font-size: 20rpx;
@@ -231,5 +216,41 @@
 		width: 100rpx;
 		font-size: 36rpx;
 		text-align: center;
+	}
+}
+.other-wrap{
+	.other-item{
+		display: inline-block;
+		font-size: 0;
+		vertical-align: top;
+		width: 50%;
+		height: 88rpx;
+		
+		border-bottom: 1px solid #000;
+		.title{
+			font-size: 24rpx;
+		}
+		.msg{
+			font-size: 36rpx;
+			font-weight: 600;
+		}
+	}
+}
+
+.bottom-operation{
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+	height: 80rpx;
+	background-color: tomato;
+	.bottom-item{
+		width: 64rpx;
+		height: 64rpx;
+		background-color: #fff;
+	}
+	.aboutme{
+		color: #333;
+		font-size: 20rpx;
+		text-align: right;
 	}
 }

@@ -20,13 +20,13 @@
 							<view wx:if="{{!renderOpenSettingBtn}}" class="address pink" catchtap="geoLocation"
 								data-cityindex="{{index}}">
 								<text class='iconfont icon-dingwei'></text>
-								<text>{{"view"+city.general.locationText}}</text>
+								<text>{{city.general.locationText}}</text>
 							</view>
 							<!-- 未开启权限-打开权限页 -->
 							<button wx:else class="remove-btn-default-style address pink " open-type="openSetting"
 								bindopensetting="handleLocationSetting">
 								<text class='iconfont icon-dingwei'></text>
-								<text>{{"button"+city.general.locationText}}</text>
+								<text>{{city.general.locationText}}</text>
 							</button>
 						</block>
 					</view>
@@ -36,7 +36,10 @@
 							<text>{{city.general.locationText}}</text>
 						</view>
 					</view>
-					<text class="summary">{{city.general.cond_txt}}</text>
+					<view class="summary">
+						<text class="iconfont {{city.general.cond_code}}"></text>
+						<text class="text">{{city.general.cond_txt}}</text>
+					</view>
 					<view class="temp">
 						<text>{{city.general.tmp}}</text>
 						<text class="symblo">℃</text>
@@ -49,21 +52,16 @@
 			<scroll-view class="detail-wrap" scroll-y="{{true}}">
 				<!-- 当天天气信息 -->
 				<view class="tmp-status">
-					<view class="week">
-						<text>{{time.weekday}}</text>
-						<text>23</text>
-					</view>
-					<view class="tmp">
-						<text class="max">32</text>
-						<text class="min">24</text>
-					</view>
+					<text>{{time.weekday}}</text>
+					<text>{{city.general.tmp}}</text>
 				</view>
 				<!-- 逐三小时预报 -->
 				<scroll-view class="hourly-wrap" scroll-x="true">
 					<view wx:for="{{city.hourly}}" wx:key="unique" wx:for-item="hour" class="item-hour">
 						<view class="hourly-Weather">
 							<text class="day">{{hour.time}}</text>
-							<text class='iconfont icon-dingwei'></text>
+							<text class="iconfont {{hour.cond_code}}"
+							></text>
 							<text class="rainpop">{{hour.rainpop}}</text>
 							<text class="tmp">{{hour.tmp}}</text>
 						</view>
@@ -74,17 +72,43 @@
 					<view wx:for="{{city.daily}}" wx:key="unique" wx:for-item="daily" class="fulture-item">
 						<text class="day">{{daily.date}}</text>
 						<view class="weather-Icon-pop">
-							<text class='iconfont icon-dingwei'></text>
-							<view class="rainpop">{{daily.rainpop}}</view>
+							<text class="iconfont {{daily.cond_code_d}}"
+							></text>
+							<text class="rainpop" wx:if="{{!!daily.rainpop}}">{{daily.rainpop}}</text>
 						</view>
 						<text class="max-tmp">{{daily.tmp_max}}</text>
 						<text class="min-tmp">{{daily.tmp_min}}</text>
 					</view>
 				</view>
-				<!-- <view class="load-other-Msg">加载更多信息</view> -->
+				<view class="other-wrap">
+					<view class="other-item" wx:for="{{city.other}}" wx:for-item="otheritem">
+						<text class="title">{{otheritem.title}}</text>
+						<view class="msg">{{otheritem.msg}}</view>
+					</view>
+				</view>
 				<!-- 今天其他信息(概述:风向/湿度/体感温度/气压/能见度/紫外线/) -->
 				<!-- 查看更多,穿衣,体感之类 -->
 			</scroll-view>
+			<view class="bottom-operation">
+				<view class="bottom-item aboutme">{{"about"+'\n'+"me"}}</view>
+				<view class="bottom-item">城市</view>
+				<!-- <text class="iconfont icon-sunny"></text>
+				<text class="iconfont icon-cloudy"></text>
+				<text class="iconfont icon-overcast"></text>
+				<text class="iconfont icon-windy"></text>
+				<text class="iconfont icon-calm"></text>
+				<text class="iconfont icon-storm"></text>
+				<text class="iconfont icon-rain"></text>
+				<text class="iconfont icon-hail"></text>
+				<text class="iconfont icon-moderate_rain"></text>
+				<text class="iconfont icon-heavy_rain"></text>
+				<text class="iconfont icon-freezing_rain"></text>
+				<text class="iconfont icon-light_snow"></text>
+				<text class="iconfont icon-moderate_snow"></text>
+				<text class="iconfont icon-heavy_snow"></text>
+				<text class="iconfont icon-dust"></text>
+				<text class="iconfont icon-haze"></text> -->
+			</view>
 		</swiper-item>
 	</swiper>
 </view>

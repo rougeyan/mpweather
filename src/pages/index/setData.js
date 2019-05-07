@@ -6,39 +6,52 @@ const util = app.globalData.util
 // 其他参数;
 const DEFAULT_INDEX = 0;
 const GENERAL = 'general';
+const GENERAL_LOCATIONTEXT = 'general.locationText';
 const DAILY = 'daily';
 const HOURLY = 'hourly';
-const LOCATION = 'location';
+const OTHER = 'other';
 
 
-const cityIndexType = function(index,type){
-	var parmasReady = arguments.length ===2;
-	if (parmasReady){
-		return `citys[${index}].${type}`
-	}else{
-		throw new Error('参数有误')
-	}
-}
+
 // 更新现在天气
 const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
-  let citys = cityIndexType(index,GENERAL); // 天气概况;
-  let cityListIndex = index==0?"cityList.geo":"cityList.custMake["+index+"]."
+  let citysGeneral = util.cityIndexType(index,GENERAL); // 天气概况;
+  let citysOther = util.cityIndexType(index,OTHER); // 天气概况;
   return api.heWeatherApi.getNowWeather(params).then(res=>{
     let data = res.HeWeather6[0];
-    let {now:{tmp,cond_txt,cond_code},basic:{location,lat,lon},update:{loc}} = data;
+    let {now:{tmp,cond_txt,cond_code,fl,wind_dir,wind_spd,hum,pcpn,pres,vis},basic:{location,lat,lon},update:{loc},} = data;
     self.setData({
       // 设置天气概况
-      [citys]: {
+      [citysGeneral]: {
         tmp: tmp, // 温度
         locationText: location, // 城市定位
         cond_txt: cond_txt, // 天气状况
-        cond_code: cond_code, // 图标code
+        cond_code: util.iconNumToString(cond_code), // 图标code
 				update_time: util.formatWeatherTime(loc), // 当地时间(最后更新时间)
 				coordinate:{
-					longitude:lon,
-					latitude: lat
+					latitude: (params&&params.latitude)?params.latitude:lat,
+					longitude:(params&&params.longitude)?params.longitude:lon
 				} // 坐标;
-			},
+      },
+      [citysOther]:[{
+        title:'体感温度',
+        msg: `${fl}℃`
+      },{
+        title:'风',
+        msg: `${wind_dir} ${(wind_spd*1000/3600).toFixed(2)}米/秒`
+      },{
+        title:'相对湿度',
+        msg: `${hum}%`
+      },{
+        title:'降水量',
+        msg: `${pcpn}毫米`
+      },{
+        title:'气压	',
+        msg: `${pres}百帕`
+      },{
+        title:'能见度	',
+        msg: `${vis}米`
+      }]
     })
     /**
      * [promise.then](http://es6.ruanyifeng.com/#docs/function)
@@ -47,25 +60,29 @@ const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
      *  res(object)
      * })
      */
-    return location
+    // 因为有可能这个人不没参数, 因此用默认的;
+    return {
+      latitude: (params&&params.latitude)?params.latitude:lat,
+      longitude:(params&&params.longitude)?params.longitude:lon
+    }
   })
 }
 // 逐日三小时天气
 const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
   return api.heWeatherApi.getHourlyWeather(params).then((res) => {
-		var citys = cityIndexType(index,HOURLY);
+		var citysHourly = util.cityIndexType(index,HOURLY);
     let arr = res.HeWeather6[0].hourly;
     let filterArr = arr.map((currentValue)=>{
       return {
         time:util.formatWeatherTime(currentValue.time), // 时间
-        cond_code: currentValue.cond_code, // 天气状况代
+        cond_code: util.iconNumToString(currentValue.cond_code), // 天气状况代
         cond_txt: currentValue.cond_txt, // 天气状况代(中文)
         tmp: currentValue.tmp, // 温度
-        rainpop: currentValue.pop>0?`${currentValue.pop}%`:'' // 降水概率
+        rainpop: ((currentValue.cond_code>=300 && currentValue.cond_code<= 406) && currentValue.pop>20)?`${Math.round(currentValue.pop/10)*10}%`:'' // 降水概率
       }
     })
     self.setData({
-      [citys]: filterArr
+      [citysHourly]: filterArr
 		});
     return
   })
@@ -73,7 +90,7 @@ const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
 // 逐日天气
 const updateDailyWeather =(self, params,index = DEFAULT_INDEX)=>{
   return api.heWeatherApi.getDailyWeather(params).then((res) => {
-		var citys = cityIndexType(index,DAILY);
+		var citysDaily = util.cityIndexType(index,DAILY);
 		let arr = res.HeWeather6[0].daily_forecast;
     let filterArr = arr.map(function (cur) {
       return {
@@ -84,8 +101,8 @@ const updateDailyWeather =(self, params,index = DEFAULT_INDEX)=>{
         // ms:cur.ms, //月落时间  //14:59
         tmp_max:cur.tmp_max, //最高温度  //4
         tmp_min:cur.tmp_min, //最低温度  //-5
-        cond_code_d:cur.cond_code_d, //白天天气状况代码  //100
-        cond_code_n:cur.cond_code_n, //晚间天气状况代码  //100
+        cond_code_d:util.iconNumToString(cur.cond_code_d), //白天天气状况代码  //100
+        cond_code_n:util.iconNumToString(cur.cond_code_n), //晚间天气状况代码  //100
         cond_txt_d:cur.cond_txt_d, //白天天气状况描述  //晴
         cond_txt_n:cur.cond_txt_n, //晚间天气状况描述  //晴
         // wind_deg:cur.wind_deg, //风向360角度  //310
@@ -94,14 +111,14 @@ const updateDailyWeather =(self, params,index = DEFAULT_INDEX)=>{
         // wind_spd:cur.wind_spd, //风速，公里/小时  //14
         // hum:cur.hum, //相对湿度  //37
         // pcpn:cur.pcpn, //降水量  //0
-        rainpop:cur.pop>0?`${cur.pop}%`:'', //降水概率  //0
+        rainpop:((cur.cond_code_d>=300 && cur.cond_code_d<= 406) && cur.pop>20)?`${Math.round(cur.pop/10)*10}%`:'', //降水概率  //0
         // pres:cur.pres, //大气压强  //1018
         // uv_index:cur.uv_index, //紫外线强度指数  //3
         // vis:cur.vis, //能见度，单位：公里  //10
       }
     })
     self.setData({
-      [citys]: filterArr
+      [citysDaily]: filterArr
 		});
 		return
   })
@@ -109,10 +126,11 @@ const updateDailyWeather =(self, params,index = DEFAULT_INDEX)=>{
 // 逆坐标(只会存在定位的时候转换逆坐标)
 const toReverseGeocoder = (self,params,index = DEFAULT_INDEX) =>{
   return api.qqmapApi.reverseGeocoder(params).then((res) => {
-		let citys = cityIndexType(index,LOCATION);
+    let citysLocaTionText = util.cityIndexType(index,GENERAL_LOCATIONTEXT);
     self.setData({
-      [citys]: res.address
+      [citysLocaTionText]: res.address
     })
+    console.log(res.address)
   })
 }
 

@@ -64,13 +64,25 @@ function requestPromisefy(options = {}) {
 
 // -------------------和风天气服务 api---------------------------------
 
+
+// 天气参数obj转为string
+const heWeatherCoordinatePram = (opt)=>{
+  // 非空判判定
+  if(!opt && JSON.stringify(opt) !== '{}'){
+    return {}
+  }else{
+    return{
+        location: `${opt.latitude},${opt.longitude}`
+      }
+  }
+}
 // 实时天气
 heWeatherApi.getNowWeather = (option)=>{
   return requestPromisefy({
     url: config.nowWeatherUrl,
     data: {
       ...weatherDefaultParams,
-      ...option
+      ...heWeatherCoordinatePram(option)
     },
   })
 }
@@ -81,7 +93,7 @@ heWeatherApi.getHourlyWeather = (option)=>{
     url: config.hourlyWeatherUrl,
     data: {
       ...weatherDefaultParams,
-      ...option,
+      ...heWeatherCoordinatePram(option)
     },
   })
 }
@@ -92,15 +104,19 @@ heWeatherApi.getDailyWeather = (option)=>{
     url: config.dailyWeatherUrl,
     data: {
       ...weatherDefaultParams,
-      ...option
+      ...heWeatherCoordinatePram(option)
     },
   })
 }
 
 // 获取生活方式;
 heWeatherApi.getLifestyle = (option) =>{
-  return weatherPromiseRequest({
-    url: config.lifestyleUrl
+  return requestPromisefy({
+    url: config.lifestyleUrl,
+    data: {
+      ...weatherDefaultParams,
+      ...heWeatherCoordinatePram(option)
+    },
   })
 }
 
@@ -109,31 +125,33 @@ heWeatherApi.getLifestyle = (option) =>{
 
 // 获取定位坐标
 wxApi.getLocation = (self) => {
-  const cityGeo = 'cityList.geo';
+  const citys = util.cityIndexType(0,'general.coordinate'); // 必定是第一个;
   return new Promise((resolve)=>{
     wx.getLocation({
       type: 'gcj02',
       // altitude: true,
       success (res) {
-        let latestGeo = {
+        let latestCoordinate = {
           latitude: res.latitude,
           longitude: res.longitude
         }
+        console.log(latestCoordinate)
         self.setData({
-          [cityGeo]: latestGeo
+          [citys]: latestCoordinate
         })
+        // {latitude: 23.15792, longitude: 113.27324}
         // 存最后一次定位数据;
         wx.setStorage({
-          key: 'LATEST_LOCATE',
-          data: latestGeo //打印城市数据
+          key: 'LATEST_COORDINATE',
+          data: latestCoordinate //打印城市数据
         })
         // 定位已经授权
-        wx.setStorageSync('userLocation',true);
+        wx.setStorageSync('userLocationAllow',true);
         resolve(true)
       },
       fail (err) {
         // 定位未被授权
-        wx.setStorageSync('userLocation',false)
+        wx.setStorageSync('userLocationAllow',false)
         self.setData({
           renderOpenSettingBtn:true
         })

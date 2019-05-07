@@ -15,23 +15,19 @@ Page({
 		// 渲染权限按钮
     renderOpenSettingBtn: false,
     // 当下天气信息 [{对应城市},{}]
-		grettings: "",
+		grettings: "定位中...",
 		// 时间
 		time:{
 			weekday: util.WeekDay[new Date().getDay()]
 		},
-    cityList: {
-      geo: {}, // 定位
-      custMake: [] // 自定义城市
-		},
 		// 页面渲染信息
 		citys:[{
-			cityMsg:{}, // 城市信息
 			general:{}, // 概况
 			hourly:[],// 逐3小时
-			daily:[], // 逐日
+      daily:[], // 逐日
+      other:[],
 		}],
-		latestLocated: util.locationParamsToString(wx.getStorageSync('LATEST_LOCATE')), // 用户最后一次定位;
+		latestCoordinate: wx.getStorageSync('LATEST_COORDINATE'), // Object
     userCityList: [], //
     presentGeneralWeather: [], // [{城市1(必须定位);城市2;城市3}] 当前城市列表;
   },
@@ -71,7 +67,7 @@ Page({
   },
   getUserLocation(){
     // 取授权信息
-    const USERLOCATION = wx.getStorageSync('userLocation');
+    const USERLOCATION = wx.getStorageSync('userLocationAllow');
     if(!USERLOCATION && typeof(USERLOCATION) !="boolean"){
       // undefined 默认都是
       // 第一次问也不知道是否被授权了 因为授权的操作不在这个getUserLocation上;
@@ -97,20 +93,17 @@ Page({
   // 初始化函数
   async init() {
     let self = this;
-    // let latestLocated = wx.getStorageSync('LATEST_LOCATE');
-    // if(latestLocated){
-    //   latestLocated = JSON.stringify(latestLocated) == "{}" ||latestLocated ==""?undefined:util.locationParamsToString(latestLocated);
-    // }
-		console.log(self.latestLocated);
     await api.wxApi.showLoading();
     // 初始化天气
-    const latestGeo = await setData.updateNowWeather(self, self.latestLocated);
+    const initCoordinate = await setData.updateNowWeather(self, self.data.latestCoordinate);
+    console.log(self.data.latestCoordinate);
+    console.log(initCoordinate);
     // 逆坐标
-    await setData.toReverseGeocoder(self, latestGeo);
+    await setData.toReverseGeocoder(self, initCoordinate);
     // 获取逐步三小时天气
-    await setData.updateHourlyWeather(self, self.latestLocated);
+    await setData.updateHourlyWeather(self, self.data.latestCoordinate);
     // 获取逐日天气
-    await setData.updateDailyWeather(self, self.latestLocated);
+    await setData.updateDailyWeather(self, self.data.latestCoordinate);
 
     await api.wxApi.hideLoading();
   },
@@ -146,25 +139,22 @@ Page({
     await api.wxApi.hideLoading();
   },
   // 点击title独立城市
-  async updateItemCityWeahter(lock) {
+  async updateItemCityWeahter(lock,idx=0) {
     // 点击索引
     let self = this;
     // let clickCityIndex = e.target.dataset.cityindex;
-    // 天气入参
-    let stringGeo = util.locationParamsToString(self.data.cityList.geo);
-    console.log(stringGeo)
-
+    let coordinate = self.data.citys[idx].general.coordinate
     if (!lock) {
       return Promise.resolve();
     }
 
-    const params = await setData.updateNowWeather(self, stringGeo);
+    const params = await setData.updateNowWeather(self, coordinate);
     // 逆坐标
     await setData.toReverseGeocoder(self, params);
     // 更新小时天气
-    await setData.updateHourlyWeather(self, stringGeo);
+    await setData.updateHourlyWeather(self, coordinate);
     // 获取逐日天气
-    await setData.updateDailyWeather(self, stringGeo);
+    await setData.updateDailyWeather(self, coordinate);
   },
 
   // 处理定位;
