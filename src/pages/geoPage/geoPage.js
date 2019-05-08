@@ -10,11 +10,12 @@ Page({
    */
   data: {
     cityList: [], // 城市列表
-    letterSlideBar: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z'],
-    searchResultSugList: [],
-    switchSearchResult: false,
+    letterSlideBar: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z'], // 基础字母
+		searched: false, // 是否进行过搜索
+    searchResultSugList: [], // 搜索结果列表
+    switchSearchResult: false, // 是否显示搜索显示
     barIndex: 0, // 侧边栏索引值;
-    focusSearchInput: false // 搜索输入框焦点
+		focusSearchInput: false, // 搜索输入框焦点
   },
 
   /**
@@ -79,39 +80,72 @@ Page({
 
   },
   catchGeo: function(e){
+		console.log('click catchCitys');
     // 触摸定位位置
-    wx.navigateBack({
-      url: '../index/index?id=10086&hash=fromGeoPage'
-    })
+    // wx.navigateBack({
+    //   url: '../index/index?id=10086&hash=fromGeoPage'
+    // })
   },
   // 输入框(防抖功能) 并且 增加搜索;
   searchInputEvent: util.debounce(function(event){
+		console.log(1234);
     var self = this;
     let inputVal = event.detail.value;  // arguments[0] = event;
-    
     geoSetData.setSearchResultSugList(self,inputVal);
-
-  },1200),
-  // 字母关联
+  },333),
+  // 字母滚动关联
   letterScroll: util.throttle(function () {
     // [NodesRef.boundingClientRect](https://developers.weixin.qq.com/miniprogram/dev/api/NodesRef.boundingClientRect.html?search-key=boundingClientRect)
     // 使用说明
-    console.log("scroll");
-
-    wx.createSelectorQuery().selectAll('.city-list-letter')  // 所有字母;
-      .boundingClientRect((rects) => {
-        // 添加节点的布局位置的查询请求
-        let index = rects.findIndex((item) => {
-          return item.top >= 0
-        })
+    wx.createSelectorQuery().selectAll('.city-list-letter').boundingClientRect((rects) => {
+				// 添加节点的布局位置的查询请求
+				// [Array​.prototype​.find​Index()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
+				let index = rects.findIndex((item) => {
+          return item.top >= 40;
+				})
         if (index === -1) {
-          index = rects.length
-        }
-        this.setIndex(index - 1)
-      }).exec()
+          index = 0;
+				}
+        this.setIndex(index-1)
+			}).exec()
 
-  }, 20),
-
+	}, 125),
+	// 输入框对焦
+	focusInputEvent:function(event){
+		// console.log(event.detail);
+		this.setData({
+			focusSearchInput: true
+		})
+	},
+	// 输入框失焦
+	blurSearchInput:function(){
+		this.setData({
+			focusSearchInput: false,
+			switchSearchResult: false
+		})
+	},
+	// 点击模糊搜索结果
+	searchResultTap: function (e) {
+		var clickItem = e.currentTarget.dataset.item;
+		console.log(clickItem);
+	},
+	// 具体城市点击
+	tapCityItem: function (e) {
+		var clickItem = e.currentTarget.dataset.item;
+		console.log(clickItem);
+		// this.addUserCityCoordinate('1234')
+	},
+	// 添加用户自定义城市
+	addUserCityCoordinate: function (coordinate) {
+		wx.navigateBack({
+			url: `../index/index?coordinate=${coordinate}`
+		})
+		// 点击城市节点后
+		// 先存在 storage里;
+		// 页面返回	调用 API wx.navigateBack 带参数 存到 index页;
+		// index 页读取到 新得坐标列表
+		// 重新请求数据, 渲染
+	},
   // 设置字母索引号
   setIndex (index) {
     if (this.data.barIndex === index) {

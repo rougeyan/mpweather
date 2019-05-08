@@ -7,7 +7,7 @@ const OPEN = true;
 const CLOSE = false;
 
 const setSearchResultSugList = (self,params)=>{
-  
+
   // 空字符串关闭城市列表;
   if(!params){
     self.setData({
@@ -18,24 +18,27 @@ const setSearchResultSugList = (self,params)=>{
 
   return new Promise((resolve)=>{
     api.qqmapApi.getSuggestion(params).then(res=>{
-      var sug = [];
-      for (var i = 0; i < res.data.length; i++) {
-        sug.push({ // 获取返回结果，放到sug数组中
-          title: res.data[i].title,
-          id: res.data[i].id,
-          addr: res.data[i].address,
-          city: res.data[i].city,
-          district: res.data[i].district,
-          latitude: res.data[i].location.lat,
-          longitude: res.data[i].location.lng
-        });
-      }
+			if(res.data.length ===0){
 
+			}
+			let sug = res.data.map(cur =>{
+				return {
+					title: cur.title,
+          id: cur.id,
+          addr: cur.address,
+          city: cur.city,
+					district: cur.district,
+					coordinate :{
+						latitude: cur.location.lat,
+						longitude: cur.location.lng
+					}
+				}
+			})
       self.setData({
         searchResultSugList: sug,
-        switchSearchResult: OPEN // 开发开关;
+				switchSearchResult: OPEN, // pop开关;
+				searched: true
       })
-      console.log(self.data.searchResultSugList);
     })
   })
 }

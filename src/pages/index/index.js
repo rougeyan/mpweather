@@ -62,7 +62,7 @@ Page({
     // 然后Dom 一句操作完的数据渲染;
     // 也就是说 DOM 的某些条件渲染{{condition}} condition 的判定逻辑可以放在onLoad 里面执行去setData
     // 类似vue的create 生命和周期;
-    // this.identify()
+		// this.identify()
     this.getUserLocation();
   },
   getUserLocation(){

@@ -4,24 +4,27 @@
   <!-- 搜索板块 -->
   <view class="search-block">
     <!-- 遮罩 -->
-    <view class="search-mask {{focusSearchInput?'active':''}}"></view>
+    <view class="search-mask {{focusSearchInput?'active':''}}" bind:tap="blurSearchInput"></view>
     <!-- 搜索框 -->
     <view class="search-bar">
       <view class="search-input-wrap">
         <text class="iconfont icon-search"></text>
-        <input class="search-input" placeholder="搜索城市"  bindinput="searchInputEvent"/>
+        <input class="search-input" placeholder="搜索具体位置"  bindinput="searchInputEvent" bindfocus="focusInputEvent"/>
       </view>
       <view class="search-btn {{focusSearchInput?'active':''}}">搜索</view>
     </view>
-    
+
     <!-- 搜索结果列表 -->
     <block>
-      <view wx:if="{{switchSearchResult && searchResultSugList.length>0}}" class="search-result-list">
-        <view wx:for="{{searchResultSugList}}" wx:key="{{unique}}" class="search-result-item">
-          <text class="place-title">{{item.title}}</text>
-          <text class="place-address">{{item.addr}}</text>
+      <scroll-view wx:if="{{switchSearchResult && searchResultSugList.length>0}}" class="search-result-list" scroll-y="{{!switchSearchResult}}">
+        <view wx:for="{{searchResultSugList}}" wx:key="{{unique}}" class="search-result-item" data-item="{{item}}" bind:tap="searchResultTap">
+          <text class="title">{{item.title}}</text>
+          <text class="area">{{item.city+'\t'+ item.district}}</text>
+          <text class="address">{{item.addr}}</text>
         </view>
-      </view>
+			</scroll-view>
+			<view wx:elif="{{searchResultSugList.length==0}}" class="search-no-result-list {{searched?'active':''}}">搜索不到结果,请更换关键词试试
+			</view>
     </block>
   </view>
 
@@ -35,7 +38,7 @@
     <block wx:for="{{cityList}}" wx:key="{{index}}">
      <!-- 字母索引条 -->
       <block wx:if="{{index === 0 || (cityList[index - 1].initial[0] !== item.initial[0])}}">
-        <view catchTap="{{catchGeo}}" class="city-list-letter" id="{{'title_' + item.initial[0]}}">{{item.initial[0]}}</view>
+        <view catch:tap="catchGeo" class="city-list-letter" id="{{'title_' + item.initial[0]}}">{{item.initial[0]}}</view>
       </block>
       <view bindtap="tapCityItem" data-item="{{item}}" class="city-list-item">{{item.fullname}}</view>
     </block>
