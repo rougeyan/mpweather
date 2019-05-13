@@ -17,7 +17,7 @@
     <!-- 搜索结果列表 -->
     <block>
       <scroll-view wx:if="{{switchSearchResult && searchResultSugList.length>0}}" class="search-result-list" scroll-y="{{!switchSearchResult}}">
-        <view wx:for="{{searchResultSugList}}" wx:key="{{unique}}" class="search-result-item" data-item="{{item}}" bind:tap="searchResultTap">
+        <view wx:for="{{searchResultSugList}}" wx:key="{{unique}}" class="search-result-item" data-item="{{item}}" bind:tap="tapCityItem">
           <text class="title">{{item.title}}</text>
           <text class="area">{{item.city+'\t'+ item.district}}</text>
           <text class="address">{{item.addr}}</text>

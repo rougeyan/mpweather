@@ -14,6 +14,7 @@
 			<!-- 实时天气概况 -->
 			<view class="general">
 				<view class="city-general">
+					<!-- 只有第一个才允许有定位功能 -->
 					<view wx:if="{{index == 0}}">
 						<block>
 							<!-- 已开启权限 -->
@@ -24,14 +25,15 @@
 							</view>
 							<!-- 未开启权限-打开权限页 -->
 							<button wx:else class="remove-btn-default-style address pink " open-type="openSetting"
-								bindopensetting="handleLocationSetting">
+								bindopensetting="openSetting">
 								<text class='iconfont icon-dingwei'></text>
 								<text>{{city.general.locationText}}</text>
 							</button>
 						</block>
 					</view>
+					<!-- 非第一个普通功能 -->
 					<view wx:elif="{{index !== 0}}">
-						<view bindtap="updateItemCityWeahter" data-cityindex="{{index}}">
+						<view bindtap="updateLocateWeahter" data-cityindex="{{index}}">
 							<text class='iconfont icon-dingwei'></text>
 							<text>{{city.general.locationText}}</text>
 						</view>
@@ -46,7 +48,7 @@
 					</view>
 					<view class="update-time">{{"最后更新于"+city.general.update_time}}</view>
 				</view>
-				<view class="add-user-citys" catchtap="bindViewTap">添加更多城市</view>
+				<view class="add-user-citys" catchtap="toCityListPage">添加更多城市</view>
 			</view>
 			<!-- 实时天气详细信息 -->
 			<scroll-view class="detail-wrap" scroll-y="{{true}}">

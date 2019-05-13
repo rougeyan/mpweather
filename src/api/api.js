@@ -135,15 +135,18 @@ wxApi.getLocation = (self) => {
           latitude: res.latitude,
           longitude: res.longitude
         }
-        console.log(latestCoordinate)
+        console.log(res)
         self.setData({
           [citys]: latestCoordinate
         })
         // {latitude: 23.15792, longitude: 113.27324}
-        // 存最后一次定位数据;
+				// 存最后一次定位数据;
         wx.setStorage({
           key: 'LATEST_COORDINATE',
-          data: latestCoordinate //打印城市数据
+          data: {
+						fullname: undefined,
+						location:latestCoordinate
+					} //打印城市数据
         })
         // 定位已经授权
         wx.setStorageSync('userLocationAllow',true);
@@ -186,9 +189,42 @@ wxApi.showLoading = (text)=>{
   })
 }
 
+// 储存用户的
+wxApi.saveUserCityIntoStorage = (citydata)=>{
+	let {fullname,location,addr,coordinate}= citydata;
+	let obj = {
+		fullname: fullname || addr,
+		location:{
+			latitude:location?location.lat:undefined || coordinate?coordinate.latitude:undefined,
+			longitude:location?location.lng:undefined || coordinate?coordinate.longitude:undefined
+		}
+	}
+	let storageCitylist = wx.getStorageSync('USERCITYS');
+
+	// 存储用户的城市;
+	if(storageCitylist instanceof Array){
+		// 这里需要判定是否重复添加;
+		storageCitylist.push(obj)
+	}else{
+		storageCitylist = [];
+		storageCitylist.push(obj)
+	}
+	// 存储城市列表
+	wx.setStorage({
+		key:'USERCITYS',
+		data: storageCitylist
+	})
+	// setTimeout(() => {
+	// 	console.log(wx.getStorageSync('USERCITYS'))
+	// }, 1000);
+	wx.navigateBack({
+		url: `../index/index`
+	})
+}
+
 // -------------------腾讯地图服务 api---------------------------------
 
-// 实例化qqmap 
+// 实例化qqmap
 var qqmapsdk;
 // 实例化API核心类
 qqmapsdk = new QQMapWX({
@@ -220,7 +256,7 @@ qqmapApi.getCityList = ()=>{
   if(CITY_LIST){
     return Promise.resolve(CITY_LIST)
   }
-  return new Promise((resolve, reject) => { 
+  return new Promise((resolve, reject) => {
     qqmapsdk.getCityList({
       success: function (res) {
         let citydata = util.sortCityList(res.result[1] || [])
@@ -243,7 +279,7 @@ qqmapApi.getCityList = ()=>{
 // 搜索建议
 qqmapApi.getSuggestion = (value)=>{
   value = !value?"广州":value
-  return new Promise((resolve, reject) => { 
+  return new Promise((resolve, reject) => {
     //调用关键词提示接口
     qqmapsdk.getSuggestion({
       //获取输入框值并设置keyword参数
@@ -257,7 +293,7 @@ qqmapApi.getSuggestion = (value)=>{
       complete: function(res) {
       }
     });
-  }) 
+  })
 }
 
 

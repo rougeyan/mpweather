@@ -126,20 +126,20 @@ Page({
 	},
 	// 点击模糊搜索结果
 	searchResultTap: function (e) {
-		var clickItem = e.currentTarget.dataset.item;
+		var option = e.currentTarget.dataset.item;
 		console.log(clickItem);
+		// this.pushSelectCityIntoStorage(option)
 	},
 	// 具体城市点击
 	tapCityItem: function (e) {
-		var clickItem = e.currentTarget.dataset.item;
-		console.log(clickItem);
-		// this.addUserCityCoordinate('1234')
+		var option = e.currentTarget.dataset.item;
+		api.wxApi.saveUserCityIntoStorage(option)
 	},
+
+
 	// 添加用户自定义城市
 	addUserCityCoordinate: function (coordinate) {
-		wx.navigateBack({
-			url: `../index/index?coordinate=${coordinate}`
-		})
+
 		// 点击城市节点后
 		// 先存在 storage里;
 		// 页面返回	调用 API wx.navigateBack 带参数 存到 index页;
