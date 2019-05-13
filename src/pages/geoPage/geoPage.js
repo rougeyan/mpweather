@@ -22,7 +22,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+		console.log(options)
   },
 
   /**
@@ -145,6 +145,8 @@ Page({
 		// 页面返回	调用 API wx.navigateBack 带参数 存到 index页;
 		// index 页读取到 新得坐标列表
 		// 重新请求数据, 渲染
+
+
 	},
   // 设置字母索引号
   setIndex (index) {
