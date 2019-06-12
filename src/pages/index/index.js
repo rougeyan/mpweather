@@ -21,14 +21,8 @@ Page({
 			weekday: util.WeekDay[new Date().getDay()]
 		},
 		// 页面渲染信息
-		citys:[{
-			general:{}, // 概况
-			hourly:[],// 逐3小时
-      daily:[], // 逐日
-      other:[], // 其他信息(如湿度,降水量等)
-		}],
-		latestCoordinate: wx.getStorageSync('LATEST_COORDINATE'), // Object
-    userCityList: [], // 用户的城市列表
+		citys:[],
+    userCityList: wx.getStorageSync('USER_CITYS'), // 用户的城市列表(上层数据)
   },
   onLoad: function () {
 		var self = this;
@@ -59,27 +53,66 @@ Page({
       })
     }
     // onLoad 的操作一般都是对渲染数据进行操作;
-    // 然后Dom 一句操作完的数据渲染;
+    // 此时未有DOM 依据操作完的数据渲染;
     // 也就是说 DOM 的某些条件渲染wx:if="{{condition}}"" condition 的判定逻辑可以放在onLoad 里面执行去setData
-    // 类似vue的create的生命周期;
+		// 类似vue的create的生命周期;
+
+		// 判定定位权限 => set Render 内容;
 		this.getUserLocationAllow();
-		// 判定是否有
-		// api.wxApi.saveUserCityIntoStorage({
-		// 	fullname: !latestCoordinate?'上次定位':'北京',
-		// 	location: latestCoordinate
-		// })
-  },
-  // 页面显示/切入前台时触发。
+
+		// 初始化USER_CITYS;
+		this.initUserCity();
+	},
+	// 取定位授权
+  getUserLocationAllow(){
+    const USER_LOCATION_ALLOW = wx.getStorageSync('userLocationAllow');
+    if(!USER_LOCATION_ALLOW && typeof(USER_LOCATION_ALLOW) !="boolean"){
+      // undefined 默认都是
+      // 第一次问也不知道是否被授权了 因为授权的操作不在这个getUserLocationAllow上;
+      this.setData({
+        renderOpenSettingBtn: false
+      })
+    }else{
+      // boolen状态下取反;
+      this.setData({
+        renderOpenSettingBtn: !USER_LOCATION_ALLOW
+      })
+    }
+	},
+
+	// 第一次初始化USER_CITYS
+	initUserCity(){
+		if(!this.data.userCityList){
+			const INIT_USERCITYS = [{
+				fullname : "北京市东城区东长安街14号",
+				location : {latitude: 39.90498734, longitude: 116.4052887}
+			}]
+			wx.setStorageSync('USER_CITYS',INIT_USERCITYS);
+			this.syncDataUserCitys();
+		}
+	},
+
+	// ------------ onLoad前函数 ------------
+
+	// 页面显示/切入前台时触发。
   onShow() {
+		var self = this;
     // 格式化问候语;
     this.setData({
       grettings: util.getGreetings()
-    })
-    // 初始化;
-    this.init()
+		})
+		//  重新获取userCitysList 因为data 在onshow的情况下不会再被修改;
+		this.setData({
+			userCityList:wx.getStorageSync('USER_CITYS')
+		},function(){
+			//  同步citys和 userCityList
+			self.syncDataUserCitys();
+			// 初始化;
+			self.init()
+		})
 	},
 	getUserInfo: function (e) {
-    console.log(e);
+    // console.log(e);
     // 设置全局globalDatauserInfo;
     app.globalData.userInfo = e.detail.userInfo
     // page设置setData属性;
@@ -90,74 +123,78 @@ Page({
   },
   // 初始化
   init() {
-    this.getCityItemWeather();
+		this.getCityItemWeather();
 	},
-	// 取定位授权
-  getUserLocationAllow(){
-    const USERLOCATIONALLOW = wx.getStorageSync('userLocationAllow');
-    if(!USERLOCATIONALLOW && typeof(USERLOCATIONALLOW) !="boolean"){
-      // undefined 默认都是
-      // 第一次问也不知道是否被授权了 因为授权的操作不在这个getUserLocationAllow上;
-      this.setData({
-        renderOpenSettingBtn: false
-      })
-    }else{
-      // boolen状态下取反;
-      this.setData({
-        renderOpenSettingBtn: !USERLOCATIONALLOW
-      })
-    }
-	},
-	// 获取单个城市的所有天气内容default(0)
-	async getCityItemWeather(index){
+	// 获取单个城市的所有天气内容
+	async getCityItemWeather(index=0){
 		let self = this;
-    await api.wxApi.showLoading();
-    // 初始化天气
-    const initCoordinate = await setData.updateNowWeather(self, self.data.latestCoordinate,index);
-		// 获取逐步三小时天气 和获取逐日天气(这两个请求可以并行;)
-		await Promise.all([
-			setData.toReverseGeocoder(self, initCoordinate,index),
-			setData.updateHourlyWeather(self, self.data.latestCoordinate,index),
-			setData.updateDailyWeather(self, self.data.latestCoordinate,index)]);
+		// 初始化天气
+		await api.wxApi.showLoading();
 
-    await api.wxApi.hideLoading();
+		// const initCoordinate = await setData.updateNowWeather(self, self.data.latestCoordinate,index);
+
+		// 获取即时天气,逐三小时天气 和 逐日天气
+		await Promise.all([
+			setData.updateNowWeather(self, self.data.citys[index]['general'],index),
+			setData.updateHourlyWeather(self, self.data.citys[index]['general'],index),
+			setData.updateDailyWeather(self, self.data.citys[index]['general'],index)]);
+		await api.wxApi.hideLoading();
 	},
   // 导航至添加更多城市
   toCityListPage: function () {
     // 可以设置id;以及hash值;
     wx.navigateTo({
-      url: '../geoPage/geoPage?id=10086&hash=fromFirstPage'
+      url: '../cityList/cityList?id=10086&hash=fromFirstPage'
     })
   },
   // 获取用户定位;
   async geoLocation() {
     let self = this;
     const geoTips = "定位中..";
-    await api.wxApi.showLoading(geoTips);
 
-    const lock = await api.wxApi.getLocation(self);
+		await api.wxApi.showLoading(geoTips);
 
-    await this.updateLocateWeahter(lock);
+    await api.wxApi.getLocation(self);
 
-    await api.wxApi.hideLoading();
-  },
-  // 更新定位城市信息
-  async updateLocateWeahter(lock,idx=0) {
-    // 点击索引
-    let self = this;
-    // let clickCityIndex = e.target.dataset.cityindex;
-    let coordinate = self.data.citys[idx].general.coordinate
-    if (!lock) {
-      return Promise.resolve();
-    }
+    await self.getCityItemWeather(0);
 
-    const params = await setData.updateNowWeather(self, coordinate);
-    // 逆坐标
-    // 更新 3小时天气&& 逐日天气
-    await Promise.all([
-			setData.toReverseGeocoder(self, params),setData.updateHourlyWeather(self, coordinate),
-			setData.updateDailyWeather(self, coordinate)])
-  },
+		await api.wxApi.hideLoading();
+
+		console.log(this.data.citys)
+		console.log(this.data.userCityList)
+	},
+
+	// 同步用户城市到citys;
+	syncDataUserCitys: function(){
+		let self = this;
+		let citysData = this.data.citys;
+		let usercitysData = this.data.userCityList;
+		// 增加的情况
+		if(usercitysData && usercitysData.length>0 && usercitysData.length >= citysData.length){
+			usercitysData.map((cur,idx)=>{
+				let {fullname,location} = cur;
+				if(!citysData[idx]){
+					citysData.push({
+						general:{
+							locationText:fullname,
+							coordinate:location
+						},
+						hourly:[],
+						daily:[],
+						other:[]
+					})
+				}
+			})
+		}else if(usercitysData && usercitysData.length>0 && usercitysData.length <citysData.length){
+			// 删除的情况
+			citysData.lenth
+		}
+		this.setData({
+			citys:citysData
+		},function(){
+			console.log(self.data.citys)
+		})
+	},
   // 开放数据 - 打开设页
   openSetting: function () {
 		let self = this;
@@ -179,6 +216,7 @@ Page({
   },
   // 改变swiper的时候更新
   changeSwiper: function (e) {
-    // 这里优先取city-item请求的data;
+		let cur = e.detail.current;
+		this.getCityItemWeather(cur);
   },
 })

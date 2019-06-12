@@ -3,7 +3,9 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/geoPage/geoPage",
-    "pages/userCitysPage/userCitysPage"
+    "pages/userCitysPage/userCitysPage",
+    "pages/discovery/discovery",
+    "pages/cityList/cityList"
   ],
   "window": {
     "backgroundTextStyle": "light",

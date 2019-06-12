@@ -1,6 +1,7 @@
 const config = require('./apiconfig');
 const util = require('../utils/util');
 const QQMapWX = require('../lib/qqmap-wx-jssdk.min');
+const regeneratorRuntime = require('../lib/regenerator')
 
 // 和风天气 默认参数
 const weatherDefaultParams = {
@@ -123,10 +124,20 @@ heWeatherApi.getLifestyle = (option) =>{
 // -------------------微信原生 api---------------------------------
 
 
-// 获取定位坐标
-wxApi.getLocation = (self) => {
-  const citys = util.cityIndexType(0,'general.coordinate'); // 必定是第一个;
-  return new Promise((resolve)=>{
+// 获取定位坐标并且转换逆坐标;
+wxApi.getLocation = async (self) => {
+	// 获取定位坐标
+	const latestLocateCoor = await wxlocation(self);
+	// 逆坐标
+	const cityfullName = await qqmapApi.reverseGeocoder(latestLocateCoor);;
+	// setData
+	await successGetLocateName(latestLocateCoor,cityfullName,self);
+
+	return Promise.resolve()
+}
+
+function wxlocation(self){
+	return new Promise((resolve)=>{
     wx.getLocation({
       type: 'gcj02',
       // altitude: true,
@@ -134,23 +145,18 @@ wxApi.getLocation = (self) => {
         let latestCoordinate = {
           latitude: res.latitude,
           longitude: res.longitude
-        }
-        console.log(res)
+				}
+				// 更新Data
+				const citys = util.cityIndexType(0,'general.coordinate'); // 必定是第一个;
         self.setData({
           [citys]: latestCoordinate
-        })
+				})
         // {latitude: 23.15792, longitude: 113.27324}
-				// 存最后一次定位数据;
-        wx.setStorage({
-          key: 'LATEST_COORDINATE',
-          data: {
-						fullname: undefined,
-						location:latestCoordinate
-					} //打印城市数据
-        })
-        // 定位已经授权
-        wx.setStorageSync('userLocationAllow',true);
-        resolve(true)
+				// 存最后一次定位数据到USER_CITYS;
+				// 同时 只有定位才进行逆坐标
+
+				// 设置 USER_CITYS
+        resolve(latestCoordinate)
       },
       fail (err) {
         // 定位未被授权
@@ -158,10 +164,38 @@ wxApi.getLocation = (self) => {
         self.setData({
           renderOpenSettingBtn:true
         })
-        resolve(false);
+        resolve();
       }
     })
   })
+
+}
+function successGetLocateName(coordinate,name,self){
+	return new Promise((resolve,reject)=>{
+		let uc = wx.getStorageSync('USER_CITYS')
+		if(uc && uc[0]){
+			uc[0].fullname = name;
+			uc[0].location = coordinate;
+		}else{
+			throw new Error("未初始化 USER_CITYS")
+		}
+		// 定位已经授权
+		wx.setStorageSync('userLocationAllow',true);
+
+		const locationText = util.cityIndexType(0,'general.locationText'); // 必定是第一个;
+        self.setData({
+          [locationText]: name
+				})
+		wx.setStorage({
+			key: 'USER_CITYS',
+			data: uc
+		})
+		resolve()
+	})
+}
+
+function textAwait(){
+	wx.getStorage('haha')
 }
 
 // 隐藏;
@@ -191,7 +225,7 @@ wxApi.showLoading = (text)=>{
 
 // 储存用户的
 wxApi.saveUserCityIntoStorage = (citydata)=>{
-	let {fullname,location,addr,coordinate}= citydata;
+	let {fullname,location,addr,coordinate} = citydata;
 	let obj = {
 		fullname: fullname || addr,
 		location:{
@@ -199,8 +233,7 @@ wxApi.saveUserCityIntoStorage = (citydata)=>{
 			longitude:location?location.lng:undefined || coordinate?coordinate.longitude:undefined
 		}
 	}
-	let storageCitylist = wx.getStorageSync('USERCITYS');
-
+	let storageCitylist = wx.getStorageSync('USER_CITYS');
 	// 存储用户的城市;
 	if(storageCitylist instanceof Array){
 		// 这里需要判定是否重复添加;
@@ -209,17 +242,20 @@ wxApi.saveUserCityIntoStorage = (citydata)=>{
 		storageCitylist = [];
 		storageCitylist.push(obj)
 	}
-	// 存储城市列表
+	// 存储用户城市列表
 	wx.setStorage({
-		key:'USERCITYS',
+		key:'USER_CITYS',
 		data: storageCitylist
 	})
-	// setTimeout(() => {
-	// 	console.log(wx.getStorageSync('USERCITYS'))
-	// }, 1000);
-	wx.navigateBack({
-		url: `../index/index`
-	})
+
+	console.log(wx.getStorageSync('USER_CITYS'));
+
+
+	setTimeout(() => {
+		wx.navigateBack({
+			url: `../index/index`
+		})
+	}, 0);
 }
 
 // -------------------腾讯地图服务 api---------------------------------
@@ -231,6 +267,7 @@ qqmapsdk = new QQMapWX({
   key: config.qqMapKey,
 });
 
+
 // 逆地址 坐标->描述
 qqmapApi.reverseGeocoder = (option) => {
   return new Promise((resolve, reject) => {
@@ -240,7 +277,7 @@ qqmapApi.reverseGeocoder = (option) => {
         longitude: option.longitude || option.lon
       },
       success (res) {
-        resolve(res.result)
+        resolve(res.result.address)
       },
       fail (err) {
         reject(err)

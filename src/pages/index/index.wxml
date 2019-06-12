@@ -9,7 +9,7 @@
 		<open-data type="userNickName" />
 		<text class="greetings">{{grettings}}</text>
 	</view>
-	<swiper class="city-swiper">
+	<swiper class="city-swiper" bindchange="changeSwiper">
 		<swiper-item class="city-swiper-item" wx:for="{{citys}}" wx:for-item="city" wx:key="unique">
 			<!-- 实时天气概况 -->
 			<view class="general">
@@ -48,7 +48,6 @@
 					</view>
 					<view class="update-time">{{"最后更新于"+city.general.update_time}}</view>
 				</view>
-				<view class="add-user-citys" catchtap="toCityListPage">添加更多城市</view>
 			</view>
 			<!-- 实时天气详细信息 -->
 			<scroll-view class="detail-wrap" scroll-y="{{true}}">
@@ -95,7 +94,7 @@
 	</swiper>
 	<view class="bottom-operation">
 				<view class="bottom-item aboutme">{{"about"+'\n'+"me"}}</view>
-				<view class="bottom-item">城市</view>
+				<view class="bottom-item" catchtap="toCityListPage">城市</view>
 				<!-- <text class="iconfont icon-sunny"></text>
 				<text class="iconfont icon-cloudy"></text>
 				<text class="iconfont icon-overcast"></text>

@@ -29,7 +29,6 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
 
   /**
@@ -49,14 +48,12 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
   },
 
   /**
@@ -79,9 +76,9 @@ Page({
   onShareAppMessage: function () {
 
   },
+	// 触摸定位位置
   catchGeo: function(e){
 		console.log('click catchCitys');
-    // 触摸定位位置
     // wx.navigateBack({
     //   url: '../index/index?id=10086&hash=fromGeoPage'
     // })

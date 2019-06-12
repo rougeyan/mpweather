@@ -17,20 +17,21 @@ const OTHER = 'other';
 const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
   let citysGeneral = util.cityIndexType(index,GENERAL); // 天气概况;
   let citysOther = util.cityIndexType(index,OTHER); // 天气概况;
-  return api.heWeatherApi.getNowWeather(params).then(res=>{
+
+	return api.heWeatherApi.getNowWeather(params.coordinate).then(res=>{
     let data = res.HeWeather6[0];
     let {now:{tmp,cond_txt,cond_code,fl,wind_dir,wind_spd,hum,pcpn,pres,vis},basic:{location,lat,lon},update:{loc},} = data;
     self.setData({
       // 设置天气概况
       [citysGeneral]: {
         tmp: tmp, // 温度
-        locationText: location, // 城市定位
+        locationText: params.locationText?params.locationText:location, // 城市定位
         cond_txt: cond_txt, // 天气状况
         cond_code: util.iconNumToString(cond_code), // 图标code
 				update_time: util.formatWeatherTime(loc), // 当地时间(最后更新时间)
 				coordinate:{
-					latitude: (params&&params.latitude)?params.latitude:lat,
-					longitude:(params&&params.longitude)?params.longitude:lon
+					latitude: (params.coordinate&&params.coordinate.latitude)?params.coordinate.latitude:lat,
+					longitude:(params.coordinate&&params.coordinate.longitude)?params.coordinate.longitude:lon
 				} // 坐标;
       },
       [citysOther]:[{
@@ -69,7 +70,7 @@ const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
 }
 // 逐日三小时天气
 const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
-  return api.heWeatherApi.getHourlyWeather(params).then((res) => {
+  return api.heWeatherApi.getHourlyWeather(params.coordinate).then((res) => {
 		var citysHourly = util.cityIndexType(index,HOURLY);
     let arr = res.HeWeather6[0].hourly;
     let filterArr = arr.map((currentValue)=>{
@@ -81,7 +82,6 @@ const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
         rainpop: ((currentValue.cond_code>=300 && currentValue.cond_code<= 406) && currentValue.pop>=20)?`${Math.round(currentValue.pop/10)*10}%`:'' // 降水概率
       }
     })
-    console.log(filterArr);
     self.setData({
       [citysHourly]: filterArr
 		});
@@ -90,7 +90,7 @@ const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
 }
 // 逐日天气
 const updateDailyWeather =(self, params,index = DEFAULT_INDEX)=>{
-  return api.heWeatherApi.getDailyWeather(params).then((res) => {
+  return api.heWeatherApi.getDailyWeather(params.coordinate).then((res) => {
 		var citysDaily = util.cityIndexType(index,DAILY);
 		let arr = res.HeWeather6[0].daily_forecast;
     let filterArr = arr.map(function (cur) {
