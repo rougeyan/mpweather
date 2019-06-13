@@ -65,6 +65,11 @@ Page({
 	// 删除左滑
 	touchStart:function(e){
 		if(e.currentTarget.dataset.index ===0){
+			wx.showToast({
+				title: '默认城市无法删除',
+				icon: 'none',
+				duration: 1500
+			})
 			return
 		}
 		let touch = e.touches[0];

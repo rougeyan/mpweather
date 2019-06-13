@@ -22,7 +22,7 @@ Page({
 		},
 		// 页面渲染信息
 		citys:[],
-    userCityList: wx.getStorageSync('USER_CITYS'), // 用户的城市列表(上层数据)
+    userCityList: wx.getStorageSync('USER_CITYS'), // 用户的城市列表 (上层数据)
   },
   onLoad: function () {
 		var self = this;
@@ -57,13 +57,13 @@ Page({
     // 也就是说 DOM 的某些条件渲染wx:if="{{condition}}"" condition 的判定逻辑可以放在onLoad 里面执行去setData
 		// 类似vue的create的生命周期;
 
-		// 判定定位权限 => set Render 内容;
+		// 判定定位权限
 		this.getUserLocationAllow();
 
 		// 初始化USER_CITYS;
 		this.initUserCity();
 	},
-	// 取定位授权
+	// 获取定位授权
   getUserLocationAllow(){
     const USER_LOCATION_ALLOW = wx.getStorageSync('userLocationAllow');
     if(!USER_LOCATION_ALLOW && typeof(USER_LOCATION_ALLOW) !="boolean"){

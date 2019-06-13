@@ -8,6 +8,7 @@ const formatTime = date => {
 
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
+
 const formatterTime = (date,fmt)=>{
 	date = new Date(date.replace(/-/g,"/"));
 	var o = {
@@ -111,6 +112,7 @@ const sortCityList = (data) => {
   return d
 }
 
+//  通过code 获取对应ICON;
 const iconNumToString =(code)=>{
   let strobj= {
     sunny: [100,900],
@@ -143,6 +145,7 @@ const iconNumToString =(code)=>{
   return `icon-${str}`
 }
 
+// 设置setData 项目;
 const cityIndexType = function(index,type){
 	var parmasReady = arguments.length ===2;
 	if (parmasReady){

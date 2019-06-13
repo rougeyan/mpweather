@@ -1,5 +1,9 @@
 <!--pages/cityList/cityList.wxml-->
 <view class="container">
+	<view class="manage-header">
+		<text class="managetitle">管理城市：</text>
+	<text class="managetips">右滑删除</text>
+	</view>
 	<view class="userCityList">
 		<view class="userCityItem" wx:for="{{userCityList}}" wx:for-index="idx" wx:key="{{unique}}" data-item="{{item}}" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" data-index="{{idx}}">
 			<view class="city-msg" style="width: calc(100% - {{item.right}}rpx);">
@@ -14,7 +18,6 @@
 			<view class="deleteCity" bindtap="deleteCity" data-index="{{idx}}">删除</view>
 		</view>
 	</view>
-
 	<view class="city-footer" bindtap="addCity">
 		<text class="text">添加城市</text>
 		<text class="iconfont icon-tianjia"></text>

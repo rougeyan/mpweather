@@ -1,5 +1,4 @@
 // 引入API 模块
-// const api = app.globalData.api
 const app = getApp();
 const api = app.globalData.api
 const util = app.globalData.util
@@ -12,7 +11,7 @@ const OTHER = 'other';
 
 
 
-// 更新现在天气
+// 即时天气
 const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
   let citysGeneral = util.cityIndexType(index,GENERAL); // 天气概况;
   let citysOther = util.cityIndexType(index,OTHER); // 天气概况;
@@ -67,7 +66,7 @@ const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
     }
   })
 }
-// 逐日三小时天气
+// 逐三小时天气
 const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
   return api.heWeatherApi.getHourlyWeather(params.coordinate).then((res) => {
 		var citysHourly = util.cityIndexType(index,HOURLY);

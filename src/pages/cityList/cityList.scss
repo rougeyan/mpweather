@@ -1,18 +1,33 @@
 .userCityList{
-
 }
 .userCityItem{
 	height: 100rpx;
 	position: relative;
-	border: 1rpx solid #333;
+	border-bottom: 1rpx solid #999;
+}
+.manage-header{
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin-bottom: 20rpx;
+	.managetitle{
+		font-size: 40rpx;
+		font-weight: 600;
+	}
+	.managetips{
+		color: #999;
+		font-size: 24rpx;
+	}
 }
 .city-msg{
+	box-sizing: border-box;
 	display: flex;
 	align-items: center;
 	position: relative;
 	z-index: 5;
 	height: 100%;
-	background: green;
+	background: #fff;
+	padding: 8rpx 16rpx;
 	width: 100%;
 	transition: all 0.3s linear;
 	.name{
