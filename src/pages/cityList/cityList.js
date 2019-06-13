@@ -48,10 +48,16 @@ Page({
 		return Promise.all(list.map((item,idx)=>{
 			return new Promise((resolve)=>{
 				api.heWeatherApi.getNowWeather(item.location).then(res=>{
-					let {tmp} = res.HeWeather6[0].now;
-					tmp?list[idx]["tmp"] = tmp:list[idx]["tmp"] = "/";
-					list[idx]["right"] = 0;
-					resolve(item)
+					if(res.HeWeather6[0].status=="ok"){
+						let {tmp} = res.HeWeather6[0].now;
+						tmp?list[idx]["tmp"] = tmp:list[idx]["tmp"] = "/";
+						list[idx]["right"] = 0;
+						resolve(item)
+					}else{
+						list[idx]["tmp"] = "/";
+						list[idx]["right"] = 0;
+						resolve(item)
+					}
 				})
 			})
 		}))

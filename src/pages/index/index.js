@@ -159,9 +159,6 @@ Page({
     await self.getCityItemWeather(0);
 
 		await api.wxApi.hideLoading();
-
-		console.log(this.data.citys)
-		console.log(this.data.userCityList)
 	},
 
 	// 同步用户城市到citys;
@@ -187,12 +184,10 @@ Page({
 			})
 		}else if(usercitysData && usercitysData.length>0 && usercitysData.length <citysData.length){
 			// 删除的情况
-			citysData.lenth
+			citysData.splice(citysData.length-1,citysData.length-usercitysData.length)
 		}
 		this.setData({
 			citys:citysData
-		},function(){
-			console.log(self.data.citys)
 		})
 	},
   // 开放数据 - 打开设页

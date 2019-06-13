@@ -2,6 +2,7 @@ const app = getApp();
 const api = app.globalData.api;
 const util = app.globalData.util;
 const geoSetData = require('./geoSetData');
+const regeneratorRuntime = require('../../lib/regenerator')
 // pages/geolocate.js
 Page({
 
@@ -78,14 +79,13 @@ Page({
   },
 	// 触摸定位位置
   catchGeo: function(e){
-		console.log('click catchCitys');
     // wx.navigateBack({
     //   url: '../index/index?id=10086&hash=fromGeoPage'
     // })
   },
   // 输入框(防抖功能) 并且 增加搜索;
   searchInputEvent: util.debounce(function(event){
-		console.log(1234);
+		console.log("debounce");
     var self = this;
     let inputVal = event.detail.value;  // arguments[0] = event;
     geoSetData.setSearchResultSugList(self,inputVal);
@@ -124,27 +124,14 @@ Page({
 	// 点击模糊搜索结果
 	searchResultTap: function (e) {
 		var option = e.currentTarget.dataset.item;
-		console.log(clickItem);
-		// this.pushSelectCityIntoStorage(option)
 	},
 	// 具体城市点击
-	tapCityItem: function (e) {
+	tapCityItem: async function (e) {
 		var option = e.currentTarget.dataset.item;
-		api.wxApi.saveUserCityIntoStorage(option)
+		const status = await this.checkTapCityStatus(option)
+		await api.wxApi.saveUserCityIntoStorage(option,status)
 	},
 
-
-	// 添加用户自定义城市
-	addUserCityCoordinate: function (coordinate) {
-
-		// 点击城市节点后
-		// 先存在 storage里;
-		// 页面返回	调用 API wx.navigateBack 带参数 存到 index页;
-		// index 页读取到 新得坐标列表
-		// 重新请求数据, 渲染
-
-
-	},
   // 设置字母索引号
   setIndex (index) {
     if (this.data.barIndex === index) {
@@ -154,5 +141,22 @@ Page({
         barIndex: index
       })
     }
-  },
+	},
+	// 检测该地区天气是否存在
+	checkTapCityStatus(params){
+		let {location,coordinate} = params;
+		let locate ={
+			latitude:location?location.lat:undefined || coordinate?coordinate.latitude:undefined,
+			longitude:location?location.lng:undefined || coordinate?coordinate.longitude:undefined
+		}
+		return new Promise((resolve)=>{
+			api.heWeatherApi.getNowWeather(locate).then(res=>{
+				if(res.HeWeather6[0].status=="ok"){
+					resolve(true)
+				}else{
+					resolve(false)
+				}
+			})
+		})
+	},
 })

@@ -6,7 +6,6 @@ const util = app.globalData.util
 // 其他参数;
 const DEFAULT_INDEX = 0;
 const GENERAL = 'general';
-const GENERAL_LOCATIONTEXT = 'general.locationText';
 const DAILY = 'daily';
 const HOURLY = 'hourly';
 const OTHER = 'other';
@@ -124,20 +123,9 @@ const updateDailyWeather =(self, params,index = DEFAULT_INDEX)=>{
 		return
   })
 }
-// 逆坐标(只会存在定位的时候转换逆坐标)
-const toReverseGeocoder = (self,params,index = DEFAULT_INDEX) =>{
-  return api.qqmapApi.reverseGeocoder(params).then((res) => {
-    let citysLocaTionText = util.cityIndexType(index,GENERAL_LOCATIONTEXT);
-    self.setData({
-      [citysLocaTionText]: res.address
-    })
-    console.log(res.address)
-  })
-}
 
 module.exports = {
   updateNowWeather,
   updateHourlyWeather,
   updateDailyWeather,
-  toReverseGeocoder,
 }

@@ -194,9 +194,6 @@ function successGetLocateName(coordinate,name,self){
 	})
 }
 
-function textAwait(){
-	wx.getStorage('haha')
-}
 
 // 隐藏;
 wxApi.hideLoading = ()=>{
@@ -224,7 +221,15 @@ wxApi.showLoading = (text)=>{
 }
 
 // 储存用户的
-wxApi.saveUserCityIntoStorage = (citydata)=>{
+wxApi.saveUserCityIntoStorage = (citydata,status)=>{
+	if(!status){
+		wx.showToast({
+			title: '添加失败,暂时无法获取该地区天气',
+			icon: 'none',
+			duration: 2000
+		})
+		return
+	}
 	let {fullname,location,addr,coordinate} = citydata;
 	let obj = {
 		fullname: fullname || addr,
@@ -237,7 +242,23 @@ wxApi.saveUserCityIntoStorage = (citydata)=>{
 	// 存储用户的城市;
 	if(storageCitylist instanceof Array){
 		// 这里需要判定是否重复添加;
-		storageCitylist.push(obj)
+		let repeat = false;
+		storageCitylist.map((cur)=>{
+			if(!repeat && cur.fullname == obj.fullname){
+				repeat = true;
+			}
+		})
+		if (!repeat){
+			storageCitylist.push(obj)
+		}else{
+			wx.showToast({
+				title: '请勿重复添加',
+				icon: 'none',
+				mask: true,
+				duration: 2000
+			})
+			return
+		}
 	}else{
 		storageCitylist = [];
 		storageCitylist.push(obj)
@@ -247,9 +268,6 @@ wxApi.saveUserCityIntoStorage = (citydata)=>{
 		key:'USER_CITYS',
 		data: storageCitylist
 	})
-
-	console.log(wx.getStorageSync('USER_CITYS'));
-
 
 	setTimeout(() => {
 		wx.navigateBack({
@@ -302,9 +320,6 @@ qqmapApi.getCityList = ()=>{
           data: citydata //打印城市数据
         })
         resolve(citydata)
-        // console.log('省份数据：', res.result[0]); //打印省份数据
-        // console.log('城市数据：', res.result[1]); //打印城市数据
-        // console.log('区县数据：', res.result[2]); //打印区县数据
       },
       fail: function (error) {
         reject(error)
