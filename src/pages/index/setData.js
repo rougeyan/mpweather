@@ -27,7 +27,7 @@ const updateNowWeather = (self,params,index = DEFAULT_INDEX)=>{
         locationText: params.locationText?params.locationText:location, // 城市定位
         cond_txt: cond_txt, // 天气状况
         cond_code: util.iconNumToString(cond_code), // 图标code
-				update_time: util.formatWeatherTime(loc), // 当地时间(最后更新时间)
+				update_time: util.formatterTime(loc,'hh:mm'), // 当地时间(最后更新时间)
 				coordinate:{
 					latitude: (params.coordinate&&params.coordinate.latitude)?params.coordinate.latitude:lat,
 					longitude:(params.coordinate&&params.coordinate.longitude)?params.coordinate.longitude:lon
@@ -74,7 +74,7 @@ const updateHourlyWeather = (self,params,index = DEFAULT_INDEX)=>{
     let arr = res.HeWeather6[0].hourly;
     let filterArr = arr.map((currentValue)=>{
       return {
-        time:util.formatWeatherTime(currentValue.time), // 时间
+        time:util.transferTime(currentValue.time), // 时间
         cond_code: util.iconNumToString(currentValue.cond_code), // 天气状况代
         cond_txt: currentValue.cond_txt, // 天气状况代(中文)
         tmp: currentValue.tmp, // 温度

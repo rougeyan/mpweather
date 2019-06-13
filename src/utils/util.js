@@ -8,6 +8,24 @@ const formatTime = date => {
 
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
+const formatterTime = (date,fmt)=>{
+	date = new Date(date.replace(/-/g,"/"));
+	var o = {
+		"M+" : date.getMonth() + 1,
+		"d+" : date.getDate(),
+		"h+" : date.getHours(),
+		"m+" : date.getMinutes(),
+		"s+" : date.getSeconds(),
+		"q+" : Math.floor((date.getMonth() + 3) / 3),
+		"S" : date.getMilliseconds()
+		};
+		if (/(y+)/.test(fmt))
+				fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+		if (new RegExp("(" + k + ")").test(fmt))
+				fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+}
 
 const formatNumber = n => {
   n = n.toString()
@@ -16,8 +34,8 @@ const formatNumber = n => {
 
 const WeekDay = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
 
-// 过滤日期
-const formatWeatherTime = n =>{
+// data => 01时
+const transferTime = n =>{
   return `${!!n?n.toString().split(" ")[1].split(":")[0]:""}时`;
 }
 
@@ -138,11 +156,12 @@ module.exports = {
   formatTime: formatTime,
   getGreetings: getGreetings,
   throttle: throttle,
-  debounce,debounce,
-  formatWeatherTime: formatWeatherTime,
+  debounce:debounce,
+  transferTime: transferTime,
   sortCityList: sortCityList,
   WeekDay: WeekDay,
   cityIndexType:cityIndexType,
-  iconNumToString:iconNumToString
+	iconNumToString:iconNumToString,
+	formatterTime:formatterTime
 }
 

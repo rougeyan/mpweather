@@ -33,8 +33,7 @@
 					</view>
 					<!-- 非第一个普通功能 -->
 					<view wx:elif="{{index !== 0}}">
-						<view bindtap="updateLocateWeahter" data-cityindex="{{index}}">
-							<text class='iconfont icon-dingwei'></text>
+						<view class="address" data-cityindex="{{index}}">
 							<text>{{city.general.locationText}}</text>
 						</view>
 					</view>
@@ -82,7 +81,7 @@
 					</view>
 				</view>
 				<view class="other-wrap">
-					<view class="other-item" wx:for="{{city.other}}" wx:for-item="otheritem">
+					<view class="other-item" wx:for="{{city.other}}" wx:for-item="otheritem" wx:key="unique">
 						<text class="title">{{otheritem.title}}</text>
 						<view class="msg">{{otheritem.msg}}</view>
 					</view>
@@ -101,8 +100,8 @@
 				<text class="iconfont icon-windy"></text>
 				<text class="iconfont icon-calm"></text>
 				<text class="iconfont icon-storm"></text>
-				<text class="iconfont icon-rain"></text>
 				<text class="iconfont icon-hail"></text>
+				<text class="iconfont icon-rain"></text>
 				<text class="iconfont icon-moderate_rain"></text>
 				<text class="iconfont icon-heavy_rain"></text>
 				<text class="iconfont icon-freezing_rain"></text>

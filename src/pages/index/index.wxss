@@ -86,7 +86,7 @@
 
 .city-general .update-time {
   position: absolute;
-  bottom: 36rpx;
+  bottom: 20rpx;
   right: 32rpx;
   font-size: 24rpx; }
 
