@@ -120,15 +120,14 @@ Page({
 	// 删除城市
 	deleteCity: function(e){
 		var self = this;
-		let item = this.data.userCityList;
 		[e.currentTarget.dataset.index];
 		let index = e.currentTarget.dataset.index;
 		// console.log(index);
 		let originalArr = wx.getStorageSync('USER_CITYS');
 		let dataOrginal = this.data.userCityList;
 		// 删除对应元素; 会改变原来数组;
-		originalArr.splice(e.currentTarget.dataset.index,1);
-		dataOrginal.splice(e.currentTarget.dataset.index,1);
+		originalArr.splice(index,1);
+		dataOrginal.splice(index,1);
 
 		this.setData({
 			userCityList:dataOrginal

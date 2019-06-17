@@ -12,16 +12,13 @@
   left: 0;
   z-index: -1; }
 
-.blue {
-  background-color: cyan; }
-
 .pink {
   background-color: pink; }
 
 .container {
   height: 100vh;
   overflow: hidden;
-  background-color: skyblue; }
+  background-color: lightslategray; }
 
 .userinfo {
   height: 80rpx;
@@ -42,7 +39,8 @@
   width: 100%;
   left: -1rpx;
   position: relative;
-  border: 1rpx solid #000;
+  border-top: 1rpx solid #000;
+  border-bottom: 1rpx solid #000;
   border-radius: 8rpx;
   margin-bottom: 20rpx; }
   .general .city-general {
@@ -172,7 +170,7 @@
   vertical-align: top;
   width: 50%;
   height: 88rpx;
-  border-bottom: 1px solid #000; }
+  border-bottom: 1rpx solid #000; }
   .other-wrap .other-item .title {
     font-size: 24rpx; }
   .other-wrap .other-item .msg {
@@ -180,16 +178,20 @@
     font-weight: 600; }
 
 .bottom-operation {
+  border-top: 1rpx solid lightslategray;
   display: flex;
   justify-content: space-between;
-  align-content: center;
-  height: 80rpx;
-  background-color: tomato; }
+  align-items: center;
+  height: 80rpx; }
   .bottom-operation .bottom-item {
     width: 64rpx;
     height: 64rpx;
-    background-color: #fff; }
-  .bottom-operation .aboutme {
-    color: #333;
+    color: #333; }
+  .bottom-operation .aboutAuthor {
     font-size: 20rpx;
-    text-align: right; }
+    text-align: center;
+    font-weight: 600; }
+  .bottom-operation .manage {
+    text-align: center;
+    font-size: 28rpx;
+    line-height: 64rpx; }

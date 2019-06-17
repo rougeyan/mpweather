@@ -80,9 +80,9 @@
     z-index: 5;
     background-color: #fff;
     position: relative;
-    height: 560rpx; }
+    height: 42vh; }
     .search-block .search-result-list .search-result-item {
-      padding: 0 36rpx;
+      padding: 6rpx 36rpx;
       position: relative; }
       .search-block .search-result-list .search-result-item:after {
         content: "";
@@ -92,14 +92,19 @@
         right: 0;
         bottom: 0;
         background: #b2b2b2; }
+      .search-block .search-result-list .search-result-item:last-child {
+        padding-bottom: 20rpx; }
       .search-block .search-result-list .search-result-item text {
         display: block; }
       .search-block .search-result-list .search-result-item .title {
         font-size: 28rpx;
-        color: #333; }
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 4rpx; }
       .search-block .search-result-list .search-result-item .area {
         font-size: 20rpx;
-        color: #999; }
+        color: #999;
+        margin-bottom: 4rpx; }
       .search-block .search-result-list .search-result-item .address {
         font-size: 24rpx;
         color: #666;

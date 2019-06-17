@@ -92,8 +92,8 @@
 		</swiper-item>
 	</swiper>
 	<view class="bottom-operation">
-				<view class="bottom-item aboutme">{{"about"+'\n'+"me"}}</view>
-				<view class="bottom-item" catchtap="toCityListPage">管理</view>
+				<view class="bottom-item aboutAuthor" bind:tap="aboutAuthor">{{"about"+'\n'+"Author"}}</view>
+				<view class="bottom-item manage" catchtap="toCityListPage">管理</view>
 				<!-- <text class="iconfont icon-sunny"></text>
 				<text class="iconfont icon-cloudy"></text>
 				<text class="iconfont icon-overcast"></text>

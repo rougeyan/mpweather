@@ -14,11 +14,6 @@
 	left: 0;
 	z-index: -1;
 }
-
-.blue {
-	background-color: cyan;
-}
-
 .pink {
 	background-color: pink;
 }
@@ -26,7 +21,7 @@
 .container {
 	height: 100vh;
 	overflow: hidden;
-	background-color: skyblue;
+	background-color: lightslategray;
 }
 
 .userinfo {
@@ -53,7 +48,8 @@
 	width: 100%;
 	left: -1rpx;
 	position: relative;
-	border: 1rpx solid #000;
+	border-top: 1rpx solid #000;
+	border-bottom: 1rpx solid #000;
 	border-radius: 8rpx;
 	margin-bottom: 20rpx;
 
@@ -223,8 +219,7 @@
 		vertical-align: top;
 		width: 50%;
 		height: 88rpx;
-
-		border-bottom: 1px solid #000;
+		border-bottom: 1rpx solid #000;
 		.title{
 			font-size: 24rpx;
 		}
@@ -236,19 +231,24 @@
 }
 
 .bottom-operation{
+	border-top: 1rpx solid lightslategray;
 	display: flex;
 	justify-content: space-between;
-	align-content: center;
+	align-items: center;
 	height: 80rpx;
-	background-color: tomato;
 	.bottom-item{
 		width: 64rpx;
 		height: 64rpx;
-		background-color: #fff;
-	}
-	.aboutme{
 		color: #333;
+	}
+	.aboutAuthor{
 		font-size: 20rpx;
-		text-align: right;
+		text-align: center;
+		font-weight: 600;
+	}
+	.manage{
+		text-align: center;
+		font-size: 28rpx;
+		line-height: 64rpx;
 	}
 }

@@ -213,5 +213,11 @@ Page({
   changeSwiper: function (e) {
 		let cur = e.detail.current;
 		this.getCityItemWeather(cur);
-  },
+	},
+	// 关于作者
+	aboutAuthor(){
+		wx.navigateTo({
+      url: '../logs/logs?id=10086&hash=fromFirstPage'
+    })
+	},
 })
