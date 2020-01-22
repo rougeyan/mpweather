@@ -4,9 +4,9 @@ const HEWEATHER_API = 'https://free-api.heweather.com/s6/weather'
 
 module.exports = {
   // 和风天气个人开发key 对外提供;
-  weatherKey: '',
+	weatherKey: '043d829ed8e744cb846e0c7dd47e93a8',
   // 腾讯地图开发key
-  qqMapKey: '',
+	qqMapKey: 'E3HBZ-D2NHU-JSMVX-4EN2N-YKT7F-65FOI',
   // 实时天气接口地址
   nowWeatherUrl: `${HEWEATHER_API}/now`,
   // 逐日天气接口地址
